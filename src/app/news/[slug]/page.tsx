@@ -112,10 +112,13 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
             {item.title}
           </h1>
 
+          {/* 比率は画像側の申告に従う。ここで 16/9 に固定していたため、
+              2:1 のセミナー告知バナーが左右で切れ、日付と社名が読めなかった。
+              申告が無い画像だけ 16/9 にする */}
           <div className="mt-9">
             <SitePhoto
               image={newsImages[item.slug] ?? newsFallbackImage}
-              ratio="16/9"
+              ratio={(newsImages[item.slug] ?? newsFallbackImage).ratio ?? "16/9"}
               sizes="(max-width: 768px) 100vw, 760px"
             />
           </div>
