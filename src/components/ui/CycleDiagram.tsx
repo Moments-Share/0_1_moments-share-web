@@ -170,7 +170,7 @@ const steps: Step[] = [
     x: 39.31,
     y: 76.66,
     side: "down",
-    title: "次の挑戦へ",
+    title: "実績ができる",
     body: "成果が次の挑戦者を呼び込む。",
     project: "地域に循環",
   },
@@ -520,6 +520,7 @@ export function CycleDiagram({
       </div>
 
       <div
+        data-cycle
         className={`relative mx-auto w-full max-w-[980px] xl:aspect-[3/2] ${
           heading ? "mt-8 xl:mt-10" : ""
         }`}
@@ -681,7 +682,10 @@ export function CycleDiagram({
                   <p className="mt-2 text-[13px] leading-[1.9] text-charcoal/75 xl:hidden">
                     {b.why}
                   </p>
-                  <div className="mt-4 xl:mt-0">
+                  <div
+                    className="cycle-reveal mt-4 xl:mt-0"
+                    style={{ "--cycle-delay": `${f.i === 0 ? 0.5 : 1.5}s` } as CSSProperties}
+                  >
                     <BizTag label={b.label} href={b.href} />
                   </div>
                 </li>
@@ -710,14 +714,14 @@ export function CycleDiagram({
                 </span>
 
                 <div
-                  className={`xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
+                  style={{ ...sideVars[s.side], "--cycle-delay": `${i}s` } as CSSProperties}
+                  className={`cycle-reveal xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
                     s.side === "left"
                       ? "xl:text-right"
                       : s.side === "right"
                         ? ""
                         : "xl:text-center"
                   }`}
-                  style={sideVars[s.side]}
                 >
                   <span className="mt-2 block text-[12px] font-medium leading-none tabular-nums text-charcoal/65 xl:mt-0">
                     {s.no}
