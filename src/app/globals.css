@@ -283,6 +283,29 @@ html[data-js] .rv-load {
   animation-delay: var(--cycle-delay, 0s);
 }
 
+/* 広い画面の∞でも、節点の説明を帯の通過に合わせて出して消す。
+   6つ分の「番号・名前・説明・タグ」を常に出していると、
+   図のまわりが文字で埋まって、形が読めなくなる。
+
+   ただし中にリンクがあるので、消えている間は押せない。
+   図に触れている（マウスを乗せた・キーボードで中に入った）あいだは
+   全部出したままにして、読みたい人が読めるようにする。
+
+   狭い画面には効かせない。あちらは下のカードの列が本体で、
+   図は番号だけの飾りなので、ここで消すものが無い。 */
+@media (min-width: 1280px) {
+  .cycle-reveal {
+    opacity: 0;
+    animation: cycle-name 6s linear infinite both;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+  [data-cycle]:hover .cycle-reveal,
+  [data-cycle]:focus-within .cycle-reveal {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* 動きを減らす設定のときは止める。
    止めた状態が、そのまま読める状態になるようにしてある
    （灯りは装飾で、点も段階名も最初から見えている） */
@@ -293,6 +316,8 @@ html[data-js] .rv-load {
      そのときは、いま選ばれている段階の名前だけを出しておく */
   .cycle-name { opacity: 0; }
   [data-on="true"] .cycle-name { opacity: 1; }
+  /* 広い画面も同じ。帯が止まるので、消したままにはしない */
+  .cycle-reveal { opacity: 1; }
 }
 
 /* --- 文字が少しずつ現れる（RevealChars）---
