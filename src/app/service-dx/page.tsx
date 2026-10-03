@@ -88,6 +88,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
+  /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
+     パラメータ付きのURLを別ページとして数えられないよう明示する */
+  alternates: { canonical: "https://moments-share.com/service-dx/" },
   title: "西尾市の業務効率化・AI導入・DX/AX支援｜Moments Share",
   description:
     "愛知県西尾市の中小企業向け、業務効率化・AI導入の伴走支援「Core Shift」。DX（業務のデジタル化）に加え、AX（AIを前提に仕事のやり方そのものを組み替える）まで支援します。入力・転記・集計を手放せば、1日60分の手作業が年間240時間になって戻ります。",

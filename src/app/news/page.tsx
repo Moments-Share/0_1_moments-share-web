@@ -6,6 +6,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
+  /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
+     パラメータ付きのURLを別ページとして数えられないよう明示する */
+  alternates: { canonical: "https://moments-share.com/news/" },
   title: "ニュース・お知らせ｜Moments Share",
   description:
     "Moments Share合同会社のお知らせ・プロジェクト情報・サービスリリース。愛知県西尾市での取り組みや、新聞・ニュースへの掲載情報をお届けします。",

@@ -92,6 +92,9 @@ const howWeWork = [
 ];
 
 export const metadata: Metadata = {
+  /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
+     パラメータ付きのURLを別ページとして数えられないよう明示する */
+  alternates: { canonical: "https://moments-share.com/service-produce/" },
   title: "西尾市の地域プロデュース・地域活性化｜Moments Share",
   description:
     "愛知県西尾市の地域プロデュース事業。地域の課題と、人や企業の「やってみたい」をつなぎ、新しいプロジェクトや事業が生まれる場をつくります。西尾働き方図鑑・西尾筋肉祭り・AI活用研究会など、挑戦と共創が循環する地域へ。",
