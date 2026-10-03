@@ -34,7 +34,11 @@ export function ExternalLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${variantClass[variant]} ${className}`}
+      /* relative を付けておく。中の sr-only は position:absolute なので、
+         位置の基準になる祖先が無いと、ページの左上を基準に置かれてしまう。
+         横スクロールの中にこのリンクがあると、その「静的な位置」は
+         画面の外（右）になり、ページ全体に横スクロールが出る */
+      className={`relative ${variantClass[variant]} ${className}`}
     >
       {children} <span aria-hidden>↗</span>
       <span className="sr-only">（別タブで開きます）</span>

@@ -69,7 +69,8 @@ export function DeckEmbed() {
               href={DECK_VIEW_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+              /* relative の理由は ExternalLink と同じ（中の sr-only の基準） */
+              className="relative inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
             >
               {isDeckEmbeddable ? "全画面で開く" : "資料を開く"} <span aria-hidden>↗</span>
               <span className="sr-only">（別タブで開きます）</span>
