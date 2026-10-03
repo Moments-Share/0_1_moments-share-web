@@ -46,7 +46,7 @@ export function NewsPreview() {
               <Link key={item.slug} href={`/news/${item.slug}`} className="group block">
                 <SitePhoto
                   image={newsImages[item.slug] ?? newsFallbackImage}
-                  ratio="4/3"
+                  ratio="16/9"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="mt-5 flex items-center gap-4">
