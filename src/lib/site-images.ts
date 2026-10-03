@@ -140,6 +140,7 @@ const region = {
   /* セミナーの告知バナー。写真ではなく文字の入った画像なので、
      切れると読めなくなる。元の比率（約2:1）のまま出す */
   seminarSaiyoAx: img("/photos/40_seminar_saiyo_ax.jpg", "無料オンラインセミナー「採用マーケAX — AIで、採用の「伝え方」を変える。」の告知バナー。2026年9月29日（火）15:00〜16:00 オンライン開催、Moments Share と Dear To の共催", "セミナーの告知バナー。文字が入っているので切り抜かない。", "2/1"),
+  workshopAiAgent: img("/photos/41_workshop_ai_agent.jpg", "ワークショップ「AIエージェントを創ろう！ 2時間で、自分専用のAIエージェントを1体構築ワークショップ」の告知バナー。2026年5月31日（日）14:00〜16:00、名古屋市中村区名駅のプロコワで開催", "ワークショップの告知バナー。文字が入っているので切り抜かない。", "920/450"),
 };
 
 /* ---------------------------------------------------------------
@@ -182,6 +183,7 @@ export const newsImages: Record<string, SiteImage> = {
   "kinniku-matsuri-1st": siteImages.regionEvent,
   "kinniku-matsuri-press": siteImages.regionEventStage,
   "saiyo-marke-ax-seminar": siteImages.seminarSaiyoAx,
+  "ai-agent-workshop": siteImages.workshopAiAgent,
 };
 
 /* ---------------------------------------------------------------
