@@ -94,8 +94,6 @@ const steps: Step[] = [
     title: "挑戦してみる",
     body: "インターンや地域プロジェクトに参加する。",
     project: "地域ベンチャー留学",
-    /* 挑戦するには、まず余白がいる。その余白をつくるのがDX・AX支援 */
-    biz: [{ label: "DX・AX支援", href: "/service-dx" }],
   },
   {
     no: "03",
@@ -106,8 +104,9 @@ const steps: Step[] = [
     body: "若者・企業・学校・行政がつながる。",
     project: "コワーキングスペース",
     note: "準備中",
-    /* 社外パートナーとチームを組んでつなぐのがBPO */
-    biz: [{ label: "BPO", href: "/service-bpo" }],
+    /* 専用ページはまだ無い。地域プロデュースの「場づくり」の項へ飛ばす。
+       開設が決まってページを作ったら、ここを差し替える */
+    href: "/service-produce#coworking",
   },
   {
     no: "04",
@@ -141,6 +140,21 @@ const steps: Step[] = [
   },
 ];
 
+/* 段階と段階の「あいだ」に置く事業。
+   事業は、ある状態（点）ではなく、次の状態へ移す力（弧）なので、
+   点に貼らずに弧の上へ置く。
+     01 地域を知る →〈DX・AX支援〉→ 02 挑戦してみる
+       挑戦するには、まず余白がいる。その余白をつくる
+     02 挑戦してみる →〈BPO〉→ 03 つながる
+       社外パートナーとチームを組んでつなぐ
+
+   x・y は PATH の道のりの中点（1/12 ずつずらした位置）を
+   実際に測って出した値。PATH を変えたら計算し直すこと。 */
+const betweens = [
+  { after: 0, label: "DX・AX支援", href: "/service-dx", x: 79.35, y: 19.64 },
+  { after: 1, label: "BPO", href: "/service-bpo", x: 79.35, y: 80.36 },
+];
+
 /* 2つの輪。広い画面では∞の左右の輪の中に名前が出るが、
    狭い画面では∞が組めず、6段階が縦一列になってしまう。
    そのとき「挑戦の輪」と「共創の輪」という、この図の一番の中身が
@@ -171,8 +185,8 @@ const groups = [
    そのときに向きが分かるものがなくなってしまう。
    位置と角度は、上の PATH の接線から取っている。 */
 const arrows = [
-  { x: 79.97, y: 20.74, r: 57.2 },
-  { x: 79.23, y: 80.64, r: 134.9 },
+  { x: 84.11, y: 34.66, r: 78.3 },
+  { x: 84.11, y: 65.34, r: 104.2 },
   { x: 20.03, y: 20.74, r: 122.8 },
   { x: 20.77, y: 80.64, r: 45.1 },
 ];
@@ -196,9 +210,11 @@ function ProjectTag({ step }: { step: Step }) {
     return (
       <Link
         href={step.href}
-        className="inline-block border-b border-navy-ink/40 pb-0.5 text-[12px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+        /* 地は不透明に。∞の道が 01 のタグの位置を通るため */
+        className="inline-block bg-background px-1.5 pb-0.5 text-[12px] font-bold text-navy-ink underline decoration-navy-ink/40 underline-offset-4 transition-colors hover:text-deep-green hover:decoration-deep-green"
       >
-        {step.project} →
+        {step.project}
+        {step.note && <span className="ml-1 font-medium text-charcoal/60">（{step.note}）</span>} →
       </Link>
     );
   }
@@ -228,8 +244,9 @@ function BizTag({ label, href }: { label: string; href: string }) {
 
 /** 灯る点。∞でも縦の道でも同じものを使う */
 function Dot({ index }: { index: number }) {
-  /* 帯の先頭がこの点に届く時刻。6点を道のりで等間隔に置いたので2秒刻み */
-  const delay = { "--cycle-delay": `${index * 2}s` } as CSSProperties;
+  /* 帯の先頭がこの点に届く時刻。6点を道のりで等間隔に置いたので、
+     一周6秒なら1秒刻み（一周の秒数を変えたら、ここも割り直すこと） */
+  const delay = { "--cycle-delay": `${index * 1}s` } as CSSProperties;
   return (
     <span aria-hidden className="relative block h-[15px] w-[15px] shrink-0">
       <span className="absolute inset-0 rounded-full border-2 border-sage-ink bg-background" />
@@ -293,12 +310,14 @@ export function CycleDiagram({
               <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.55" />
               <stop offset="100%" stopColor="var(--color-terracotta)" />
             </linearGradient>
-            <radialGradient id="cycle-glow-l" cx="37%" cy="50%" r="26%">
-              <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.16" />
+            <radialGradient id="cycle-glow-l" cx="37%" cy="50%" r="33%">
+              <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.17" />
+              <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.11" />
               <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="cycle-glow-r" cx="63%" cy="50%" r="26%">
-              <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.16" />
+            <radialGradient id="cycle-glow-r" cx="63%" cy="50%" r="33%">
+              <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.17" />
+              <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.11" />
               <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
             </radialGradient>
           </defs>
@@ -327,7 +346,7 @@ export function CycleDiagram({
             pathLength={100}
             fill="none"
             stroke="var(--color-deep-green)"
-            strokeWidth="0.75"
+            strokeWidth="1.2"
             strokeLinecap="round"
             strokeDasharray="13 87"
             strokeDashoffset={-20.33}
@@ -389,7 +408,10 @@ export function CycleDiagram({
           className="absolute hidden xl:block"
           style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
-          <span className="block rounded-full bg-background px-2.5 py-2 text-center text-[13px] font-bold leading-none tracking-[0.06em] text-charcoal">
+          {/* 交点は、この図でいちばん言いたい場所（2つの輪が地域で交わる）。
+              13pxだと図のなかで最小の文字になり、意味と大きさが逆だった。
+              円は交点の広がりより小さいので、線が交わる形は円の外で見える */}
+          <span className="flex h-[88px] w-[88px] items-center justify-center rounded-full bg-background text-center text-[30px] font-bold leading-none tracking-[0.06em] text-charcoal">
             地域
           </span>
         </div>
@@ -413,11 +435,51 @@ export function CycleDiagram({
                 detail ? "gap-7 sm:grid-cols-2 xl:gap-0" : "gap-5 xl:gap-0"
               }`}
             >
-              {steps.slice(g.from, g.to).map((s, j) => {
-                const i = g.from + j;
+              {/* 段階と、そのあとに挟まる事業を、ひと並びにする。
+                  広い画面ではどちらも ∞ の上の座標へ飛ぶので、
+                  同じ仕組みで扱える（DOMに同じものを2つ持たずに済む） */}
+              {steps
+                .slice(g.from, g.to)
+                .flatMap((s, j) => {
+                  const i = g.from + j;
+                  const row: { s?: Step; b?: (typeof betweens)[number]; key: string }[] = [
+                    { s, key: s.no },
+                  ];
+                  betweens
+                    .filter((b) => b.after === i)
+                    .forEach((b) => row.push({ b, key: `b-${b.label}` }));
+                  return row;
+                })
+                .map((item, k, arr) => {
+                const last = k === arr.length - 1;
+
+                /* 段階と段階のあいだに挟まる事業。点は持たない。
+                   広い画面では弧の上、狭い画面では行と行のあいだに置く */
+                if (item.b) {
+                  const b = item.b;
+                  return (
+                    <li
+                      key={item.key}
+                      className="relative flex items-start gap-3 xl:absolute xl:left-[var(--cx)] xl:top-[var(--cy)] xl:block xl:-translate-x-1/2 xl:-translate-y-1/2"
+                      style={{ "--cx": `${b.x}%`, "--cy": `${b.y}%` } as CSSProperties}
+                    >
+                      {!last && (
+                        <span
+                          aria-hidden
+                          className="absolute left-[7px] top-0 h-[calc(100%+26px)] w-px bg-charcoal/20 xl:hidden"
+                        />
+                      )}
+                      <span aria-hidden className="w-[15px] shrink-0 xl:hidden" />
+                      <BizTag label={b.label} href={b.href} />
+                    </li>
+                  );
+                }
+
+                const s = item.s as Step;
+                const i = steps.indexOf(s);
                 return (
                   <li
-                    key={s.no}
+                    key={item.key}
                     /* 位置は変数で渡し、lg でだけ使う。left/top を直に書くと、
                        ∞にならない画面でも relative の項目がその分ずれて階段状になる */
                     className={`relative xl:absolute xl:left-[var(--cx)] xl:top-[var(--cy)] xl:block ${
@@ -439,10 +501,10 @@ export function CycleDiagram({
                     {/* 狭い画面の道。点の下端から次の点の上端まで。
                         行の高さが揃っているので 100% + 行間 - 点 で届く。
                         まとまりの最後では引かない。そこが輪の変わり目になる */}
-                    {j < g.to - g.from - 1 && !detail && (
+                    {!last && !detail && (
                       <span
                         aria-hidden
-                        className="absolute left-[7px] top-[18px] h-[calc(100%+13px)] w-px bg-charcoal/20 xl:hidden"
+                        className="absolute left-[7px] top-[18px] h-[calc(100%+26px)] w-px bg-charcoal/20 xl:hidden"
                       />
                     )}
 
@@ -467,16 +529,25 @@ export function CycleDiagram({
                         {s.title}
                       </h4>
                       {detail && (
-                        <>
-                          <p className="mt-1.5 text-[12px] leading-[1.75] text-charcoal/80">
-                            {s.body}
-                          </p>
-                          {s.project && (
-                            <div className="mt-2.5">
-                              <ProjectTag step={s} />
-                            </div>
-                          )}
-                        </>
+                        <p className="mt-1.5 text-[12px] leading-[1.75] text-charcoal/80">
+                          {s.body}
+                        </p>
+                      )}
+                      {/* 行き先のあるプロジェクトは、TOP（短い版）でも出す。
+                          行き先の無いものは、短い版では出さない。
+                          押せないタグが並ぶと、押せるものが埋もれる */}
+                      {s.project && (detail || s.href) && (
+                        <div
+                          className={`w-full xl:mt-2.5 xl:w-auto ${detail ? "mt-2.5" : ""} ${
+                            s.side === "left"
+                              ? "xl:text-right"
+                              : s.side === "right"
+                                ? ""
+                                : "xl:text-center"
+                          }`}
+                        >
+                          <ProjectTag step={s} />
+                        </div>
                       )}
                       {/* その段階を担う事業。04だけに付く。
                           狭い画面では w-full で名前の下の行へ落とす */}
