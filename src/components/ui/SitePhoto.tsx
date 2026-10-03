@@ -51,9 +51,13 @@ export function SitePhoto({
   const resolved = image ?? (name ? siteImages[name] : undefined);
   if (!resolved) return null;
 
+  /* 文字入りの画像は切らない。枠の比率と合わないぶんは余白にして、
+     その余白が「切れている」ように見えないよう、薄い地を敷く */
+  const contain = resolved.fit === "contain";
+
   return (
     <div
-      className={`relative w-full overflow-hidden ${className}`}
+      className={`relative w-full overflow-hidden ${contain ? "bg-charcoal/[0.05]" : ""} ${className}`}
       style={{ aspectRatio: ratio ?? resolved.ratio }}
     >
       {isImageReady(resolved) ? (
@@ -63,7 +67,7 @@ export function SitePhoto({
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover object-center"
+          className={`object-center ${contain ? "object-contain" : "object-cover"}`}
         />
       ) : (
         <PhotoSpec image={resolved} />

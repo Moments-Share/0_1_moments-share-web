@@ -164,7 +164,7 @@ export function BusinessFlow() {
               href="/service-produce"
               className="mt-7 inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
             >
-              この循環をつくる取り組みを見る →
+              この循環をつくるのが、地域プロデュース事業 →
             </Link>
           </div>
         </Reveal>

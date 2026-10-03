@@ -21,6 +21,8 @@ import type { CSSProperties } from "react";
    動きはCSSだけ（JSも状態もなし）。
 
    狭い画面は∞に組めないので、縦一本の道に切り替える。
+   切り替えは xl（1280px）。lg（1024px）だと、∞の右端のラベル
+   （13em の固定幅）が画面からはみ出し、横スクロールが出る。
    同じ要素の並べ方を変えているだけで、内容は重複させていない。
 
    variant:
@@ -43,6 +45,11 @@ type Step = {
   project?: string;
   href?: string;
   note?: string;
+  /** その段階を担う事業。循環そのものが地域プロデュース事業なので、
+      ここに出すのは DX・AX支援 と BPO だけにしている。
+      6点すべてに「地域プロデュース」を貼ると5回並び、
+      図ではなく模様になる。3つ目の事業は図の下の一行で受ける */
+  biz?: { label: string; href: string }[];
 };
 
 /* 道のりの計算（作り直すときのために残す）
@@ -87,6 +94,8 @@ const steps: Step[] = [
     title: "挑戦してみる",
     body: "インターンや地域プロジェクトに参加する。",
     project: "地域ベンチャー留学",
+    /* 挑戦するには、まず余白がいる。その余白をつくるのがDX・AX支援 */
+    biz: [{ label: "DX・AX支援", href: "/service-dx" }],
   },
   {
     no: "03",
@@ -97,6 +106,8 @@ const steps: Step[] = [
     body: "若者・企業・学校・行政がつながる。",
     project: "コワーキングスペース",
     note: "準備中",
+    /* 社外パートナーとチームを組んでつなぐのがBPO */
+    biz: [{ label: "BPO", href: "/service-bpo" }],
   },
   {
     no: "04",
@@ -105,6 +116,10 @@ const steps: Step[] = [
     side: "up",
     title: "人と企業が変わる",
     body: "採用・育成・DX・組織が変わる。",
+    biz: [
+      { label: "DX・AX支援", href: "/service-dx" },
+      { label: "BPO", href: "/service-bpo" },
+    ],
   },
   {
     no: "05",
@@ -126,6 +141,32 @@ const steps: Step[] = [
   },
 ];
 
+/* 2つの輪。広い画面では∞の左右の輪の中に名前が出るが、
+   狭い画面では∞が組めず、6段階が縦一列になってしまう。
+   そのとき「挑戦の輪」と「共創の輪」という、この図の一番の中身が
+   跡形もなく消えるので、狭い画面では2つのまとまりに割って見出しを付ける。
+
+   内容は増やしていない。広い画面で輪の中に出しているものと同じ語を、
+   並べ方だけ変えて出している。 */
+const groups = [
+  {
+    en: "CHALLENGE",
+    ja: "挑戦",
+    note: "個人の「やってみたい」",
+    tone: "text-terracotta-ink",
+    from: 0,
+    to: 3,
+  },
+  {
+    en: "CO-CREATION",
+    ja: "共創",
+    note: "地域の「課題」",
+    tone: "text-sage-ink",
+    from: 3,
+    to: 6,
+  },
+];
+
 /* 進む向きを示す矢印。動きを減らす設定の人には帯が出ないので、
    そのときに向きが分かるものがなくなってしまう。
    位置と角度は、上の PATH の接線から取っている。 */
@@ -138,7 +179,7 @@ const arrows = [
 
 /* ラベルを点のどちら側に出すか。
 
-   ずらし方は変数で渡し、lg でだけ効かせる。
+   ずらし方は変数で渡し、xl でだけ効かせる。
    style に transform を直に書くと、∞に組まない狭い画面でも
    ラベルがその分ずれて、画面の外へ飛び出してしまう。 */
 const sideVars: Record<Side, CSSProperties> = {
@@ -166,6 +207,22 @@ function ProjectTag({ step }: { step: Step }) {
       {step.project}
       {step.note && <span className="ml-1 text-charcoal/60">／{step.note}</span>}
     </span>
+  );
+}
+
+/** その段階を担う事業。プロジェクトのタグより一段強く見せる。
+    事業はサービスページへ辿らせたいので、必ずリンクにする */
+function BizTag({ label, href }: { label: string; href: string }) {
+  return (
+    <Link
+      href={href}
+      /* 地は不透明にしておく。04のタグの位置を∞の道が通るので、
+         半透明だと線が文字を横切って読めなくなる。
+         色は deep-green 8% を ivory（#f8f5ef＝この図が乗る地）に焼き込んだ値 */
+      className="inline-block border border-deep-green/40 bg-[#e8e9e2] px-2 py-0.5 text-[11px] font-bold text-deep-green transition-colors hover:border-deep-green hover:bg-[#dde2d8]"
+    >
+      {label} →
+    </Link>
   );
 }
 
@@ -215,15 +272,15 @@ export function CycleDiagram({
       )}
 
       <div
-        className={`relative mx-auto w-full max-w-[980px] lg:aspect-[3/2] ${
-          heading ? "mt-8 lg:mt-10" : ""
+        className={`relative mx-auto w-full max-w-[980px] xl:aspect-[3/2] ${
+          heading ? "mt-8 xl:mt-10" : ""
         }`}
       >
         {/* ∞の道。飾りなので読み上げない */}
         <svg
           aria-hidden
           viewBox="0 0 150 100"
-          className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+          className="pointer-events-none absolute inset-0 hidden h-full w-full xl:block"
         >
           <defs>
             {/* 左は挑戦（terracotta）、右は共創（sage）。
@@ -285,7 +342,7 @@ export function CycleDiagram({
             viewBox="0 0 10 10"
             width="12"
             height="12"
-            className="absolute hidden lg:block"
+            className="absolute hidden xl:block"
             style={{
               left: `${a.x}%`,
               top: `${a.y}%`,
@@ -299,7 +356,7 @@ export function CycleDiagram({
         {/* 2つのループの名前と、交わるところ。∞の意味はこの3語で決まる */}
         <div
           aria-hidden
-          className="absolute hidden lg:block"
+          className="absolute hidden xl:block"
           style={{ left: "69%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <p className="text-center text-[10px] font-bold tracking-[0.22em] text-terracotta-ink">
@@ -314,7 +371,7 @@ export function CycleDiagram({
         </div>
         <div
           aria-hidden
-          className="absolute hidden lg:block"
+          className="absolute hidden xl:block"
           style={{ left: "31%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <p className="text-center text-[10px] font-bold tracking-[0.22em] text-sage-ink">
@@ -329,7 +386,7 @@ export function CycleDiagram({
         </div>
         <div
           aria-hidden
-          className="absolute hidden lg:block"
+          className="absolute hidden xl:block"
           style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <span className="block rounded-full bg-background px-2.5 py-2 text-center text-[13px] font-bold leading-none tracking-[0.06em] text-charcoal">
@@ -337,76 +394,116 @@ export function CycleDiagram({
           </span>
         </div>
 
-        {/* 6段階。広い画面では∞の道の上へ、狭い画面では縦一本の道になる。
+        {/* 6段階。広い画面では∞の道の上へ、狭い画面では「挑戦」「共創」の
+            2つのまとまりに分かれた縦の道になる。
             同じ要素の並べ方を変えているだけで、内容は重複させていない */}
-        <ol
-          className={`grid grid-cols-1 lg:static lg:block ${
-            detail ? "gap-7 sm:grid-cols-2 lg:gap-0" : "gap-5 lg:gap-0"
-          }`}
-        >
-          {steps.map((s, i) => (
-            <li
-              key={s.no}
-              /* 位置は変数で渡し、lg でだけ使う。left/top を直に書くと、
-                 ∞にならない画面でも relative の項目がその分ずれて階段状になる */
-              className={`relative lg:absolute lg:left-[var(--cx)] lg:top-[var(--cy)] lg:block ${
-                detail ? "" : "flex items-center gap-3"
+        {groups.map((g) => (
+          <div key={g.en} className="max-xl:mt-9 max-xl:first:mt-0">
+            {/* 輪の名前。広い画面では輪の中に出しているので、ここは狭い画面だけ */}
+            <div className="xl:hidden">
+              <p className={`text-[10px] font-bold tracking-[0.22em] ${g.tone}`}>{g.en}</p>
+              <p className="mt-1.5 text-[15px] font-bold tracking-[0.04em] text-charcoal">
+                {g.ja}
+                <span className="ml-2 text-[12px] font-normal text-charcoal/70">{g.note}</span>
+              </p>
+            </div>
+
+            <ol
+              className={`grid grid-cols-1 max-xl:mt-5 xl:static xl:block ${
+                detail ? "gap-7 sm:grid-cols-2 xl:gap-0" : "gap-5 xl:gap-0"
               }`}
-              style={{ "--cx": `${s.x}%`, "--cy": `${s.y}%` } as CSSProperties}
             >
-              {/* 点は道の上に置く。ラベルはその外側へ逃がす。
-                  ラベルの余白は max-lg: で「狭い画面だけ」に効かせる。
-                  lg:mt-0 のように打ち消しを書くと、ずらし幅を入れている
-                  margin の一括指定と競合して、点と番号が重なる */}
-              <span className="lg:absolute lg:left-0 lg:top-0 lg:-translate-x-1/2 lg:-translate-y-1/2">
-                <Dot index={i} />
-              </span>
+              {steps.slice(g.from, g.to).map((s, j) => {
+                const i = g.from + j;
+                return (
+                  <li
+                    key={s.no}
+                    /* 位置は変数で渡し、lg でだけ使う。left/top を直に書くと、
+                       ∞にならない画面でも relative の項目がその分ずれて階段状になる */
+                    className={`relative xl:absolute xl:left-[var(--cx)] xl:top-[var(--cy)] xl:block ${
+                      /* 狭い画面では、点を行の真ん中ではなく1行目（番号と段階名）
+                         の高さに合わせる。事業タグが付く行は2行になるので、
+                         真ん中に置くと点だけが名前より下にずれる */
+                      detail ? "" : "flex items-start gap-3"
+                    }`}
+                    style={{ "--cx": `${s.x}%`, "--cy": `${s.y}%` } as CSSProperties}
+                  >
+                    {/* 点は道の上に置く。ラベルはその外側へ逃がす。
+                        ラベルの余白は max-xl: で「狭い画面だけ」に効かせる。
+                        xl:mt-0 のように打ち消しを書くと、ずらし幅を入れている
+                        margin の一括指定と競合して、点と番号が重なる */}
+                    <span className="max-xl:mt-[3px] xl:absolute xl:left-0 xl:top-0 xl:-translate-x-1/2 xl:-translate-y-1/2">
+                      <Dot index={i} />
+                    </span>
 
-              {/* 狭い画面の道。点の下端から次の点の上端まで。
-                  行の高さが揃っているので 100% + 行間 - 点 で届く */}
-              {i < steps.length - 1 && !detail && (
-                <span
-                  aria-hidden
-                  className="absolute left-[7px] top-[calc(50%+7px)] h-[calc(100%+6px)] w-px bg-charcoal/20 lg:hidden"
-                />
-              )}
-
-              <div
-                className={`lg:absolute lg:left-0 lg:top-0 lg:w-[13em] lg:[margin:var(--lo)] lg:[transform:var(--lt)] ${
-                  s.side === "left" ? "lg:text-right" : s.side === "right" ? "" : "lg:text-center"
-                } ${detail ? "max-lg:mt-2" : "flex items-baseline gap-2 lg:block"}`}
-                style={sideVars[s.side]}
-              >
-                <span className="block text-[12px] font-medium leading-none tabular-nums text-charcoal/65">
-                  {s.no}
-                </span>
-                <h4
-                  className={`text-charcoal font-semibold leading-[1.4] lg:mt-1.5 ${
-                    detail ? "mt-1.5 text-[16px] md:text-[17px]" : "text-[14px] md:text-[15px]"
-                  }`}
-                >
-                  {s.title}
-                </h4>
-                {detail && (
-                  <>
-                    <p className="mt-1.5 text-[12px] leading-[1.75] text-charcoal/80">{s.body}</p>
-                    {s.project && (
-                      <div className="mt-2.5">
-                        <ProjectTag step={s} />
-                      </div>
+                    {/* 狭い画面の道。点の下端から次の点の上端まで。
+                        行の高さが揃っているので 100% + 行間 - 点 で届く。
+                        まとまりの最後では引かない。そこが輪の変わり目になる */}
+                    {j < g.to - g.from - 1 && !detail && (
+                      <span
+                        aria-hidden
+                        className="absolute left-[7px] top-[18px] h-[calc(100%+13px)] w-px bg-charcoal/20 xl:hidden"
+                      />
                     )}
-                  </>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+
+                    <div
+                      className={`xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
+                        s.side === "left"
+                          ? "xl:text-right"
+                          : s.side === "right"
+                            ? ""
+                            : "xl:text-center"
+                      } ${detail ? "max-xl:mt-2" : "flex flex-wrap items-baseline gap-x-2 gap-y-1.5 xl:block"}`}
+                      style={sideVars[s.side]}
+                    >
+                      <span className="block text-[12px] font-medium leading-none tabular-nums text-charcoal/65">
+                        {s.no}
+                      </span>
+                      <h4
+                        className={`text-charcoal font-semibold leading-[1.4] xl:mt-1.5 ${
+                          detail ? "mt-1.5 text-[16px] md:text-[17px]" : "text-[14px] md:text-[15px]"
+                        }`}
+                      >
+                        {s.title}
+                      </h4>
+                      {detail && (
+                        <>
+                          <p className="mt-1.5 text-[12px] leading-[1.75] text-charcoal/80">
+                            {s.body}
+                          </p>
+                          {s.project && (
+                            <div className="mt-2.5">
+                              <ProjectTag step={s} />
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {/* その段階を担う事業。04だけに付く。
+                          狭い画面では w-full で名前の下の行へ落とす */}
+                      {s.biz && (
+                        <div
+                          className={`flex w-full flex-wrap gap-1.5 xl:mt-2.5 xl:w-auto ${
+                            detail ? "max-xl:mt-2.5" : ""
+                          } ${s.side === "left" ? "xl:justify-end" : s.side === "right" ? "" : "xl:justify-center"}`}
+                        >
+                          {s.biz.map((b) => (
+                            <BizTag key={b.label} label={b.label} href={b.href} />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ))}
       </div>
 
       {/* 狭い画面の戻り。縦の道には∞を描く余白がないので、
           点の列に合わせた小さな印で「01へ戻る」ことを示す */}
       {!detail && (
-        <p className="mt-4 flex items-center gap-3 text-[12px] text-charcoal/70 lg:hidden">
+        <p className="mt-4 flex items-center gap-3 text-[12px] text-charcoal/70 xl:hidden">
           <span
             aria-hidden
             className="block w-[15px] shrink-0 text-center text-[13px] leading-none text-sage-ink"
@@ -418,7 +515,7 @@ export function CycleDiagram({
       )}
 
       {detail && (
-        <p className="mt-10 text-center text-[14px] leading-[1.9] text-charcoal/75 lg:mt-14">
+        <p className="mt-10 text-center text-[14px] leading-[1.9] text-charcoal/75 xl:mt-14">
           この循環をつくることが、地域プロデュース事業です。
         </p>
       )}
