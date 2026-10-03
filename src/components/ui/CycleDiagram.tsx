@@ -419,8 +419,47 @@ export function CycleDiagram({
         {/* 6段階。広い画面では∞の道の上へ、狭い画面では「挑戦」「共創」の
             2つのまとまりに分かれた縦の道になる。
             同じ要素の並べ方を変えているだけで、内容は重複させていない */}
+        {/* 狭い画面の戻り道。06の下から左へ回り込み、左の余白を上って01へ戻る。
+            ∞が描けない幅でも「閉じている」ことだけは形で見せる。
+            上下の位置は、実際に測った 01 と 06 の点の高さ（枠の上端・下端から）。
+            まとまりの見出しの級数を変えたら、測り直すこと */}
+        <div className={`relative ${detail ? "" : "max-xl:pl-[26px]"}`}>
+          {/* 戻り道は短い版（TOP）だけ。詳しい版は sm 以上で2列の格子になるので、
+              縦一本の道を前提にしたこの線は引けない（そちらは元から線を引いていない）。
+              top/bottom は 01 と 06 の点の高さの実測値。320〜767pxで同じ値だった */}
+          {!detail && (
+            <>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-[87px] bottom-[9px] w-[33px] rounded-l-[16px] border-y border-l border-charcoal/20 xl:hidden"
+              />
+              {/* 01へ入る矢印 */}
+              <svg
+                aria-hidden
+                viewBox="0 0 10 10"
+                className="pointer-events-none absolute left-[18px] top-[87px] h-[11px] w-[11px] -translate-y-1/2 text-charcoal/45 xl:hidden"
+              >
+                <polygon points="1,1 9,5 1,9" fill="currentColor" />
+              </svg>
+            </>
+          )}
+
         {groups.map((g) => (
           <div key={g.en} className="max-xl:mt-9 max-xl:first:mt-0">
+            {/* 2つの輪の変わり目。∞では交点、ここでは道の途中に置く印。
+                03 の点から 04 の点まで線を通し、その上に「地域」を載せる */}
+            {g.from > 0 && !detail && (
+              <div className="relative -mt-9 mb-7 py-5 xl:hidden">
+                <span
+                  aria-hidden
+                  className="absolute left-[7px] -top-[30px] h-[calc(100%+60px)] w-px bg-charcoal/20"
+                />
+                <span className="relative ml-[7px] inline-block -translate-x-1/2 rounded-full border border-charcoal/25 bg-background px-3 py-1 text-[12px] font-bold leading-none tracking-[0.06em] text-charcoal">
+                  地域
+                </span>
+              </div>
+            )}
+
             {/* 輪の名前。広い画面では輪の中に出しているので、ここは狭い画面だけ */}
             <div className="xl:hidden">
               <p className={`text-[10px] font-bold tracking-[0.22em] ${g.tone}`}>{g.en}</p>
@@ -501,7 +540,7 @@ export function CycleDiagram({
                     {/* 狭い画面の道。点の下端から次の点の上端まで。
                         行の高さが揃っているので 100% + 行間 - 点 で届く。
                         まとまりの最後では引かない。そこが輪の変わり目になる */}
-                    {!last && !detail && (
+                    {!(last && g.from > 0) && !detail && (
                       <span
                         aria-hidden
                         className="absolute left-[7px] top-[18px] h-[calc(100%+26px)] w-px bg-charcoal/20 xl:hidden"
@@ -569,12 +608,14 @@ export function CycleDiagram({
             </ol>
           </div>
         ))}
+        </div>
       </div>
 
-      {/* 狭い画面の戻り。縦の道には∞を描く余白がないので、
-          点の列に合わせた小さな印で「01へ戻る」ことを示す */}
+      {/* 戻り道は線で描いてあるが、線は飾りなので読み上げも検索も読めない。
+          同じことを一行の文でも書いておく。
+          左の余白は戻り道が通っているので、点の列まで寄せる */}
       {!detail && (
-        <p className="mt-4 flex items-center gap-3 text-[12px] text-charcoal/70 xl:hidden">
+        <p className="mt-4 flex items-center gap-3 pl-[26px] text-[12px] text-charcoal/70 xl:hidden">
           <span
             aria-hidden
             className="block w-[15px] shrink-0 text-center text-[13px] leading-none text-sage-ink"
