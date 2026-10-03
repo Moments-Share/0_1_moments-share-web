@@ -47,12 +47,13 @@ type Step = {
   project?: string;
   href?: string;
   note?: string;
-  /** その段階を担う事業。循環そのものが地域プロデュース事業なので、
-      ここに出すのは DX・AX支援 と BPO だけにしている。
-      6点すべてに「地域プロデュース」を貼ると5回並び、
-      図ではなく模様になる。3つ目の事業は図の下の一行で受ける */
-  biz?: { label: string; href: string }[];
 };
+
+/* 事業の名前は、ここ（段階＝点）には置かない。
+   事業は「ある状態」ではなく「次の状態へ移す力」なので、下の betweens で
+   段階と段階のあいだ（弧）に置いている。
+   両方に置くと、同じ名前が図の中に2回ずつ出て、どちらが本体か分からなくなる。
+   地域プロデュースは循環そのものなので、図の下の一行で受ける。 */
 
 /* 道のりの計算（作り直すときのために残す）
 
@@ -150,10 +151,6 @@ const steps: Step[] = [
     side: "up",
     title: "人と企業が変わる",
     body: "採用・育成・DX・組織が変わる。",
-    biz: [
-      { label: "DX・AX支援", href: "/service-dx" },
-      { label: "BPO", href: "/service-bpo" },
-    ],
   },
   {
     no: "05",
@@ -741,21 +738,6 @@ export function CycleDiagram({
                       } ${s.href || detail ? "" : "xl:hidden"}`}
                     >
                       <ProjectTag step={s} />
-                    </div>
-                  )}
-                  {s.biz && (
-                    <div
-                      className={`mt-3 flex flex-wrap gap-1.5 xl:mt-2.5 ${
-                        s.side === "left"
-                          ? "xl:justify-end"
-                          : s.side === "right"
-                            ? ""
-                            : "xl:justify-center"
-                      }`}
-                    >
-                      {s.biz.map((b) => (
-                        <BizTag key={b.label} label={b.label} href={b.href} />
-                      ))}
                     </div>
                   )}
                 </div>
