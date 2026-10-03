@@ -88,15 +88,19 @@ const VPATH =
    上の輪が 01〜03（挑戦）、下の輪が 04〜06（共創）、交点はちょうど真ん中。
    side は、選ばれたときに名前を点のどちら側へ出すか（必ず輪の内側へ） */
 const vspots = [
-  { x: 22.29, y: 36.96, side: "r" },
-  { x: 19.64, y: 16.13, side: "r" },
-  { x: 50.0, y: 9.23, side: "d" },
-  { x: 80.36, y: 16.13, side: "l" },
-  { x: 76.66, y: 37.67, side: "l" },
-  { x: 22.29, y: 63.04, side: "r" },
-  { x: 50.0, y: 90.77, side: "u" },
-  { x: 76.66, y: 62.33, side: "l" },
+  { x: 22.29, y: 36.96, side: "r", t: 0 },
+  { x: 19.64, y: 16.13, side: "r", t: 0.5 },
+  { x: 50.0, y: 9.23, side: "d", t: 1 },
+  { x: 80.36, y: 16.13, side: "l", t: 1.5 },
+  { x: 76.66, y: 37.67, side: "l", t: 2 },
+  { x: 22.29, y: 63.04, side: "r", t: 3 },
+  { x: 50.0, y: 90.77, side: "u", t: 4 },
+  { x: 76.66, y: 62.33, side: "l", t: 5 },
 ] as const;
+/* t は、光の帯の先頭がその点に届く時刻（秒）。一周6秒。
+   節点は道のりで1/6ずつ等間隔なので1秒刻み、
+   事業は節点と節点の中点なので0.5秒ずれる。
+   一周の秒数（globals.css の cycle-sweep）を変えたら、ここも割り直すこと。 */
 
 /* 進む向き。上の矢印と同じものを -90度回しただけ */
 const varrows = [
@@ -494,8 +498,10 @@ export function CycleDiagram({
                   {num}
                 </span>
               )}
+              {/* 名前は、帯が通ったときに出て消える。常には出さない。
+                  6つ同時に出すと、01と03（同じ高さ）がぶつかる */}
               <span
-                className={`absolute whitespace-nowrap rounded-full bg-background/95 px-2.5 py-1 text-[13px] font-bold leading-none text-charcoal opacity-0 shadow-[0_1px_8px_rgba(0,0,0,0.06)] transition-all duration-300 group-data-[on=true]:opacity-100 ${
+                className={`cycle-name absolute whitespace-nowrap rounded-full bg-background/95 px-2.5 py-1 text-[13px] font-bold leading-none text-charcoal shadow-[0_1px_8px_rgba(0,0,0,0.06)] ${
                   v.side === "r"
                     ? "left-[22px] top-1/2 -translate-y-1/2"
                     : v.side === "l"
@@ -504,6 +510,7 @@ export function CycleDiagram({
                         ? "left-1/2 top-[24px] -translate-x-1/2"
                         : "bottom-[24px] left-1/2 -translate-x-1/2"
                 }`}
+                style={{ "--cycle-delay": `${v.t}s` } as CSSProperties}
               >
                 {name}
               </span>

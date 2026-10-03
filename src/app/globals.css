@@ -263,12 +263,36 @@ html[data-js] .rv-load {
   animation-delay: var(--cycle-delay, 0s);
 }
 
+/* 狭い画面の図で、段階の名前が帯の通過に合わせて出て、消える。
+   名前を6つ常に出すと、01と03（同じ高さ）がぶつかる。
+   1つずつ、回ってきた順に出せば、ぶつかりようがない。
+
+   位置の指定に translate 系のユーティリティを使っているので、
+   ここで動かすのは opacity と scale だけにしてある
+   （Tailwind v4 は translate を単独のプロパティで出すため、
+     transform でまとめて書くと位置指定を打ち消してしまう）。 */
+@keyframes cycle-name {
+  0%        { opacity: 0; scale: 0.92; }
+  3%        { opacity: 1; scale: 1; }
+  20%       { opacity: 1; scale: 1; }
+  30%, 100% { opacity: 0; scale: 1; }
+}
+.cycle-name {
+  opacity: 0;
+  animation: cycle-name 6s linear infinite both;
+  animation-delay: var(--cycle-delay, 0s);
+}
+
 /* 動きを減らす設定のときは止める。
    止めた状態が、そのまま読める状態になるようにしてある
    （灯りは装飾で、点も段階名も最初から見えている） */
 @media (prefers-reduced-motion: reduce) {
-  .cycle-sweep, .cycle-fill, .cycle-pulse { animation: none; }
+  .cycle-sweep, .cycle-fill, .cycle-pulse, .cycle-name { animation: none; }
   .cycle-sweep { display: none; }
+  /* 名前は帯に合わせて出していたので、帯を止めると出る機会が無くなる。
+     そのときは、いま選ばれている段階の名前だけを出しておく */
+  .cycle-name { opacity: 0; }
+  [data-on="true"] .cycle-name { opacity: 1; }
 }
 
 /* --- 文字が少しずつ現れる（RevealChars）---
