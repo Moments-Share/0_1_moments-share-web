@@ -6,6 +6,8 @@ import { DeckEmbed } from "@/components/ui/DeckEmbed";
 import { PRICE_FROM, hasPrice, priceFactors, priceSteps } from "@/lib/pricing";
 import { SitePhoto, SitePhotoFill } from "@/components/ui/SitePhoto";
 import { dxCases } from "@/data/dx-cases";
+import { dxResults } from "@/data/dx-results";
+import { VIDEO_EMBED_URL, VIDEO_LEAD, VIDEO_TITLE, hasVideo } from "@/lib/video";
 
 const problems = [
   "Excelやシステムへの転記が多い",
@@ -283,6 +285,34 @@ export default function ServiceDX() {
               </h2>
             </div>
 
+            {/* 実績の数字。dx-results.ts が空のあいだは行ごと出ない。
+                数字だけ大きく、単位と説明は小さく。カードにはしない */}
+            {dxResults.length > 0 && (
+              <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-9 border-t border-charcoal/15 pt-10 md:mt-14 md:grid-cols-4 md:gap-x-10">
+                {dxResults.map((r) => (
+                  <div key={r.label}>
+                    <div className="flex items-end gap-1.5">
+                      <span
+                        className="font-semibold leading-[0.9] tracking-[-0.03em] text-charcoal"
+                        style={{ fontSize: "clamp(34px, 4.4vw, 54px)" }}
+                      >
+                        {r.value}
+                      </span>
+                      <span className="pb-1 text-[15px] font-semibold text-sage-ink md:text-[17px]">
+                        {r.unit}
+                      </span>
+                    </div>
+                    <p className="mt-3 text-[13px] font-bold leading-[1.6] text-charcoal md:text-[14px]">
+                      {r.label}
+                    </p>
+                    {r.note && (
+                      <p className="mt-1.5 text-[12px] leading-[1.7] text-charcoal/55">{r.note}</p>
+                    )}
+                  </div>
+                ))}
+              </dl>
+            )}
+
             {/* 主役：SNS自動化 約80％削減。数字は信頼を伝える情報として扱う */}
             <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 items-end">
               <div className="md:col-span-5">
@@ -364,6 +394,43 @@ export default function ServiceDX() {
             </div>
           </div>
         </section>
+
+        {/* ===== 動画 — lib/video.ts の URL が空のあいだは節ごと出ない。
+             押しても何も起きない枠を作らないため（資料の DeckEmbed と同じ扱い） ===== */}
+        {hasVideo && (
+          <section className="px-6 py-14 md:px-10 md:py-22 bg-white">
+            <div className="mx-auto max-w-[1400px]">
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+                <div className="lg:col-span-4">
+                  <h2
+                    className="font-semibold leading-[1.2] tracking-[-0.02em] text-charcoal"
+                    style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}
+                  >
+                    {VIDEO_TITLE || "動画で見る。"}
+                  </h2>
+                  {VIDEO_LEAD && (
+                    <p className="mt-6 max-w-[30em] text-[15px] leading-[2] text-charcoal/75 md:text-[16px]">
+                      {VIDEO_LEAD}
+                    </p>
+                  )}
+                </div>
+                <div className="lg:col-span-8">
+                  {/* 16:9。loading="lazy" で、ここまで来るまで読み込まない */}
+                  <div className="relative aspect-video w-full overflow-hidden border border-charcoal/15 bg-charcoal/[0.06]">
+                    <iframe
+                      src={VIDEO_EMBED_URL}
+                      title={VIDEO_TITLE || "紹介動画"}
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ===== SERVICE — できること。6項目を番号付きリストに ===== */}
         <section className="py-14 md:py-22 px-6 md:px-10 bg-ivory">
@@ -551,6 +618,34 @@ export default function ServiceDX() {
           </div>
         </section>
 
+        {/* ===== 途中のお問い合わせ導線 ==============================
+             実測で、事例のリンク（スマホ y=4049）の次の導線が
+             最後の節（y=9783）まで無く、6.8画面ぶん空いていた。
+             費用を読み終えた直後がいちばん温度が高いので、
+             進め方の手前に1つ置いて空白を半分に割る ================= */}
+        <section className="px-6 py-12 md:px-10 md:py-16 bg-white">
+          <div className="mx-auto max-w-[1400px]">
+            <div className="flex flex-col gap-6 border-y border-charcoal/15 py-10 md:flex-row md:items-center md:justify-between md:py-12">
+              <div>
+                <h2
+                  className="font-semibold leading-[1.35] tracking-[-0.02em] text-charcoal"
+                  style={{ fontSize: "clamp(20px, 2.4vw, 30px)" }}
+                >
+                  自社だとどうなるか、聞いてみませんか。
+                </h2>
+                <p className="mt-4 max-w-[34em] text-[15px] leading-[2] text-charcoal/75">
+                  どの作業が減らせるかは、現場によって違います。
+                  いまの困りごとを伺えれば、進め方と費用の目安をお伝えします。
+                </p>
+              </div>
+              <Link href="/contact" className="btn btn-solid-green shrink-0 px-9 py-4">
+                まずは無料でご相談 →
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
         {/* ===== PROCESS — 進め方。01–05のステップ行 ===== */}
         <section className="py-14 md:py-22 px-6 md:px-10 bg-white">
           <div className="mx-auto max-w-[1400px]">
@@ -590,6 +685,7 @@ export default function ServiceDX() {
             </div>
           </div>
         </section>
+
 
         {/* ===== GOAL — 言明 ===== */}
         <section className="py-14 md:py-24 px-6 md:px-10 bg-ivory">
