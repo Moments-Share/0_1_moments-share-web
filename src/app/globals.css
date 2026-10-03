@@ -233,7 +233,9 @@ html[data-js] .rv-load {
   to   { stroke-dashoffset: -120.33; }
 }
 .cycle-sweep {
-  animation: cycle-sweep 12s linear infinite;
+  /* 12秒だと、人がこの節を見ている時間（5〜8秒）のあいだに
+     一周せず、「回っている」が体験として成立しない。6秒にした */
+  animation: cycle-sweep 6s linear infinite;
 }
 
 /* 点の中身が灯る */
@@ -244,7 +246,7 @@ html[data-js] .rv-load {
 }
 .cycle-fill {
   opacity: 0;
-  animation: cycle-fill 12s linear infinite;
+  animation: cycle-fill 6s linear infinite;
   animation-delay: var(--cycle-delay, 0s);
 }
 
@@ -257,7 +259,7 @@ html[data-js] .rv-load {
 }
 .cycle-pulse {
   opacity: 0;
-  animation: cycle-pulse 12s linear infinite;
+  animation: cycle-pulse 6s linear infinite;
   animation-delay: var(--cycle-delay, 0s);
 }
 

@@ -331,8 +331,10 @@ export default function ServiceProduce() {
           </div>
         </section>
 
-        {/* ===== 準備中 — 名前だけ先に置く。中身が空のページは作らない ===== */}
-        <section className="py-14 md:py-20 px-6 md:px-10 bg-ivory">
+        {/* ===== 準備中 — 名前だけ先に置く。中身が空のページは作らない。
+             コワーキングスペースの専用ページはまだ無いので、
+             循環の図の「つながる」からはここへ飛んでくる ===== */}
+        <section id="coworking" className="scroll-mt-20 py-14 md:py-20 px-6 md:px-10 bg-ivory">
           <div className="mx-auto max-w-[1400px]">
             <div className="text-charcoal/45 text-[12px] font-bold tracking-[0.16em]">
               COMING SOON — 準備中のプロジェクト
