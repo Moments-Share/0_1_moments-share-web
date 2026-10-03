@@ -185,7 +185,15 @@ function Dot({ index }: { index: number }) {
   );
 }
 
-export function CycleDiagram({ variant = "full" }: { variant?: "full" | "compact" | "ring" }) {
+export function CycleDiagram({
+  variant = "full",
+  heading,
+}: {
+  variant?: "full" | "compact" | "ring";
+  /** 図の上に出す見出し。渡さなければ見出しは出さない。
+      ページごとに言いたいことが違うので、文言は呼び出し側に置いている */
+  heading?: string;
+}) {
   const compact = variant === "compact";
   /* 説明と担うプロジェクトまで出すか。TOPは名前だけにして短くする。
      "ring" は以前の呼び名。地域プロデュース側の呼び出しを壊さないために残す */
@@ -195,16 +203,22 @@ export function CycleDiagram({ variant = "full" }: { variant?: "full" | "compact
     <div className={compact ? "mt-8" : "mt-10 md:mt-14"}>
       {/* 見出しは図の外、上に置く。∞の真ん中は交点なので、
           長い文を置く場所がない（そこに入るのは2文字だけ） */}
-      <div className="text-center">
-        <h3
-          className="text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]"
-          style={{ fontSize: compact ? "clamp(20px, 2.4vw, 30px)" : "clamp(22px, 2.8vw, 34px)" }}
-        >
-          挑戦と共創が、循環する地域へ。
-        </h3>
-      </div>
+      {heading && (
+        <div className="text-center">
+          <h3
+            className="text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]"
+            style={{ fontSize: compact ? "clamp(20px, 2.4vw, 30px)" : "clamp(22px, 2.8vw, 34px)" }}
+          >
+            {heading}
+          </h3>
+        </div>
+      )}
 
-      <div className="relative mx-auto mt-8 w-full max-w-[980px] lg:mt-10 lg:aspect-[3/2]">
+      <div
+        className={`relative mx-auto w-full max-w-[980px] lg:aspect-[3/2] ${
+          heading ? "mt-8 lg:mt-10" : ""
+        }`}
+      >
         {/* ∞の道。飾りなので読み上げない */}
         <svg
           aria-hidden
