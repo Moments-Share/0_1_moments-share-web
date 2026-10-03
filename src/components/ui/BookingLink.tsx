@@ -36,7 +36,8 @@ export function BookingLink({
       href={BOOKING_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${variantClass[variant]} ${className}`}
+      /* relative の理由は ExternalLink と同じ（中の sr-only の基準） */
+      className={`relative ${variantClass[variant]} ${className}`}
     >
       {children} <span aria-hidden>↗</span>
       <span className="sr-only">（別タブで開きます）</span>

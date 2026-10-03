@@ -145,7 +145,9 @@ export function Carousel({
     <div role="group" aria-roledescription="カルーセル" aria-label={label}>
       <div
         ref={scroller}
-        className="flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-2 md:gap-8 [&::-webkit-scrollbar]:hidden"
+        /* relative は念のため。中に position:absolute の子が入ったとき、
+           基準がこの枠になり、横スクロールの外へはみ出さない */
+        className="relative flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain pb-2 md:gap-8 [&::-webkit-scrollbar]:hidden"
         style={{ scrollbarWidth: "none" }}
         tabIndex={0}
       >
