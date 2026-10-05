@@ -216,81 +216,18 @@ html[data-js] .rv-load {
 }
 
 /* --- 循環図（CycleDiagram）---
-   輪の上を光の帯が一周し、通過した段階の点が順に灯る。
-   「循環」は言葉で書くより、回っているところを見せたほうが早い。
+   挑戦の円と共創の円を、図が画面に入ったときに一度だけ描く。
+   「循環します」と書く代わりに、描かれていくところを見せる。
 
-   一周12秒、6段階なので1段階あたり2秒。帯の先頭が点に届く時刻と
-   点が灯る時刻を合わせてある（点kの遅延 = k×2秒）。
+   回り続けるものは「ウィジェット」に見え、読ませたい文章とずっと競合する。
+   一周したら止まり、止まった状態がそのまま読める状態になるようにしてある。
+   [data-run] は図が自分で付ける（CycleDiagram の IntersectionObserver）。
 
-   帯は pathLength="100" で長さを正規化してあるので、
-   楕円の実寸が変わっても dasharray を書き直さなくてよい。
-   開始位置を -20.33 にしているのは、そこで帯の先頭がちょうど
-   01「地域を知る」に重なるため。帯の長さが13、01が位置33.33なので
-   13 − 33.33 = -20.33。6つの節点は道のりで等間隔に置いてあるので、
-   灯る時刻はそのまま 0/2/4/6/8/10秒になる。 */
-@keyframes cycle-sweep {
-  0%        { stroke-dashoffset: -20.33; opacity: 1; }
-  88%       { opacity: 1; }
-  100%      { stroke-dashoffset: -120.33; opacity: 0; }
-}
-/* 回り続けるものは「ウィジェット」に見え、読ませたい文章とずっと競合する。
-   図が画面に入ったときに一度だけ回し、止まった状態がそのまま読める状態になる。
-   [data-run] は図が自分で付ける（CycleDiagram の IntersectionObserver）。 */
-.cycle-sweep { opacity: 0; }
-[data-run="1"] .cycle-sweep {
-  animation: cycle-sweep 6s linear 1 both;
-}
-
-/* 点の中身が灯る */
-@keyframes cycle-fill {
-  0%        { opacity: 0; }
-  4%, 15%   { opacity: 1; }
-  34%, 100% { opacity: 0; }
-}
-.cycle-fill { opacity: 0; }
-[data-run="1"] .cycle-fill {
-  animation: cycle-fill 6s linear 1 both;
-  animation-delay: var(--cycle-delay, 0s);
-}
-
-/* 点のまわりに広がる波紋 */
-@keyframes cycle-pulse {
-  0%        { opacity: 0; transform: scale(0.55); }
-  4%        { opacity: 0.9; transform: scale(1); }
-  15%       { opacity: 0.5; transform: scale(1.25); }
-  34%, 100% { opacity: 0; transform: scale(1.6); }
-}
-.cycle-pulse { opacity: 0; }
-[data-run="1"] .cycle-pulse {
-  animation: cycle-pulse 6s linear 1 both;
-  animation-delay: var(--cycle-delay, 0s);
-}
-
-/* 狭い画面の図で、段階の名前が帯の通過に合わせて出て、消える。
-   名前を6つ常に出すと、01と03（同じ高さ）がぶつかる。
-   1つずつ、回ってきた順に出せば、ぶつかりようがない。
-
-   位置の指定に translate 系のユーティリティを使っているので、
-   ここで動かすのは opacity と scale だけにしてある
-   （Tailwind v4 は translate を単独のプロパティで出すため、
-     transform でまとめて書くと位置指定を打ち消してしまう）。 */
-@keyframes cycle-name {
-  0%        { opacity: 0; scale: 0.92; }
-  3%        { opacity: 1; scale: 1; }
-  20%       { opacity: 1; scale: 1; }
-  30%, 100% { opacity: 0; scale: 1; }
-}
-.cycle-name { opacity: 0; }
-[data-run="1"] .cycle-name {
-  animation: cycle-name 6s linear 1 both;
-  animation-delay: var(--cycle-delay, 0s);
-}
-/* 一周したあとは、いま選ばれている段階の名前だけを出しておく。
-   全部消えたままだと、図に手がかりが番号しか残らない */
-[data-on="true"] .cycle-name { opacity: 1; animation: none; }
-
-/* 広い画面の2つの円。画面に入ると、挑戦 → 共創 の順に描かれて止まる。
-   描き終わった状態が、そのまま読める状態になる。 */
+   広い画面も狭い画面も同じ「円が2つ」なので、動かし方もひとつ。
+     cycle-ring-a … 挑戦の円（0.25〜1.75秒）
+     cycle-ring-b … 共創の円（1.35〜2.85秒）
+   線は pathLength="100" で長さを正規化してあるので、
+   円の実寸を変えても dasharray を書き直さなくてよい。 */
 @keyframes cycle-ring-draw {
   from { stroke-dashoffset: 100; }
   to   { stroke-dashoffset: 0; }
@@ -312,30 +249,43 @@ html[data-js] .cycle-dot { opacity: 0; }
   animation-delay: var(--cycle-delay, 0s);
 }
 
-/* 以下は狭い画面の図（縦向きの∞）で使う。
-   6つ分の「番号・名前・説明・タグ」を常に出していると、
-   図のまわりが文字で埋まって、形が読めなくなる。
+/* 狭い画面の図で、段階の名前が、円が描かれていくのに合わせて出て、消える。
+   6つの名前を輪の中に常に出すと、01と03（同じ高さ）がぶつかる。
+   1つずつ、描かれてきた順に出せば、ぶつかりようがない。
 
-   ただし中にリンクがあるので、消えている間は押せない。
-   図に触れている（マウスを乗せた・キーボードで中に入った）あいだは
-   全部出したままにして、読みたい人が読めるようにする。
+   出ている時間は0.48秒。点が灯る間隔（0.5秒）より短くしてあるので、
+   2つの名前が同時に出ることはない。間隔を変えたら、ここも短くすること。
 
-   狭い画面には効かせない。あちらは下のカードの列が本体で、
-   図は番号だけの飾りなので、ここで消すものが無い。 */
+   位置の指定に translate 系のユーティリティを使っているので、
+   ここで動かすのは opacity と scale だけにしてある
+   （Tailwind v4 は translate を単独のプロパティで出すため、
+     transform でまとめて書くと位置指定を打ち消してしまう）。 */
+@keyframes cycle-name {
+  0%   { opacity: 0; scale: 0.94; }
+  18%  { opacity: 1; scale: 1; }
+  72%  { opacity: 1; scale: 1; }
+  100% { opacity: 0; scale: 1; }
+}
+.cycle-name { opacity: 0; }
+[data-run="1"] .cycle-name {
+  animation: cycle-name 480ms cubic-bezier(0.33, 0, 0.1, 1) both;
+  animation-delay: var(--cycle-delay, 0s);
+}
+/* 描き終わったあとは、いま選ばれている段階の名前だけを出しておく。
+   全部消えたままだと、図に手がかりが番号しか残らない */
+[data-on="true"] .cycle-name { opacity: 1; animation: none; }
 
 /* 動きを減らす設定のときは止める。
    止めた状態が、そのまま読める状態になるようにしてある
-   （灯りは装飾で、点も段階名も最初から見えている） */
+   （円は描き終わった形、点は灯ったあとの形で出る） */
 @media (prefers-reduced-motion: reduce) {
-  .cycle-sweep, .cycle-fill, .cycle-pulse, .cycle-name { animation: none; }
-  .cycle-sweep { display: none; }
-  /* 名前は帯に合わせて出していたので、帯を止めると出る機会が無くなる。
-     そのときは、いま選ばれている段階の名前だけを出しておく */
-  .cycle-name { opacity: 0; }
-  [data-on="true"] .cycle-name { opacity: 1; }
   /* 円は描かずに最初から出しておく */
   .cycle-ring { stroke-dashoffset: 0; animation: none; }
   .cycle-dot { opacity: 1; animation: none; }
+  /* 名前は円が描かれるのに合わせて出していたので、止めると出る機会が無くなる。
+     そのときは、いま選ばれている段階の名前だけを出しておく */
+  .cycle-name { animation: none; opacity: 0; }
+  [data-on="true"] .cycle-name { opacity: 1; }
 }
 
 /* --- 文字が少しずつ現れる（RevealChars）---

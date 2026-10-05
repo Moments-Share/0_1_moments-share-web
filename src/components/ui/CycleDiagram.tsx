@@ -10,22 +10,24 @@ import { useEffect, useRef, type CSSProperties } from "react";
    画像のまま貼ると、文字が画像なので検索もAI検索も読めず、
    スマホでは潰れて判読できず、読み上げもできない。
 
-   形は∞（無限大）。輪をひとつ描くより、この形のほうが正確だった。
-   ・右のループ＝挑戦（個人の「やってみたい」）
-   ・左のループ＝共創（地域の「課題」）
-   ・交わるところ＝地域
+   形は「円が2つ」。
+   ・挑戦の円＝個人の「やってみたい」
+   ・共創の円＝地域の「課題」
+   ・重なったところ＝地域
    個人の「やってみたい」と地域の「課題」は別々にあるのではなく、
    地域で交わって互いに送り合っている。
    輪ひとつだと、この「交わり」が描けない。
 
-   光の帯が∞の上を一周し、通過した段階の点が灯る。
-   「循環します」と書く代わりに、回っているところを見せる。
-   動きはCSSだけ（JSも状態もなし）。
+   図が画面に入ると、挑戦 → 共創 の順に円が描かれ、通った段階の点が灯る。
+   「循環します」と書く代わりに、描かれていくところを見せる。
+   一周したら止まり、止まった状態がそのまま読める状態になる。
 
-   狭い画面は∞に組めないので、縦一本の道に切り替える。
-   切り替えは xl（1280px）。lg（1024px）だと、∞の右端のラベル
-   （13em の固定幅）が画面からはみ出し、横スクロールが出る。
-   同じ要素の並べ方を変えているだけで、内容は重複させていない。
+   広い画面は円を横に、狭い画面は縦に積む。形も向き（時計回り・反時計回り）も
+   同じものなので、同じ図が置き方を変えているだけに見える。
+   切り替えは xl（1280px）。lg（1024px）だと、円の外のラベルが
+   画面からはみ出し、横スクロールが出る。
+   狭い画面では、段階の中身は図の下のカードの列で読む。
+   並べ方を変えているだけで、内容は重複させていない。
 
    variant:
      compact … TOPに置く短い版。段階の名前だけ
@@ -37,7 +39,7 @@ type Side = "up" | "down" | "left" | "right";
 
 type Step = {
   no: string;
-  /** ∞の道の上の位置（枠に対する%）。下の「道のりの計算」で出した値 */
+  /** 広い画面の図での位置（枠に対する%）。2つの円の上・外・下の6点 */
   x: number;
   y: number;
   side: Side;
@@ -60,45 +62,59 @@ type Step = {
 
    以前は1本のレムニスケート（∞）で2つの輪を描いていたが、
    この図の意味は「挑戦の円」と「共創の円」が地域で交わることなので、
-   円を2つ置くほうが、形と意味が一致する。
-   狭い画面はいまもレムニスケート（下の VPATH）を使っている。 */
+   円を2つ置くほうが、形と意味が一致する。 */
 
-/* 狭い画面用の、縦向きの∞。
-   横幅342pxに2つの円を横に並べると、輪の外にも内にもラベルが入らない。
-   縦に積めば入るので、こちらはレムニスケートのまま。
-   光の帯の dasharray / dashoffset はこの道のりに合わせてある。
+/* 狭い画面も、同じ「円が2つ」で描く。縦に積むだけ。
+   以前は狭い画面だけ1本のレムニスケート（∞）にしていたが、
+   同じ図のはずなのに形が別で、サイトの中に似て非なる図が2つあるように
+   見えていた。円を縦に積めば、横342pxでも輪の内側にラベルが入る。
 
-   なぜ縦にするか：横のままだと、輪の外にラベルを出す余白が無い。
-   390px画面で使える幅は342pxしかなく、段階名は最長8文字（約104px）。
-   縦にすると輪の内側に入る。 */
-const VPATH =
-  "M50.0 128.0L52.7 127.9L55.4 127.8L58.0 127.5L60.6 127.1L63.2 126.7L65.6 126.1L67.9 125.4L70.1 124.7L72.2 123.9L74.2 123.0L76.0 122.0L77.7 121.0L79.3 120.0L80.6 118.8L81.9 117.7L83.0 116.5L83.9 115.4L84.7 114.2L85.3 112.9L85.8 111.7L86.2 110.5L86.4 109.3L86.5 108.1L86.5 106.9L86.4 105.7L86.2 104.5L85.9 103.3L85.5 102.2L85.0 101.1L84.5 100.0L83.8 98.9L83.1 97.8L82.3 96.8L81.5 95.8L80.6 94.8L79.7 93.8L78.7 92.9L77.7 91.9L76.7 91.0L75.6 90.1L74.5 89.3L73.3 88.4L72.1 87.6L70.9 86.8L69.7 85.9L68.5 85.1L67.2 84.4L65.9 83.6L64.7 82.8L63.4 82.1L62.1 81.4L60.7 80.6L59.4 79.9L58.1 79.2L56.7 78.5L55.4 77.8L54.1 77.1L52.7 76.4L51.4 75.7L50.0 75.0L48.6 74.3L47.3 73.6L45.9 72.9L44.6 72.2L43.3 71.5L41.9 70.8L40.6 70.1L39.3 69.4L37.9 68.6L36.6 67.9L35.3 67.2L34.1 66.4L32.8 65.6L31.5 64.9L30.3 64.1L29.1 63.2L27.9 62.4L26.7 61.6L25.5 60.7L24.4 59.9L23.3 59.0L22.3 58.1L21.3 57.1L20.3 56.2L19.4 55.2L18.5 54.2L17.7 53.2L16.9 52.2L16.2 51.1L15.6 50.0L15.0 48.9L14.5 47.8L14.1 46.7L13.8 45.5L13.6 44.3L13.5 43.1L13.5 41.9L13.6 40.7L13.8 39.5L14.2 38.3L14.7 37.1L15.3 35.8L16.1 34.6L17.0 33.5L18.1 32.3L19.4 31.2L20.7 30.0L22.3 29.0L24.0 28.0L25.8 27.0L27.8 26.1L29.9 25.3L32.1 24.6L34.4 23.9L36.8 23.3L39.4 22.9L42.0 22.5L44.6 22.2L47.3 22.1L50.0 22.0L52.7 22.1L55.4 22.2L58.0 22.5L60.6 22.9L63.2 23.3L65.6 23.9L67.9 24.6L70.1 25.3L72.2 26.1L74.2 27.0L76.0 28.0L77.7 29.0L79.3 30.0L80.6 31.2L81.9 32.3L83.0 33.5L83.9 34.6L84.7 35.8L85.3 37.1L85.8 38.3L86.2 39.5L86.4 40.7L86.5 41.9L86.5 43.1L86.4 44.3L86.2 45.5L85.9 46.7L85.5 47.8L85.0 48.9L84.5 50.0L83.8 51.1L83.1 52.2L82.3 53.2L81.5 54.2L80.6 55.2L79.7 56.2L78.7 57.1L77.7 58.1L76.7 59.0L75.6 59.9L74.5 60.7L73.3 61.6L72.1 62.4L70.9 63.2L69.7 64.1L68.5 64.9L67.2 65.6L65.9 66.4L64.7 67.2L63.4 67.9L62.1 68.6L60.7 69.4L59.4 70.1L58.1 70.8L56.7 71.5L55.4 72.2L54.1 72.9L52.7 73.6L51.4 74.3L50.0 75.0L48.6 75.7L47.3 76.4L45.9 77.1L44.6 77.8L43.3 78.5L41.9 79.2L40.6 79.9L39.3 80.6L37.9 81.4L36.6 82.1L35.3 82.8L34.1 83.6L32.8 84.4L31.5 85.1L30.3 85.9L29.1 86.8L27.9 87.6L26.7 88.4L25.5 89.3L24.4 90.1L23.3 91.0L22.3 91.9L21.3 92.9L20.3 93.8L19.4 94.8L18.5 95.8L17.7 96.8L16.9 97.8L16.2 98.9L15.6 100.0L15.0 101.1L14.5 102.2L14.1 103.3L13.8 104.5L13.6 105.7L13.5 106.9L13.5 108.1L13.6 109.3L13.8 110.5L14.2 111.7L14.7 112.9L15.3 114.2L16.1 115.4L17.0 116.5L18.1 117.7L19.4 118.8L20.7 120.0L22.3 121.0L24.0 122.0L25.8 123.0L27.8 123.9L29.9 124.7L32.1 125.4L34.4 126.1L36.8 126.7L39.4 127.1L42.0 127.5L44.6 127.8L47.3 127.9Z";
+   半径・中心間は広い画面と同じ（34 / 44.2＝1.3R）。
+   円の上端が y=1、下端が y=113.2 なので、上下に6ずつ余白を取って
+   viewBox は 0 -5 100 123.2。枠の比は 100 / 123.2。 */
+const VR = 34;
+/** 上の円（挑戦）の中心 */
+const VCY1 = 35;
+/** 下の円（共創）の中心。VCY1 + 1.3R */
+const VCY2 = 79.2;
+/** viewBox の y を、枠に対する % に直す */
+const vy = (y: number) => ((y + 5) / 123.2) * 100;
 
-/* 縦向きのときの、節点と事業の位置（枠に対する%）。
-   上の輪が 01〜03（挑戦）、下の輪が 04〜06（共創）、交点はちょうど真ん中。
-   side は、選ばれたときに名前を点のどちら側へ出すか（必ず輪の内側へ） */
+/* 円を <circle> ではなく <path> で描いているのは、描き始めと向きを
+   指定したいため。<circle> は必ず3時から時計回りに始まる。
+     上の円 … 9時（01）から時計回りに 01 → 02 → 03
+     下の円 … 9時（04）から反時計回りに 04 → 05 → 06
+   この向きは広い画面の図を90度回したものと同じ（矢印もそれに合わせてある）。 */
+const VTOP = `M${50 - VR} ${VCY1}A${VR} ${VR} 0 0 1 ${50 + VR} ${VCY1}A${VR} ${VR} 0 0 1 ${50 - VR} ${VCY1}`;
+const VBOT = `M${50 - VR} ${VCY2}A${VR} ${VR} 0 0 0 ${50 + VR} ${VCY2}A${VR} ${VR} 0 0 0 ${50 - VR} ${VCY2}`;
+
+/* 節点の位置（viewBox の座標）。各円の「外・横・横」の3点。
+   side は、選ばれたときに名前を点のどちら側へ出すか（必ず輪の内側へ）。
+   内側へ出すので、名前が枠の外へはみ出すことがない。 */
 const vspots = [
-  { x: 22.29, y: 36.96, side: "r", t: 0 },
-  { x: 19.64, y: 16.13, side: "r", t: 0.5 },
-  { x: 50.0, y: 9.23, side: "d", t: 1 },
-  { x: 80.36, y: 16.13, side: "l", t: 1.5 },
-  { x: 76.66, y: 37.67, side: "l", t: 2 },
-  { x: 22.29, y: 63.04, side: "r", t: 3 },
-  { x: 50.0, y: 90.77, side: "u", t: 4 },
-  { x: 76.66, y: 62.33, side: "l", t: 5 },
+  { x: 50 - VR, y: VCY1, side: "r" }, // 01 上の円の左
+  { x: 50, y: VCY1 - VR, side: "d" }, // 02 上の円の上
+  { x: 50 + VR, y: VCY1, side: "l" }, // 03 上の円の右
+  { x: 50 - VR, y: VCY2, side: "r" }, // 04 下の円の左
+  { x: 50, y: VCY2 + VR, side: "u" }, // 05 下の円の下
+  { x: 50 + VR, y: VCY2, side: "l" }, // 06 下の円の右
 ] as const;
-/* t は、光の帯の先頭がその点に届く時刻（秒）。一周6秒。
-   節点は道のりで1/6ずつ等間隔なので1秒刻み、
-   事業は節点と節点の中点なので0.5秒ずれる。
-   一周の秒数（globals.css の cycle-sweep）を変えたら、ここも割り直すこと。 */
 
-/* 進む向き。上の矢印と同じものを -90度回しただけ */
+/* 進む向き。節点と節点の中点（円周上の45度のところ）に置く。
+   動きを減らす設定の人には円が描かれる様子が見えないので、
+   そのときに向きを示すものがこれしか残らない。 */
+const vcos = VR * Math.SQRT1_2;
 const varrows = [
-  { x: 34.66, y: 10.64, r: -11.7 },
-  { x: 65.34, y: 10.64, r: 14.2 },
-  { x: 20.74, y: 84.58, r: 32.8 },
-  { x: 80.64, y: 83.73, r: -44.9 },
+  { x: 50 - vcos, y: VCY1 - vcos, r: -45, c: "var(--color-terracotta)" },
+  { x: 50 + vcos, y: VCY1 - vcos, r: 45, c: "var(--color-terracotta)" },
+  { x: 50 - vcos, y: VCY2 + vcos, r: 45, c: "var(--color-sage)" },
+  { x: 50 + vcos, y: VCY2 + vcos, r: -45, c: "var(--color-sage)" },
 ];
+
+/* 点が灯り、名前が出る時刻（秒）。円が描かれていく途中に等間隔で置く。
+   上の円は 0.25〜1.75秒、下の円は 1.35〜2.85秒で描かれる（globals.css）。
+   間隔0.5秒に対して名前が出ているのは0.48秒なので、2つ同時には出ない。 */
+const vDelay = [0.35, 0.85, 1.35, 1.85, 2.35, 2.85];
 
 /* TODO: ②の名称が資料間でずれている。
          構想図では「地域ベンチャー留学」、大学生募集ページでは
@@ -210,13 +226,18 @@ const flow: ({ kind: "step"; i: number } | { kind: "biz"; i: number })[] = [
   { kind: "step", i: 5 },
 ];
 
-/* 2つの輪。広い画面では∞の左右の輪の中に名前が出るが、
-   狭い画面では∞が組めず、6段階が縦一列になってしまう。
-   そのとき「挑戦の輪」と「共創の輪」という、この図の一番の中身が
-   跡形もなく消えるので、狭い画面では2つのまとまりに割って見出しを付ける。
+/** 送っているカード（flow）に対して、図のどの点を灯すか。
+    事業のカードは図に点を持たない（図から事業名を外したので）。
+    そのあいだは直前の段階を灯したままにする＝「01 と 02 のあいだの話」に見える */
+const cardToMark = flow.map((f, k) => {
+  if (f.kind === "step") return f.i;
+  const prev = flow.slice(0, k).filter((x) => x.kind === "step").pop();
+  return prev ? prev.i : 0;
+});
 
-   内容は増やしていない。広い画面で輪の中に出しているものと同じ語を、
-   並べ方だけ変えて出している。 */
+/* 2つの円の名前。この図の一番の中身なので、広い画面でも狭い画面でも
+   円の中に出す（置き方だけ変える）。
+   en と note は広い画面の図で使う。狭い画面は ja だけにしている。 */
 const groups = [
   {
     en: "CHALLENGE",
@@ -249,7 +270,7 @@ const arrows = [
 /* ラベルを点のどちら側に出すか。
 
    ずらし方は変数で渡し、xl でだけ効かせる。
-   style に transform を直に書くと、∞に組まない狭い画面でも
+   style に transform を直に書くと、円に組まない狭い画面でも
    ラベルがその分ずれて、画面の外へ飛び出してしまう。 */
 const sideVars: Record<Side, CSSProperties> = {
   up: { "--lt": "translate(-50%, -100%)", "--lo": "-14px 0 0 0" },
@@ -265,7 +286,7 @@ function ProjectTag({ step }: { step: Step }) {
     return (
       <Link
         href={step.href}
-        /* 地は不透明に。∞の道が 01 のタグの位置を通るため */
+        /* 地は不透明に。狭い画面のカードの地（白）に重ねるため */
         className="inline-block bg-background px-1.5 pb-0.5 text-[12px] font-bold text-navy-ink underline decoration-navy-ink/40 underline-offset-4 transition-colors hover:text-deep-green hover:decoration-deep-green"
       >
         {step.project}
@@ -287,9 +308,8 @@ function BizTag({ label, href }: { label: string; href: string }) {
   return (
     <Link
       href={href}
-      /* 地は不透明にしておく。04のタグの位置を∞の道が通るので、
-         半透明だと線が文字を横切って読めなくなる。
-         色は deep-green 8% を ivory（#f8f5ef＝この図が乗る地）に焼き込んだ値 */
+      /* 地は不透明にしておく。色は deep-green 8% を
+         ivory（#f8f5ef＝この図が乗る地）に焼き込んだ値 */
       className="inline-block border border-deep-green/40 bg-[#e8e9e2] px-2 py-0.5 text-[11px] font-bold text-deep-green transition-colors hover:border-deep-green hover:bg-[#dde2d8]"
     >
       {label} →
@@ -356,14 +376,14 @@ export function CycleDiagram({
 
     const io = new IntersectionObserver(
       (entries) => {
-        /* 広い画面では∞の上に並ぶので、送る・選ぶという考え方がない */
+        /* 広い画面では6つとも円の上に並ぶので、送る・選ぶという考え方がない */
         if (wide.matches) return;
         const best = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (!best) return;
         const i = cards.indexOf(best.target as HTMLElement);
-        if (i >= 0) select(i);
+        if (i >= 0) select(cardToMark[i] ?? 0);
       },
       { root: strip, threshold: [0.45, 0.7, 0.95] },
     );
@@ -398,8 +418,8 @@ export function CycleDiagram({
 
   return (
     <div className={compact ? "mt-8" : "mt-10 md:mt-14"}>
-      {/* 見出しは図の外、上に置く。∞の真ん中は交点なので、
-          長い文を置く場所がない（そこに入るのは2文字だけ） */}
+      {/* 見出しは図の外、上に置く。図の真ん中は2つの円が重なるところなので、
+          長い文を置く場所がない（そこに入るのは「地域」の2文字だけ） */}
       {heading && (
         <div className="text-center">
           <h3
@@ -411,62 +431,63 @@ export function CycleDiagram({
         </div>
       )}
 
-      {/* ===== 狭い画面の図：縦向きの∞ =====
-          これ全体が飾り。読む中身は下のカードの列にあり、重複させていない。
-          番号だけを出し、名前は選ばれたものだけを大きく出す。 */}
+      {/* ===== 狭い画面の図：挑戦の円と共創の円を、縦に積む =====
+          これ全体が飾り（aria-hidden）。読む中身は下のカードの列にあり、
+          重複させていない。図は「2つの円が地域で重なっている」ことと、
+          いまカードのどこを見ているかだけを示す。
+
+          出すのは番号と、円の名前（挑戦・共創）だけ。
+          6つの段階名を輪の中に常に出すと、01と03・04と06が同じ高さで
+          ぶつかるので、名前は円が描かれるのに合わせて1つずつ出して消す。 */}
       <div
         ref={figRef}
         aria-hidden
-        className={`relative mx-auto w-full max-w-[380px] xl:hidden ${heading ? "mt-8" : ""}`}
-        style={{ aspectRatio: "100 / 130" }}
+        className={`relative mx-auto w-full max-w-[300px] xl:hidden ${heading ? "mt-8" : ""}`}
+        style={{ aspectRatio: "100 / 123.2" }}
       >
-        {/* 道は y=22〜128 にしか無いので、上下10ずつだけ残して切る */}
-        <svg viewBox="0 10 100 130" className="absolute inset-0 h-full w-full">
+        <svg viewBox="0 -5 100 123.2" className="absolute inset-0 h-full w-full">
           <defs>
-            <radialGradient id="vcycle-glow-t" cx="50%" cy="25%" r="33%">
+            <radialGradient id="vcycle-fill-t" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.17" />
-              <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.11" />
-              <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
+              <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.07" />
             </radialGradient>
-            <radialGradient id="vcycle-glow-b" cx="50%" cy="75%" r="33%">
+            <radialGradient id="vcycle-fill-c" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.17" />
-              <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.11" />
-              <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
+              <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0.07" />
             </radialGradient>
-            <linearGradient id="vcycle-stroke" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--color-terracotta)" />
-              <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.55" />
-              <stop offset="50%" stopColor="var(--color-sage)" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="var(--color-sage)" />
-            </linearGradient>
           </defs>
+
+          {/* 面。掛け算で重ねると、重なったところだけ自然に濃くなる。
+              「地域」は色を塗って作るのではなく、2つが重なった結果として出る */}
           <g style={{ mixBlendMode: "multiply" }}>
-            <rect y="10" width="100" height="130" fill="url(#vcycle-glow-t)" />
-            <rect y="10" width="100" height="130" fill="url(#vcycle-glow-b)" />
+            <circle cx="50" cy={VCY1} r={VR} fill="url(#vcycle-fill-t)" />
+            <circle cx="50" cy={VCY2} r={VR} fill="url(#vcycle-fill-c)" />
           </g>
+
+          {/* 輪郭。画面に入ると、挑戦 → 共創 の順に描かれて止まる */}
           <path
-            d={VPATH}
-            fill="none"
-            stroke="url(#vcycle-stroke)"
-            strokeOpacity="0.55"
-            strokeWidth="0.55"
-          />
-          <path
-            className="cycle-sweep"
-            d={VPATH}
+            className="cycle-ring cycle-ring-a"
+            d={VTOP}
             pathLength={100}
             fill="none"
-            stroke="var(--color-deep-green)"
-            /* 下地（0.55）の2倍以上あると、光ではなく「別の太い線」に見える。
-               見えるだけの差をつけて、それ以上は太くしない */
-            strokeWidth="0.9"
-            strokeOpacity="0.9"
+            stroke="var(--color-terracotta)"
+            strokeOpacity="0.8"
+            strokeWidth="0.7"
             strokeLinecap="round"
-            strokeDasharray="13 87"
-            strokeDashoffset={-20.33}
+          />
+          <path
+            className="cycle-ring cycle-ring-b"
+            d={VBOT}
+            pathLength={100}
+            fill="none"
+            stroke="var(--color-sage)"
+            strokeOpacity="0.8"
+            strokeWidth="0.7"
+            strokeLinecap="round"
           />
         </svg>
 
+        {/* 進む向き。歪ませたくないので円のSVGとは別に置く */}
         {varrows.map((a, i) => (
           <svg
             key={i}
@@ -476,61 +497,75 @@ export function CycleDiagram({
             className="absolute"
             style={{
               left: `${a.x}%`,
-              top: `${a.y}%`,
+              top: `${vy(a.y)}%`,
               transform: `translate(-50%, -50%) rotate(${a.r}deg)`,
             }}
           >
-            <polygon points="1,1 9,5 1,9" fill="var(--color-sage-ink)" fillOpacity="0.75" />
+            <polygon points="1,1 9,5 1,9" fill={a.c} fillOpacity="0.9" />
           </svg>
         ))}
 
-        {/* 交点＝2つの輪が地域で交わるところ */}
-        <span className="absolute left-1/2 top-1/2 flex h-[62px] w-[62px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background text-[19px] font-bold leading-none tracking-[0.06em] text-charcoal">
+        {/* 2つの円の名前。この図の中身はこの2語で決まるので、常に出しておく。
+            位置は円の中の、点とも「地域」ともぶつからない高さ */}
+        {groups.map((g, i) => (
+          <p
+            key={g.ja}
+            className="absolute w-full -translate-x-1/2 -translate-y-1/2 text-center text-[15px] font-bold tracking-[0.08em] text-charcoal/75"
+            style={{ left: "50%", top: `${vy(i === 0 ? 26 : 88.2)}%` }}
+          >
+            {g.ja}
+          </p>
+        ))}
+
+        {/* 重なったところ＝2つの円が地域で交わるところ */}
+        <span
+          className="absolute left-1/2 flex h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background text-[16px] font-bold leading-none tracking-[0.06em] text-charcoal/85"
+          style={{ top: `${vy((VCY1 + VCY2) / 2)}%` }}
+        >
           地域
         </span>
 
-        {/* 8つの印。選ばれたものだけ大きくなり、名前が出る */}
-        {flow.map((f, k) => {
+        {/* 6つの点。円が描かれていくのに合わせて灯り、名前が一度だけ出る。
+            横に送ると、いま見ているカードの点だけが大きく灯ったままになる */}
+        {steps.map((st, k) => {
           const v = vspots[k];
-          const name = f.kind === "step" ? steps[f.i].title : betweens[f.i].label;
-          const num = f.kind === "step" ? steps[f.i].no : null;
+          const tone =
+            k < 3
+              ? "border-terracotta/70 group-data-[on=true]:border-terracotta group-data-[on=true]:bg-terracotta"
+              : "border-sage/70 group-data-[on=true]:border-sage group-data-[on=true]:bg-sage";
           return (
             <span
-              key={k}
+              key={st.no}
               data-mark
               data-on={k === 0}
-              className="group absolute block -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${v.x}%`, top: `${v.y}%` }}
+              className="cycle-dot group absolute block -translate-x-1/2 -translate-y-1/2"
+              style={
+                {
+                  left: `${v.x}%`,
+                  top: `${vy(v.y)}%`,
+                  "--cycle-delay": `${vDelay[k]}s`,
+                } as CSSProperties
+              }
             >
               <span
-                className={`block rounded-full border transition-all duration-300 ${
-                  f.kind === "step"
-                    ? "h-[22px] w-[22px] border-sage-ink/70 bg-background group-data-[on=true]:h-[30px] group-data-[on=true]:w-[30px] group-data-[on=true]:border-deep-green group-data-[on=true]:bg-deep-green"
-                    : "h-[11px] w-[11px] border-deep-green/50 bg-background group-data-[on=true]:h-[18px] group-data-[on=true]:w-[18px] group-data-[on=true]:border-deep-green group-data-[on=true]:bg-deep-green"
-                }`}
+                className={`block h-[20px] w-[20px] rounded-full border-2 bg-white transition-all duration-300 group-data-[on=true]:h-[28px] group-data-[on=true]:w-[28px] ${tone}`}
               />
-              {num && (
-                <span
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold leading-none tabular-nums text-charcoal/60 transition-colors duration-200 group-data-[on=true]:text-white"
-                >
-                  {num}
-                </span>
-              )}
-              {/* 名前は、帯が通ったときに出て消える。常には出さない。
-                  6つ同時に出すと、01と03（同じ高さ）がぶつかる */}
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold leading-none tabular-nums text-charcoal/55 transition-colors duration-200 group-data-[on=true]:text-white">
+                {st.no}
+              </span>
+              {/* 名前は輪の内側へ出す。外に出す余白が無いので、ここは固定 */}
               <span
                 className={`cycle-name absolute whitespace-nowrap rounded-full bg-background/95 px-2.5 py-1 text-[13px] font-bold leading-none text-charcoal shadow-[0_1px_8px_rgba(0,0,0,0.06)] ${
                   v.side === "r"
-                    ? "left-[22px] top-1/2 -translate-y-1/2"
+                    ? "left-[20px] top-1/2 -translate-y-1/2"
                     : v.side === "l"
-                      ? "right-[22px] top-1/2 -translate-y-1/2"
+                      ? "right-[20px] top-1/2 -translate-y-1/2"
                       : v.side === "d"
-                        ? "left-1/2 top-[24px] -translate-x-1/2"
-                        : "bottom-[24px] left-1/2 -translate-x-1/2"
+                        ? "left-1/2 top-[22px] -translate-x-1/2"
+                        : "bottom-[22px] left-1/2 -translate-x-1/2"
                 }`}
-                style={{ "--cycle-delay": `${v.t}s` } as CSSProperties}
               >
-                {name}
+                {st.title}
               </span>
             </span>
           );
@@ -539,7 +574,7 @@ export function CycleDiagram({
 
       {/* 図を置く面。これが無いと、ページと同じ地に線と文字が散っているだけで、
           ひとつの「図」として認識されない。
-          横の余白180pxは、∞の外へ出るラベル（13em）が面の中に収まる幅 */}
+          横の余白70pxは、円の外へ出るラベルが面の中に収まる幅 */}
       <div
         className={`xl:mx-auto xl:max-w-[960px] xl:rounded-[32px] xl:border xl:border-charcoal/[0.08] xl:bg-white xl:px-[70px] xl:py-16 ${
           heading ? "mt-8 xl:mt-10" : ""
@@ -625,7 +660,7 @@ export function CycleDiagram({
           </svg>
         ))}
 
-        {/* 2つのループの名前と、交わるところ。∞の意味はこの3語で決まる */}
+        {/* 2つの円の名前と、重なるところ。この図の意味はこの3語で決まる */}
         <div
           aria-hidden
           className="absolute hidden xl:block"
@@ -664,7 +699,7 @@ export function CycleDiagram({
         </div>
 
         {/* 段階と事業のひと並び。
-            広い画面 … ∞の道の上の座標へ飛ばす
+            広い画面 … 2つの円の上の座標へ飛ばす
             狭い画面 … 横に送るカードの列になる。図のどの点にいるかは上の図が示す
             並べ方を変えているだけで、内容はひとつしか持っていない */}
         <ol
@@ -709,21 +744,15 @@ export function CycleDiagram({
 
             const s = steps[f.i];
             const i = f.i;
-            const g = groups.find((x) => i >= x.from && i < x.to)!;
             return (
               <li
                 key={s.no}
                 /* 位置は変数で渡し、xl でだけ使う。left/top を直に書くと、
-                   ∞にならない画面でも項目がその分ずれて階段状になる */
+                   円に組まない画面でも項目がその分ずれて階段状になる */
                 className={`${common} relative xl:absolute xl:left-[var(--cx)] xl:top-[var(--cy)] xl:block xl:w-auto xl:border-0 xl:bg-transparent xl:p-0`}
                 style={{ "--cx": `${s.x}%`, "--cy": `${s.y}%` } as CSSProperties}
               >
-                {/* どちらの輪の段階か。広い画面では輪の中に書いてあるので出さない */}
-                <p className={`text-[10px] font-bold tracking-[0.22em] xl:hidden ${g.tone}`}>
-                  {g.en} ／ {g.ja}
-                </p>
-
-                {/* 点は∞の道の上に置く。狭い画面では上の図の側に出しているので隠す */}
+                {/* 点は円の上に置く。狭い画面では上の図の側に出しているので隠す */}
                 <span className="hidden xl:absolute xl:left-0 xl:top-0 xl:block xl:-translate-x-1/2 xl:-translate-y-1/2">
                   <Dot index={i} />
                 </span>
@@ -741,7 +770,7 @@ export function CycleDiagram({
                         : "xl:text-center"
                   }`}
                 >
-                  {/* 番号は、進む順を示すもの。順序は矢印・光の帯・輪の並びが
+                  {/* 番号は、進む順を示すもの。順序は矢印・円の描かれ方・並びが
                       すでに示しているので、広い画面では出さない（同じ情報の3回目）。
                       狭い画面はカードの通し番号として要るので残す */}
                   <span className="mt-2 block text-[12px] font-medium leading-none tabular-nums text-charcoal/65 xl:hidden">
