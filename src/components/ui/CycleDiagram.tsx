@@ -391,6 +391,83 @@ export function CycleDiagram({
     return () => io.disconnect();
   }, []);
 
+  /* 06「実績ができる」まで来てから、もう一度送ると 01 に戻る。
+     「06のあとは01へ戻り、循環します」と文で書く代わりに、そうなるようにした。
+
+     末尾に着いた状態で、さらに送る動きがあったときだけ戻す。
+     一度目（末尾に着いただけ）では戻さない。読んでいる最中に飛ばされてしまう。
+
+     判定は指を離したとき。触れているあいだに動かすと、iOSの端での
+     ゴムのような戻りと引っ張り合って、動きが乱れる。
+     トラックパッドの横スクロール（wheel）も同じように拾う。
+
+     戻る様子はそのまま見せる。黙って先頭に入れ替えると、同じカードが
+     出ているだけに見えて、一周したことがかえって伝わらない。 */
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+
+    const wide = window.matchMedia("(min-width: 1280px)");
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    /** いま列の末尾（06）にいるか */
+    const atEnd = () => strip.scrollWidth - strip.clientWidth - strip.scrollLeft <= 2;
+
+    let raf = 0;
+    const rewind = () => {
+      if (raf || wide.matches) return;
+      if (still.matches) {
+        strip.scrollLeft = 0;
+        return;
+      }
+      /* 動かしているあいだはスナップを切る。切らないと、1フレームごとに
+         近くのカードへ吸い寄せられて、滑らかに戻らずカードを1枚ずつ
+         飛び戻る動きになる（実測：2014→1748→1155→859→…）。
+         戻り先の 0 はスナップ位置なので、戻してから元に戻せばよい */
+      const from = strip.scrollLeft;
+      const t0 = performance.now();
+      strip.style.scrollSnapType = "none";
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / 520);
+        strip.scrollLeft = from * Math.pow(1 - p, 3);
+        if (p < 1) {
+          raf = requestAnimationFrame(tick);
+          return;
+        }
+        raf = 0;
+        strip.style.scrollSnapType = "";
+      };
+      raf = requestAnimationFrame(tick);
+    };
+
+    /* 指が触れはじめた時点で末尾にいたか。
+       「末尾に着いた」のと「末尾からさらに送った」のを分けるために要る */
+    let x0 = 0;
+    let fromEnd = false;
+    const onStart = (e: TouchEvent) => {
+      x0 = e.touches[0]?.clientX ?? 0;
+      fromEnd = atEnd();
+    };
+    const onEnd = (e: TouchEvent) => {
+      if (!fromEnd || !atEnd()) return;
+      /* 送る向き（次のカードへ）は、指が左へ動く。40pxはふつうの送りの下限 */
+      if ((e.changedTouches[0]?.clientX ?? x0) - x0 < -40) rewind();
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaX > 8 && atEnd()) rewind();
+    };
+
+    strip.addEventListener("touchstart", onStart, { passive: true });
+    strip.addEventListener("touchend", onEnd, { passive: true });
+    strip.addEventListener("wheel", onWheel, { passive: true });
+    return () => {
+      strip.removeEventListener("touchstart", onStart);
+      strip.removeEventListener("touchend", onEnd);
+      strip.removeEventListener("wheel", onWheel);
+      if (raf) cancelAnimationFrame(raf);
+      strip.style.scrollSnapType = "";
+    };
+  }, []);
+
   /* 図が画面に入ったときに一度だけ回す。
      回り続けるものは「ウィジェット」に見え、読ませたい文章とずっと競合する。
      一周したら止まり、止まった状態がそのまま読める状態になる。
