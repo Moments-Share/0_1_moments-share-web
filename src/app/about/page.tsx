@@ -122,25 +122,19 @@ const stances = [
   { en: "Build Systems", ja: "仕組みを創ろう。" },
 ];
 
-/* 3事業。サービスとしてではなく「担う役割」から書く */
+/* 3事業。Aboutでは「名前＋一行」まで。詳しい説明はTOPと各サービスページにある */
 const businesses = [
   {
-    role: "余白をつくる",
-    en: "DX / AX",
     name: "DX・AX支援",
     body: "人がやらなくてもいい仕事を減らし、挑戦するための余白をつくる。",
     href: "/service-dx",
   },
   {
-    role: "人と仕事をつなぐ",
-    en: "BPO",
     name: "BPO",
     body: "必要な仕事と多様な人の力をつなぎ、挑戦を続けられる体制をつくる。",
     href: "/service-bpo",
   },
   {
-    role: "きっかけをつくる",
-    en: "PRODUCE",
     name: "地域プロデュース",
     body: "人・企業・想いが出会い、新しい挑戦が生まれるきっかけをつくる。",
     href: "/service-produce",
@@ -208,21 +202,25 @@ const placeLines = [
 const visionSteps = ["挑戦した。", "失敗した。", "誰かと出会った。", "続けた。", "カタチになった。"];
 
 /* 3事業のカード。三角形の各頂点に同じ組みで置く */
+/* ここはAboutなので、事業は「名前＋一行」まで。
+   詳しい説明はTOPの事業紹介と各サービスページにある。
+
+   以前は「役割（余白をつくる）／英字／事業名／説明／詳しく→」の5段だったが、
+   役割と説明の末尾が同じことを言っていた（余白をつくる ↔ …余白をつくる。）。
+   3枚とも同じ重複だったので、役割と英字を落とした。 */
 function BusinessCard({ b }: { b: (typeof businesses)[number] }) {
   return (
     <>
       <p
-        className="font-bold leading-[1.4] tracking-[-0.02em] text-charcoal"
-        style={{ fontSize: "clamp(20px, 2.2vw, 26px)" }}
+        className="font-bold leading-[1.45] tracking-[-0.01em] text-charcoal"
+        style={{ fontSize: "clamp(17px, 1.6vw, 20px)" }}
       >
-        {b.role}
+        {b.name}
       </p>
-      <p className="mt-4 text-[11px] font-bold tracking-[0.22em] text-terracotta-ink">{b.en}</p>
-      <p className="mt-2 text-[15px] font-bold text-charcoal md:text-[16px]">{b.name}</p>
-      <p className="mt-4 text-[14px] leading-[2] text-charcoal/80 md:text-[15px]">{b.body}</p>
+      <p className="mt-3 text-[14px] leading-[1.95] text-charcoal/80 md:text-[15px]">{b.body}</p>
       <Link
         href={b.href}
-        className="mt-6 inline-block border-b border-navy-ink/40 pb-0.5 text-[13px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+        className="mt-4 inline-block border-b border-navy-ink/40 pb-0.5 text-[13px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
       >
         詳しく →
       </Link>
@@ -490,11 +488,11 @@ export default function AboutPage() {
                   付けず静かな3列で並べる。図を2つ重ねると、どちらも
                   「ぐるぐる回る絵」になって読み手の目が散る */}
             <Reveal delay={0.12}>
-              <ol className="mt-16 grid grid-cols-1 gap-y-12 border-t border-charcoal/15 md:mt-20 md:grid-cols-3 md:gap-x-10 md:gap-y-0">
+              <ol className="mt-12 grid grid-cols-1 gap-y-9 border-t border-charcoal/15 md:mt-16 md:grid-cols-3 md:gap-x-10 md:gap-y-0">
                 {businesses.map((b, i) => (
                   <li
-                    key={b.en}
-                    className={`pt-9 md:px-8 md:first:pl-0 md:last:pr-0 ${
+                    key={b.name}
+                    className={`pt-7 md:px-8 md:first:pl-0 md:last:pr-0 ${
                       i > 0 ? "border-t border-charcoal/15 md:border-l md:border-t-0" : ""
                     }`}
                   >
