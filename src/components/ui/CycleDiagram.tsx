@@ -432,9 +432,8 @@ export function CycleDiagram({
             d={VPATH}
             fill="none"
             stroke="url(#vcycle-stroke)"
-            strokeOpacity="0.5"
-            strokeWidth="0.5"
-            strokeDasharray="1.1 1.1"
+            strokeOpacity="0.55"
+            strokeWidth="0.55"
           />
           <path
             className="cycle-sweep"
@@ -442,7 +441,10 @@ export function CycleDiagram({
             pathLength={100}
             fill="none"
             stroke="var(--color-deep-green)"
-            strokeWidth="1.2"
+            /* 下地（0.55）の2倍以上あると、光ではなく「別の太い線」に見える。
+               見えるだけの差をつけて、それ以上は太くしない */
+            strokeWidth="0.9"
+            strokeOpacity="0.9"
             strokeLinecap="round"
             strokeDasharray="13 87"
             strokeDashoffset={-20.33}
@@ -521,7 +523,7 @@ export function CycleDiagram({
 
       <div
         data-cycle
-        className={`relative mx-auto w-full max-w-[980px] xl:aspect-[3/2] ${
+        className={`relative mx-auto w-full max-w-[760px] xl:aspect-[3/2] ${
           heading ? "mt-8 xl:mt-10" : ""
         }`}
       >
@@ -565,9 +567,8 @@ export function CycleDiagram({
             d={PATH}
             fill="none"
             stroke="url(#cycle-stroke)"
-            strokeOpacity="0.5"
-            strokeWidth="0.5"
-            strokeDasharray="1.1 1.1"
+            strokeOpacity="0.55"
+            strokeWidth="0.55"
           />
 
           {/* 一周する光の帯。pathLength で長さを100に正規化しているので、
@@ -578,7 +579,10 @@ export function CycleDiagram({
             pathLength={100}
             fill="none"
             stroke="var(--color-deep-green)"
-            strokeWidth="1.2"
+            /* 下地（0.55）の2倍以上あると、光ではなく「別の太い線」に見える。
+               見えるだけの差をつけて、それ以上は太くしない */
+            strokeWidth="0.9"
+            strokeOpacity="0.9"
             strokeLinecap="round"
             strokeDasharray="13 87"
             strokeDashoffset={-20.33}
@@ -682,10 +686,7 @@ export function CycleDiagram({
                   <p className="mt-2 text-[13px] leading-[1.9] text-charcoal/75 xl:hidden">
                     {b.why}
                   </p>
-                  <div
-                    className="cycle-reveal mt-4 xl:mt-0"
-                    style={{ "--cycle-delay": `${f.i === 0 ? 0.5 : 1.5}s` } as CSSProperties}
-                  >
+                  <div className="mt-4 xl:mt-0">
                     <BizTag label={b.label} href={b.href} />
                   </div>
                 </li>
@@ -714,8 +715,8 @@ export function CycleDiagram({
                 </span>
 
                 <div
-                  style={{ ...sideVars[s.side], "--cycle-delay": `${i}s` } as CSSProperties}
-                  className={`cycle-reveal xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
+                  style={sideVars[s.side]}
+                  className={`xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
                     s.side === "left"
                       ? "xl:text-right"
                       : s.side === "right"
@@ -731,9 +732,14 @@ export function CycleDiagram({
                   </h4>
                   {/* 説明は、狭い画面ではカードに余白があるので必ず出す。
                       広い画面の短い版（TOP）だけ落とす */}
+                  {/* 説明は、広い画面では帯が通ったときだけ出す。
+                      6つ分の説明を常に出すと図のまわりが文字で埋まるが、
+                      名前まで消すと「点滅しているだけの図」になって壊れて見える。
+                      消していいのは説明だけ。狭い画面はカードなので常に出す */}
                   <p
+                    style={{ "--cycle-delay": `${i}s` } as CSSProperties}
                     className={`mt-2 text-[13px] leading-[1.9] text-charcoal/80 xl:mt-1.5 xl:text-[12px] xl:leading-[1.75] ${
-                      detail ? "" : "xl:hidden"
+                      detail ? "cycle-reveal" : "xl:hidden"
                     }`}
                   >
                     {s.body}
