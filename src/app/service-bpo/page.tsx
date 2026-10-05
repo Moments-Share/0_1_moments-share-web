@@ -4,6 +4,9 @@ import { Nav } from "@/components/ui/Nav";
 import { SitePhoto, SitePhotoFill } from "@/components/ui/SitePhoto";
 
 export const metadata: Metadata = {
+  /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
+     パラメータ付きのURLを別ページとして数えられないよう明示する */
+  alternates: { canonical: "https://moments-share.com/service-bpo/" },
   title: "西尾市のBPO・業務委託（営業・事務・CS）｜Moments Share",
   description:
     "愛知県西尾市のBPO・業務委託サービス。採用して人を増やす前に、仕事を外に出すという選択肢があります。営業支援・カスタマーサクセス・SNS運用・経理事務を、必要な分だけ受託。まず仕事そのものを整理してから、外に出す範囲を決めます。",

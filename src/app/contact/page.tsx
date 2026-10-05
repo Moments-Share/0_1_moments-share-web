@@ -5,6 +5,9 @@ import { ContactForm } from "@/components/ui/ContactForm";
 import { BookingLink } from "@/components/ui/BookingLink";
 
 export const metadata: Metadata = {
+  /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
+     パラメータ付きのURLを別ページとして数えられないよう明示する */
+  alternates: { canonical: "https://moments-share.com/contact/" },
   title: "お問い合わせ・無料相談｜Moments Share",
   description:
     "愛知県西尾市のMoments Share合同会社へのご相談・お問い合わせ。この作業、減らせないか。人が足りない。地域で何か始めたい。まずはお気軽にお問い合わせください。初回のご相談は無料です。",

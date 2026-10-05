@@ -229,13 +229,16 @@ html[data-js] .rv-load {
    13 − 33.33 = -20.33。6つの節点は道のりで等間隔に置いてあるので、
    灯る時刻はそのまま 0/2/4/6/8/10秒になる。 */
 @keyframes cycle-sweep {
-  from { stroke-dashoffset: -20.33; }
-  to   { stroke-dashoffset: -120.33; }
+  0%        { stroke-dashoffset: -20.33; opacity: 1; }
+  88%       { opacity: 1; }
+  100%      { stroke-dashoffset: -120.33; opacity: 0; }
 }
-.cycle-sweep {
-  /* 12秒だと、人がこの節を見ている時間（5〜8秒）のあいだに
-     一周せず、「回っている」が体験として成立しない。6秒にした */
-  animation: cycle-sweep 6s linear infinite;
+/* 回り続けるものは「ウィジェット」に見え、読ませたい文章とずっと競合する。
+   図が画面に入ったときに一度だけ回し、止まった状態がそのまま読める状態になる。
+   [data-run] は図が自分で付ける（CycleDiagram の IntersectionObserver）。 */
+.cycle-sweep { opacity: 0; }
+[data-run="1"] .cycle-sweep {
+  animation: cycle-sweep 6s linear 1 both;
 }
 
 /* 点の中身が灯る */
@@ -244,9 +247,9 @@ html[data-js] .rv-load {
   4%, 15%   { opacity: 1; }
   34%, 100% { opacity: 0; }
 }
-.cycle-fill {
-  opacity: 0;
-  animation: cycle-fill 6s linear infinite;
+.cycle-fill { opacity: 0; }
+[data-run="1"] .cycle-fill {
+  animation: cycle-fill 6s linear 1 both;
   animation-delay: var(--cycle-delay, 0s);
 }
 
@@ -257,9 +260,9 @@ html[data-js] .rv-load {
   15%       { opacity: 0.5; transform: scale(1.25); }
   34%, 100% { opacity: 0; transform: scale(1.6); }
 }
-.cycle-pulse {
-  opacity: 0;
-  animation: cycle-pulse 6s linear infinite;
+.cycle-pulse { opacity: 0; }
+[data-run="1"] .cycle-pulse {
+  animation: cycle-pulse 6s linear 1 both;
   animation-delay: var(--cycle-delay, 0s);
 }
 
@@ -277,11 +280,14 @@ html[data-js] .rv-load {
   20%       { opacity: 1; scale: 1; }
   30%, 100% { opacity: 0; scale: 1; }
 }
-.cycle-name {
-  opacity: 0;
-  animation: cycle-name 6s linear infinite both;
+.cycle-name { opacity: 0; }
+[data-run="1"] .cycle-name {
+  animation: cycle-name 6s linear 1 both;
   animation-delay: var(--cycle-delay, 0s);
 }
+/* 一周したあとは、いま選ばれている段階の名前だけを出しておく。
+   全部消えたままだと、図に手がかりが番号しか残らない */
+[data-on="true"] .cycle-name { opacity: 1; animation: none; }
 
 /* 広い画面の∞でも、節点の説明を帯の通過に合わせて出して消す。
    6つ分の「番号・名前・説明・タグ」を常に出していると、
@@ -294,9 +300,9 @@ html[data-js] .rv-load {
    狭い画面には効かせない。あちらは下のカードの列が本体で、
    図は番号だけの飾りなので、ここで消すものが無い。 */
 @media (min-width: 1280px) {
-  .cycle-reveal {
-    opacity: 0;
-    animation: cycle-name 6s linear infinite both;
+  .cycle-reveal { opacity: 0; }
+  [data-run="1"] .cycle-reveal {
+    animation: cycle-name 6s linear 1 both;
     animation-delay: var(--cycle-delay, 0s);
   }
   [data-cycle]:hover .cycle-reveal,

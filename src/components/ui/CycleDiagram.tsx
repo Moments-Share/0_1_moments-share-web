@@ -57,6 +57,10 @@ type Step = {
 
 /* 道のりの計算（作り直すときのために残す）
 
+   輪ひとつが真円になる縦倍率は K=1.4147（53×53＝1.000:1）。
+   この図の意味は「挑戦の円」と「共創の円」が地域で交わること。
+   横長のリボンにすると形は綺麗だが、意味とズレる。円のままでよい。
+
    形はベルヌーイのレムニスケート。
      x = 75 + a·cos t / (1+sin²t)
      y = 50 + 1.95·a·sin t·cos t / (1+sin²t)      a = 53
@@ -71,7 +75,7 @@ type Step = {
 
    a や 1.95 を変えたら、節点のx・yと矢印を計算し直すこと。 */
 const PATH =
-  "M22.0 50.0L22.1 52.7L22.2 55.4L22.5 58.0L22.9 60.6L23.3 63.2L23.9 65.6L24.6 67.9L25.3 70.1L26.1 72.2L27.0 74.2L28.0 76.0L29.0 77.7L30.0 79.3L31.2 80.6L32.3 81.9L33.5 83.0L34.6 83.9L35.8 84.7L37.1 85.3L38.3 85.8L39.5 86.2L40.7 86.4L41.9 86.5L43.1 86.5L44.3 86.4L45.5 86.2L46.7 85.9L47.8 85.5L48.9 85.0L50.0 84.5L51.1 83.8L52.2 83.1L53.2 82.3L54.2 81.5L55.2 80.6L56.2 79.7L57.1 78.7L58.1 77.7L59.0 76.7L59.9 75.6L60.7 74.5L61.6 73.3L62.4 72.1L63.2 70.9L64.1 69.7L64.9 68.5L65.6 67.2L66.4 65.9L67.2 64.7L67.9 63.4L68.6 62.1L69.4 60.7L70.1 59.4L70.8 58.1L71.5 56.7L72.2 55.4L72.9 54.1L73.6 52.7L74.3 51.4L75.0 50.0L75.7 48.6L76.4 47.3L77.1 45.9L77.8 44.6L78.5 43.3L79.2 41.9L79.9 40.6L80.6 39.3L81.4 37.9L82.1 36.6L82.8 35.3L83.6 34.1L84.4 32.8L85.1 31.5L85.9 30.3L86.8 29.1L87.6 27.9L88.4 26.7L89.3 25.5L90.1 24.4L91.0 23.3L91.9 22.3L92.9 21.3L93.8 20.3L94.8 19.4L95.8 18.5L96.8 17.7L97.8 16.9L98.9 16.2L100.0 15.6L101.1 15.0L102.2 14.5L103.3 14.1L104.5 13.8L105.7 13.6L106.9 13.5L108.1 13.5L109.3 13.6L110.5 13.8L111.7 14.2L112.9 14.7L114.2 15.3L115.4 16.1L116.5 17.0L117.7 18.1L118.8 19.4L120.0 20.7L121.0 22.3L122.0 24.0L123.0 25.8L123.9 27.8L124.7 29.9L125.4 32.1L126.1 34.4L126.7 36.8L127.1 39.4L127.5 42.0L127.8 44.6L127.9 47.3L128.0 50.0L127.9 52.7L127.8 55.4L127.5 58.0L127.1 60.6L126.7 63.2L126.1 65.6L125.4 67.9L124.7 70.1L123.9 72.2L123.0 74.2L122.0 76.0L121.0 77.7L120.0 79.3L118.8 80.6L117.7 81.9L116.5 83.0L115.4 83.9L114.2 84.7L112.9 85.3L111.7 85.8L110.5 86.2L109.3 86.4L108.1 86.5L106.9 86.5L105.7 86.4L104.5 86.2L103.3 85.9L102.2 85.5L101.1 85.0L100.0 84.5L98.9 83.8L97.8 83.1L96.8 82.3L95.8 81.5L94.8 80.6L93.8 79.7L92.9 78.7L91.9 77.7L91.0 76.7L90.1 75.6L89.3 74.5L88.4 73.3L87.6 72.1L86.8 70.9L85.9 69.7L85.1 68.5L84.4 67.2L83.6 65.9L82.8 64.7L82.1 63.4L81.4 62.1L80.6 60.7L79.9 59.4L79.2 58.1L78.5 56.7L77.8 55.4L77.1 54.1L76.4 52.7L75.7 51.4L75.0 50.0L74.3 48.6L73.6 47.3L72.9 45.9L72.2 44.6L71.5 43.3L70.8 41.9L70.1 40.6L69.4 39.3L68.6 37.9L67.9 36.6L67.2 35.3L66.4 34.1L65.6 32.8L64.9 31.5L64.1 30.3L63.2 29.1L62.4 27.9L61.6 26.7L60.7 25.5L59.9 24.4L59.0 23.3L58.1 22.3L57.1 21.3L56.2 20.3L55.2 19.4L54.2 18.5L53.2 17.7L52.2 16.9L51.1 16.2L50.0 15.6L48.9 15.0L47.8 14.5L46.7 14.1L45.5 13.8L44.3 13.6L43.1 13.5L41.9 13.5L40.7 13.6L39.5 13.8L38.3 14.2L37.1 14.7L35.8 15.3L34.6 16.1L33.5 17.0L32.3 18.1L31.2 19.4L30.0 20.7L29.0 22.3L28.0 24.0L27.0 25.8L26.1 27.8L25.3 29.9L24.6 32.1L23.9 34.4L23.3 36.8L22.9 39.4L22.5 42.0L22.2 44.6L22.1 47.3Z";
+  "M22.0 50.0L22.1 52.0L22.2 53.9L22.5 55.8L22.9 57.7L23.3 59.5L23.9 61.3L24.6 63.0L25.3 64.6L26.1 66.1L27.0 67.6L28.0 68.9L29.0 70.1L30.0 71.2L31.2 72.2L32.3 73.1L33.5 73.9L34.6 74.6L35.8 75.1L37.1 75.6L38.3 76.0L39.5 76.2L40.7 76.4L41.9 76.5L43.1 76.5L44.3 76.4L45.5 76.3L46.7 76.0L47.8 75.8L48.9 75.4L50.0 75.0L51.1 74.5L52.2 74.0L53.2 73.5L54.2 72.9L55.2 72.2L56.2 71.6L57.1 70.8L58.1 70.1L59.0 69.3L59.9 68.6L60.7 67.7L61.6 66.9L62.4 66.1L63.2 65.2L64.1 64.3L64.9 63.4L65.6 62.5L66.4 61.6L67.2 60.6L67.9 59.7L68.6 58.7L69.4 57.8L70.1 56.8L70.8 55.9L71.5 54.9L72.2 53.9L72.9 52.9L73.6 52.0L74.3 51.0L75.0 50.0L75.7 49.0L76.4 48.0L77.1 47.1L77.8 46.1L78.5 45.1L79.2 44.1L79.9 43.2L80.6 42.2L81.4 41.3L82.1 40.3L82.8 39.4L83.6 38.4L84.4 37.5L85.1 36.6L85.9 35.7L86.8 34.8L87.6 33.9L88.4 33.1L89.3 32.3L90.1 31.4L91.0 30.7L91.9 29.9L92.9 29.2L93.8 28.4L94.8 27.8L95.8 27.1L96.8 26.5L97.8 26.0L98.9 25.5L100.0 25.0L101.1 24.6L102.2 24.2L103.3 24.0L104.5 23.7L105.7 23.6L106.9 23.5L108.1 23.5L109.3 23.6L110.5 23.8L111.7 24.0L112.9 24.4L114.2 24.9L115.4 25.4L116.5 26.1L117.7 26.9L118.8 27.8L120.0 28.8L121.0 29.9L122.0 31.1L123.0 32.4L123.9 33.9L124.7 35.4L125.4 37.0L126.1 38.7L126.7 40.5L127.1 42.3L127.5 44.2L127.8 46.1L127.9 48.0L128.0 50.0L127.9 52.0L127.8 53.9L127.5 55.8L127.1 57.7L126.7 59.5L126.1 61.3L125.4 63.0L124.7 64.6L123.9 66.1L123.0 67.6L122.0 68.9L121.0 70.1L120.0 71.2L118.8 72.2L117.7 73.1L116.5 73.9L115.4 74.6L114.2 75.1L112.9 75.6L111.7 76.0L110.5 76.2L109.3 76.4L108.1 76.5L106.9 76.5L105.7 76.4L104.5 76.3L103.3 76.0L102.2 75.8L101.1 75.4L100.0 75.0L98.9 74.5L97.8 74.0L96.8 73.5L95.8 72.9L94.8 72.2L93.8 71.6L92.9 70.8L91.9 70.1L91.0 69.3L90.1 68.6L89.3 67.7L88.4 66.9L87.6 66.1L86.8 65.2L85.9 64.3L85.1 63.4L84.4 62.5L83.6 61.6L82.8 60.6L82.1 59.7L81.4 58.7L80.6 57.8L79.9 56.8L79.2 55.9L78.5 54.9L77.8 53.9L77.1 52.9L76.4 52.0L75.7 51.0L75.0 50.0L74.3 49.0L73.6 48.0L72.9 47.1L72.2 46.1L71.5 45.1L70.8 44.1L70.1 43.2L69.4 42.2L68.6 41.3L67.9 40.3L67.2 39.4L66.4 38.4L65.6 37.5L64.9 36.6L64.1 35.7L63.2 34.8L62.4 33.9L61.6 33.1L60.7 32.3L59.9 31.4L59.0 30.7L58.1 29.9L57.1 29.2L56.2 28.4L55.2 27.8L54.2 27.1L53.2 26.5L52.2 26.0L51.1 25.5L50.0 25.0L48.9 24.6L47.8 24.2L46.7 24.0L45.5 23.7L44.3 23.6L43.1 23.5L41.9 23.5L40.7 23.6L39.5 23.8L38.3 24.0L37.1 24.4L35.8 24.9L34.6 25.4L33.5 26.1L32.3 26.9L31.2 27.8L30.0 28.8L29.0 29.9L28.0 31.1L27.0 32.4L26.1 33.9L25.3 35.4L24.6 37.0L23.9 38.7L23.3 40.5L22.9 42.3L22.5 44.2L22.2 46.1L22.1 48.0Z";
 
 /* 狭い画面用の、縦向きの∞。
    上の PATH を -90度回した（(x,y) → (y, 150-x)）だけで、形は同じもの。
@@ -118,8 +122,8 @@ const varrows = [
 const steps: Step[] = [
   {
     no: "01",
-    x: 61.3,
-    y: 22.29,
+    x: 61.57,
+    y: 23.12,
     side: "up",
     title: "地域を知る",
     body: "働く人・企業・生き方に出会う。",
@@ -137,8 +141,8 @@ const steps: Step[] = [
   },
   {
     no: "03",
-    x: 60.69,
-    y: 76.66,
+    x: 61.57,
+    y: 76.88,
     side: "down",
     title: "つながる",
     body: "若者・企業・学校・行政がつながる。",
@@ -150,8 +154,8 @@ const steps: Step[] = [
   },
   {
     no: "04",
-    x: 38.7,
-    y: 22.29,
+    x: 38.43,
+    y: 23.12,
     side: "up",
     title: "人と企業が変わる",
     body: "採用・育成・DX・組織が変わる。",
@@ -167,8 +171,8 @@ const steps: Step[] = [
   },
   {
     no: "06",
-    x: 39.31,
-    y: 76.66,
+    x: 38.43,
+    y: 76.88,
     side: "down",
     title: "実績ができる",
     body: "成果が次の挑戦者を呼び込む。",
@@ -191,16 +195,16 @@ const betweens = [
     after: 0,
     label: "DX・AX支援",
     href: "/service-dx",
-    x: 79.35,
-    y: 19.64,
+    x: 78.10,
+    y: 19.08,
     why: "挑戦するには、まず余白がいる。その余白をつくる。",
   },
   {
     after: 1,
     label: "BPO",
     href: "/service-bpo",
-    x: 79.35,
-    y: 80.36,
+    x: 78.10,
+    y: 80.92,
     why: "社外パートナーとチームを組んで、人と企業をつなぐ。",
   },
 ];
@@ -250,10 +254,10 @@ const groups = [
    そのときに向きが分かるものがなくなってしまう。
    位置と角度は、上の PATH の接線から取っている。 */
 const arrows = [
-  { x: 84.11, y: 34.66, r: 78.3 },
-  { x: 84.11, y: 65.34, r: 104.2 },
-  { x: 20.03, y: 20.74, r: 122.8 },
-  { x: 20.77, y: 80.64, r: 45.1 },
+  { x: 83.73, y: 33.42, r: 70.7 },
+  { x: 83.73, y: 66.58, r: 112.7 },
+  { x: 16.27, y: 33.42, r: 109.3 },
+  { x: 16.27, y: 66.58, r: 67.3 },
 ];
 
 /* ラベルを点のどちら側に出すか。
@@ -380,6 +384,31 @@ export function CycleDiagram({
     return () => io.disconnect();
   }, []);
 
+  /* 図が画面に入ったときに一度だけ回す。
+     回り続けるものは「ウィジェット」に見え、読ませたい文章とずっと競合する。
+     一周したら止まり、止まった状態がそのまま読める状態になる。
+
+     Reveal は TOP にしか掛かっていないので、図が自分で見張る。
+     一度動かしたら観察をやめる（戻ってくるたびに回り直さない）。 */
+  useEffect(() => {
+    const figs = [figRef.current, stripRef.current?.closest("[data-cycle]")].filter(
+      Boolean,
+    ) as HTMLElement[];
+    if (!figs.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          (e.target as HTMLElement).dataset.run = "1";
+          io.unobserve(e.target);
+        }
+      },
+      { threshold: 0.25 },
+    );
+    figs.forEach((f) => io.observe(f));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div className={compact ? "mt-8" : "mt-10 md:mt-14"}>
       {/* 見出しは図の外、上に置く。∞の真ん中は交点なので、
@@ -432,9 +461,8 @@ export function CycleDiagram({
             d={VPATH}
             fill="none"
             stroke="url(#vcycle-stroke)"
-            strokeOpacity="0.5"
-            strokeWidth="0.5"
-            strokeDasharray="1.1 1.1"
+            strokeOpacity="0.55"
+            strokeWidth="0.55"
           />
           <path
             className="cycle-sweep"
@@ -442,7 +470,10 @@ export function CycleDiagram({
             pathLength={100}
             fill="none"
             stroke="var(--color-deep-green)"
-            strokeWidth="1.2"
+            /* 下地（0.55）の2倍以上あると、光ではなく「別の太い線」に見える。
+               見えるだけの差をつけて、それ以上は太くしない */
+            strokeWidth="0.9"
+            strokeOpacity="0.9"
             strokeLinecap="round"
             strokeDasharray="13 87"
             strokeDashoffset={-20.33}
@@ -519,16 +550,22 @@ export function CycleDiagram({
         })}
       </div>
 
+      {/* 図を置く面。これが無いと、ページと同じ地に線と文字が散っているだけで、
+          ひとつの「図」として認識されない。
+          横の余白180pxは、∞の外へ出るラベル（13em）が面の中に収まる幅 */}
       <div
-        data-cycle
-        className={`relative mx-auto w-full max-w-[980px] xl:aspect-[3/2] ${
+        className={`xl:mx-auto xl:max-w-[1120px] xl:rounded-[28px] xl:border xl:border-charcoal/[0.09] xl:bg-white xl:px-[180px] xl:py-14 ${
           heading ? "mt-8 xl:mt-10" : ""
         }`}
+      >
+      <div
+        data-cycle
+        className="relative mx-auto w-full max-w-[760px] xl:aspect-[150/76]"
       >
         {/* ∞の道。飾りなので読み上げない */}
         <svg
           aria-hidden
-          viewBox="0 0 150 100"
+          viewBox="0 12 150 76"
           className="pointer-events-none absolute inset-0 hidden h-full w-full xl:block"
         >
           <defs>
@@ -542,12 +579,12 @@ export function CycleDiagram({
               <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.55" />
               <stop offset="100%" stopColor="var(--color-terracotta)" />
             </linearGradient>
-            <radialGradient id="cycle-glow-l" cx="37%" cy="50%" r="33%">
+            <radialGradient id="cycle-glow-l" cx="37%" cy="50%" r="40%">
               <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.17" />
               <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.11" />
               <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="cycle-glow-r" cx="63%" cy="50%" r="33%">
+            <radialGradient id="cycle-glow-r" cx="63%" cy="50%" r="40%">
               <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.17" />
               <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.11" />
               <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
@@ -556,8 +593,8 @@ export function CycleDiagram({
 
           {/* 2つのループの中を淡く染める。どちらの領域かが一目で分かる */}
           <g style={{ mixBlendMode: "multiply" }}>
-            <rect width="150" height="100" fill="url(#cycle-glow-l)" />
-            <rect width="150" height="100" fill="url(#cycle-glow-r)" />
+            <rect y="12" width="150" height="76" fill="url(#cycle-glow-l)" />
+            <rect y="12" width="150" height="76" fill="url(#cycle-glow-r)" />
           </g>
 
           {/* 道そのもの */}
@@ -565,9 +602,8 @@ export function CycleDiagram({
             d={PATH}
             fill="none"
             stroke="url(#cycle-stroke)"
-            strokeOpacity="0.5"
-            strokeWidth="0.5"
-            strokeDasharray="1.1 1.1"
+            strokeOpacity="0.55"
+            strokeWidth="0.55"
           />
 
           {/* 一周する光の帯。pathLength で長さを100に正規化しているので、
@@ -578,7 +614,10 @@ export function CycleDiagram({
             pathLength={100}
             fill="none"
             stroke="var(--color-deep-green)"
-            strokeWidth="1.2"
+            /* 下地（0.55）の2倍以上あると、光ではなく「別の太い線」に見える。
+               見えるだけの差をつけて、それ以上は太くしない */
+            strokeWidth="0.9"
+            strokeOpacity="0.9"
             strokeLinecap="round"
             strokeDasharray="13 87"
             strokeDashoffset={-20.33}
@@ -610,13 +649,10 @@ export function CycleDiagram({
           className="absolute hidden xl:block"
           style={{ left: "69%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
-          <p className="text-center text-[10px] font-bold tracking-[0.22em] text-terracotta-ink">
-            CHALLENGE
-          </p>
-          <p className="mt-1.5 text-center text-[22px] font-bold tracking-[0.04em] text-charcoal">
+          <p className="text-center text-[16px] font-bold tracking-[0.04em] text-charcoal/80">
             挑戦
           </p>
-          <p className="mt-1 text-center text-[11px] leading-[1.7] text-charcoal/75">
+          <p className="mt-1 text-center text-[11px] leading-[1.7] text-charcoal/60">
             個人の「やってみたい」
           </p>
         </div>
@@ -625,13 +661,10 @@ export function CycleDiagram({
           className="absolute hidden xl:block"
           style={{ left: "31%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
-          <p className="text-center text-[10px] font-bold tracking-[0.22em] text-sage-ink">
-            CO-CREATION
-          </p>
-          <p className="mt-1.5 text-center text-[22px] font-bold tracking-[0.04em] text-charcoal">
+          <p className="text-center text-[16px] font-bold tracking-[0.04em] text-charcoal/80">
             共創
           </p>
-          <p className="mt-1 text-center text-[11px] leading-[1.7] text-charcoal/75">
+          <p className="mt-1 text-center text-[11px] leading-[1.7] text-charcoal/60">
             地域の「課題」
           </p>
         </div>
@@ -643,7 +676,7 @@ export function CycleDiagram({
           {/* 交点は、この図でいちばん言いたい場所（2つの輪が地域で交わる）。
               13pxだと図のなかで最小の文字になり、意味と大きさが逆だった。
               円は交点の広がりより小さいので、線が交わる形は円の外で見える */}
-          <span className="flex h-[88px] w-[88px] items-center justify-center rounded-full bg-background text-center text-[30px] font-bold leading-none tracking-[0.06em] text-charcoal">
+          <span className="flex h-[66px] w-[66px] items-center justify-center rounded-full bg-white text-center text-[19px] font-bold leading-none tracking-[0.06em] text-charcoal/85">
             地域
           </span>
         </div>
@@ -682,10 +715,7 @@ export function CycleDiagram({
                   <p className="mt-2 text-[13px] leading-[1.9] text-charcoal/75 xl:hidden">
                     {b.why}
                   </p>
-                  <div
-                    className="cycle-reveal mt-4 xl:mt-0"
-                    style={{ "--cycle-delay": `${f.i === 0 ? 0.5 : 1.5}s` } as CSSProperties}
-                  >
+                  <div className="mt-4 xl:mt-0">
                     <BizTag label={b.label} href={b.href} />
                   </div>
                 </li>
@@ -714,26 +744,37 @@ export function CycleDiagram({
                 </span>
 
                 <div
-                  style={{ ...sideVars[s.side], "--cycle-delay": `${i}s` } as CSSProperties}
-                  className={`cycle-reveal xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
+                  style={sideVars[s.side]}
+                  /* 上側の2つ（01・04）は、箱の「下端」を点に合わせて置くので、
+                     タグの有無で箱の高さが変わると、名前の高さがズレる。
+                     高さを揃えて、名前の行が同じ高さに並ぶようにする */
+                  className={`xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
                     s.side === "left"
                       ? "xl:text-right"
                       : s.side === "right"
                         ? ""
                         : "xl:text-center"
-                  }`}
+                  } ${s.side === "up" ? "xl:flex xl:min-h-[62px] xl:flex-col xl:justify-start" : ""}`}
                 >
-                  <span className="mt-2 block text-[12px] font-medium leading-none tabular-nums text-charcoal/65 xl:mt-0">
+                  {/* 番号は、進む順を示すもの。順序は矢印・光の帯・輪の並びが
+                      すでに示しているので、広い画面では出さない（同じ情報の3回目）。
+                      狭い画面はカードの通し番号として要るので残す */}
+                  <span className="mt-2 block text-[12px] font-medium leading-none tabular-nums text-charcoal/65 xl:hidden">
                     {s.no}
                   </span>
-                  <h4 className="mt-2 text-[17px] font-semibold leading-[1.4] text-charcoal xl:mt-1.5 xl:text-[16px] xl:leading-[1.4]">
+                  <h4 className="mt-2 text-[17px] font-semibold leading-[1.4] text-charcoal xl:mt-0 xl:text-[18px] xl:leading-[1.35]">
                     {s.title}
                   </h4>
                   {/* 説明は、狭い画面ではカードに余白があるので必ず出す。
                       広い画面の短い版（TOP）だけ落とす */}
+                  {/* 説明は、広い画面では帯が通ったときだけ出す。
+                      6つ分の説明を常に出すと図のまわりが文字で埋まるが、
+                      名前まで消すと「点滅しているだけの図」になって壊れて見える。
+                      消していいのは説明だけ。狭い画面はカードなので常に出す */}
                   <p
+                    style={{ "--cycle-delay": `${i}s` } as CSSProperties}
                     className={`mt-2 text-[13px] leading-[1.9] text-charcoal/80 xl:mt-1.5 xl:text-[12px] xl:leading-[1.75] ${
-                      detail ? "" : "xl:hidden"
+                      detail ? "cycle-reveal" : "xl:hidden"
                     }`}
                   >
                     {s.body}
@@ -756,6 +797,7 @@ export function CycleDiagram({
             );
           })}
         </ol>
+      </div>
       </div>
 
       {/* 図は飾りなので、読み上げも検索も読めない。

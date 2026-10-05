@@ -5,6 +5,9 @@ import { Nav } from "@/components/ui/Nav";
 import { fellows } from "@/data/fellows";
 
 export const metadata: Metadata = {
+  /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
+     パラメータ付きのURLを別ページとして数えられないよう明示する */
+  alternates: { canonical: "https://moments-share.com/people/" },
   title: "メンバー・Fellow紹介｜Moments Share",
   description:
     "Moments Shareでは、ともに歩む一人ひとりを「Fellow」と呼びます。自分の人生を主体的に生きながら、志が重なるとき、ともに挑戦し、ともに未来を創る人。専門人材・副業・子育て中・学生・地域の人など、多様な関わり方があります。愛知県西尾市発。",
