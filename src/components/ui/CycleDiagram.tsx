@@ -55,32 +55,18 @@ type Step = {
    両方に置くと、同じ名前が図の中に2回ずつ出て、どちらが本体か分からなくなる。
    地域プロデュースは循環そのものなので、図の下の一行で受ける。 */
 
-/* 道のりの計算（作り直すときのために残す）
+/* 広い画面は「本物の円を2つ」で描いている（下のSVGを参照）。
+   半径34・中心間44.2（=1.3R）。節点は各円の上・外・下の3点。
 
-   輪ひとつが真円になる縦倍率は K=1.4147（53×53＝1.000:1）。
-   この図の意味は「挑戦の円」と「共創の円」が地域で交わること。
-   横長のリボンにすると形は綺麗だが、意味とズレる。円のままでよい。
-
-   形はベルヌーイのレムニスケート。
-     x = 75 + a·cos t / (1+sin²t)
-     y = 50 + 1.95·a·sin t·cos t / (1+sin²t)      a = 53
-   最初はベジェ4本で手描きしたが、中心で接線が縦になってしまい、
-   「2つの円が並んでいる」ようにしか見えなかった。
-   交点をきちんと通る式で描くと、一本の線が交差する形になる。
-   240点の折れ線に落としてある（この大きさなら曲線と区別がつかない）。
-
-   6つの節点は交点（位置25と75）を避け、1/6ずつの等間隔に置いた。
-   道のりで等間隔なので、帯が届く時刻もそのまま2秒刻みになる。
-   01〜03が左（挑戦）、04〜06が右（共創）。
-
-   a や 1.95 を変えたら、節点のx・yと矢印を計算し直すこと。 */
-const PATH =
-  "M22.0 50.0L22.1 52.0L22.2 53.9L22.5 55.8L22.9 57.7L23.3 59.5L23.9 61.3L24.6 63.0L25.3 64.6L26.1 66.1L27.0 67.6L28.0 68.9L29.0 70.1L30.0 71.2L31.2 72.2L32.3 73.1L33.5 73.9L34.6 74.6L35.8 75.1L37.1 75.6L38.3 76.0L39.5 76.2L40.7 76.4L41.9 76.5L43.1 76.5L44.3 76.4L45.5 76.3L46.7 76.0L47.8 75.8L48.9 75.4L50.0 75.0L51.1 74.5L52.2 74.0L53.2 73.5L54.2 72.9L55.2 72.2L56.2 71.6L57.1 70.8L58.1 70.1L59.0 69.3L59.9 68.6L60.7 67.7L61.6 66.9L62.4 66.1L63.2 65.2L64.1 64.3L64.9 63.4L65.6 62.5L66.4 61.6L67.2 60.6L67.9 59.7L68.6 58.7L69.4 57.8L70.1 56.8L70.8 55.9L71.5 54.9L72.2 53.9L72.9 52.9L73.6 52.0L74.3 51.0L75.0 50.0L75.7 49.0L76.4 48.0L77.1 47.1L77.8 46.1L78.5 45.1L79.2 44.1L79.9 43.2L80.6 42.2L81.4 41.3L82.1 40.3L82.8 39.4L83.6 38.4L84.4 37.5L85.1 36.6L85.9 35.7L86.8 34.8L87.6 33.9L88.4 33.1L89.3 32.3L90.1 31.4L91.0 30.7L91.9 29.9L92.9 29.2L93.8 28.4L94.8 27.8L95.8 27.1L96.8 26.5L97.8 26.0L98.9 25.5L100.0 25.0L101.1 24.6L102.2 24.2L103.3 24.0L104.5 23.7L105.7 23.6L106.9 23.5L108.1 23.5L109.3 23.6L110.5 23.8L111.7 24.0L112.9 24.4L114.2 24.9L115.4 25.4L116.5 26.1L117.7 26.9L118.8 27.8L120.0 28.8L121.0 29.9L122.0 31.1L123.0 32.4L123.9 33.9L124.7 35.4L125.4 37.0L126.1 38.7L126.7 40.5L127.1 42.3L127.5 44.2L127.8 46.1L127.9 48.0L128.0 50.0L127.9 52.0L127.8 53.9L127.5 55.8L127.1 57.7L126.7 59.5L126.1 61.3L125.4 63.0L124.7 64.6L123.9 66.1L123.0 67.6L122.0 68.9L121.0 70.1L120.0 71.2L118.8 72.2L117.7 73.1L116.5 73.9L115.4 74.6L114.2 75.1L112.9 75.6L111.7 76.0L110.5 76.2L109.3 76.4L108.1 76.5L106.9 76.5L105.7 76.4L104.5 76.3L103.3 76.0L102.2 75.8L101.1 75.4L100.0 75.0L98.9 74.5L97.8 74.0L96.8 73.5L95.8 72.9L94.8 72.2L93.8 71.6L92.9 70.8L91.9 70.1L91.0 69.3L90.1 68.6L89.3 67.7L88.4 66.9L87.6 66.1L86.8 65.2L85.9 64.3L85.1 63.4L84.4 62.5L83.6 61.6L82.8 60.6L82.1 59.7L81.4 58.7L80.6 57.8L79.9 56.8L79.2 55.9L78.5 54.9L77.8 53.9L77.1 52.9L76.4 52.0L75.7 51.0L75.0 50.0L74.3 49.0L73.6 48.0L72.9 47.1L72.2 46.1L71.5 45.1L70.8 44.1L70.1 43.2L69.4 42.2L68.6 41.3L67.9 40.3L67.2 39.4L66.4 38.4L65.6 37.5L64.9 36.6L64.1 35.7L63.2 34.8L62.4 33.9L61.6 33.1L60.7 32.3L59.9 31.4L59.0 30.7L58.1 29.9L57.1 29.2L56.2 28.4L55.2 27.8L54.2 27.1L53.2 26.5L52.2 26.0L51.1 25.5L50.0 25.0L48.9 24.6L47.8 24.2L46.7 24.0L45.5 23.7L44.3 23.6L43.1 23.5L41.9 23.5L40.7 23.6L39.5 23.8L38.3 24.0L37.1 24.4L35.8 24.9L34.6 25.4L33.5 26.1L32.3 26.9L31.2 27.8L30.0 28.8L29.0 29.9L28.0 31.1L27.0 32.4L26.1 33.9L25.3 35.4L24.6 37.0L23.9 38.7L23.3 40.5L22.9 42.3L22.5 44.2L22.2 46.1L22.1 48.0Z";
+   以前は1本のレムニスケート（∞）で2つの輪を描いていたが、
+   この図の意味は「挑戦の円」と「共創の円」が地域で交わることなので、
+   円を2つ置くほうが、形と意味が一致する。
+   狭い画面はいまもレムニスケート（下の VPATH）を使っている。 */
 
 /* 狭い画面用の、縦向きの∞。
-   上の PATH を -90度回した（(x,y) → (y, 150-x)）だけで、形は同じもの。
-   回転なので道のりの順番も長さの比も変わらない。
-   光の帯の dasharray / dashoffset はそのまま使える。
+   横幅342pxに2つの円を横に並べると、輪の外にも内にもラベルが入らない。
+   縦に積めば入るので、こちらはレムニスケートのまま。
+   光の帯の dasharray / dashoffset はこの道のりに合わせてある。
 
    なぜ縦にするか：横のままだと、輪の外にラベルを出す余白が無い。
    390px画面で使える幅は342pxしかなく、段階名は最長8文字（約104px）。
@@ -122,8 +108,8 @@ const varrows = [
 const steps: Step[] = [
   {
     no: "01",
-    x: 61.57,
-    y: 23.12,
+    x: 64.73,
+    y: 9.52,
     side: "up",
     title: "地域を知る",
     body: "働く人・企業・生き方に出会う。",
@@ -132,7 +118,7 @@ const steps: Step[] = [
   },
   {
     no: "02",
-    x: 85.33,
+    x: 87.4,
     y: 50.0,
     side: "right",
     title: "挑戦してみる",
@@ -141,8 +127,8 @@ const steps: Step[] = [
   },
   {
     no: "03",
-    x: 61.57,
-    y: 76.88,
+    x: 64.73,
+    y: 90.48,
     side: "down",
     title: "つながる",
     body: "若者・企業・学校・行政がつながる。",
@@ -154,15 +140,15 @@ const steps: Step[] = [
   },
   {
     no: "04",
-    x: 38.43,
-    y: 23.12,
+    x: 35.27,
+    y: 9.52,
     side: "up",
     title: "人と企業が変わる",
     body: "採用・育成・DX・組織が変わる。",
   },
   {
     no: "05",
-    x: 14.67,
+    x: 12.6,
     y: 50.0,
     side: "left",
     title: "ともに生み出す",
@@ -171,8 +157,8 @@ const steps: Step[] = [
   },
   {
     no: "06",
-    x: 38.43,
-    y: 76.88,
+    x: 35.27,
+    y: 90.48,
     side: "down",
     title: "実績ができる",
     body: "成果が次の挑戦者を呼び込む。",
@@ -254,10 +240,10 @@ const groups = [
    そのときに向きが分かるものがなくなってしまう。
    位置と角度は、上の PATH の接線から取っている。 */
 const arrows = [
-  { x: 83.73, y: 33.42, r: 70.7 },
-  { x: 83.73, y: 66.58, r: 112.7 },
-  { x: 16.27, y: 33.42, r: 109.3 },
-  { x: 16.27, y: 66.58, r: 67.3 },
+  { x: 80.76, y: 21.38, r: 45, c: "var(--color-terracotta)" },
+  { x: 80.76, y: 78.62, r: 135, c: "var(--color-terracotta)" },
+  { x: 19.24, y: 21.38, r: 135, c: "var(--color-sage)" },
+  { x: 19.24, y: 78.62, r: 45, c: "var(--color-sage)" },
 ];
 
 /* ラベルを点のどちら側に出すか。
@@ -311,19 +297,20 @@ function BizTag({ label, href }: { label: string; href: string }) {
   );
 }
 
-/** 灯る点。∞でも縦の道でも同じものを使う */
+/** 円の上の点。円が描かれていくのに合わせて、一度だけ現れる。
+    挑戦の円は 0.25〜1.75秒、共創の円は 1.35〜2.85秒で描かれるので、
+    その途中に等間隔で置く（円の向きを変えたら、ここも合わせ直すこと） */
+const dotDelay = [0.55, 0.95, 1.35, 1.65, 2.05, 2.45];
+
 function Dot({ index }: { index: number }) {
-  /* 帯の先頭がこの点に届く時刻。6点を道のりで等間隔に置いたので、
-     一周6秒なら1秒刻み（一周の秒数を変えたら、ここも割り直すこと） */
-  const delay = { "--cycle-delay": `${index * 1}s` } as CSSProperties;
+  const ring = index < 3 ? "border-terracotta" : "border-sage";
   return (
-    <span aria-hidden className="relative block h-[15px] w-[15px] shrink-0">
-      <span className="absolute inset-0 rounded-full border-2 border-sage-ink bg-background" />
-      <span className="cycle-fill absolute inset-[3px] rounded-full bg-deep-green" style={delay} />
-      <span
-        className="cycle-pulse absolute -inset-[7px] rounded-full border border-deep-green/60"
-        style={delay}
-      />
+    <span
+      aria-hidden
+      className="cycle-dot relative block h-[13px] w-[13px] shrink-0"
+      style={{ "--cycle-delay": `${dotDelay[index] ?? 0}s` } as CSSProperties}
+    >
+      <span className={`absolute inset-0 rounded-full border-2 bg-white ${ring}`} />
     </span>
   );
 }
@@ -554,73 +541,68 @@ export function CycleDiagram({
           ひとつの「図」として認識されない。
           横の余白180pxは、∞の外へ出るラベル（13em）が面の中に収まる幅 */}
       <div
-        className={`xl:mx-auto xl:max-w-[1120px] xl:rounded-[28px] xl:border xl:border-charcoal/[0.09] xl:bg-white xl:px-[180px] xl:py-14 ${
+        className={`xl:mx-auto xl:max-w-[960px] xl:rounded-[32px] xl:border xl:border-charcoal/[0.08] xl:bg-white xl:px-[70px] xl:py-16 ${
           heading ? "mt-8 xl:mt-10" : ""
         }`}
       >
       <div
         data-cycle
-        className="relative mx-auto w-full max-w-[760px] xl:aspect-[150/76]"
+        className="relative mx-auto w-full max-w-[820px] xl:aspect-[150/84]"
       >
-        {/* ∞の道。飾りなので読み上げない */}
+        {/* 挑戦の円と共創の円。重なったところが「地域」。
+            これがこの図の意味なので、1本の線で2つの輪を描くのではなく、
+            本物の円を2つ置いている。
+            半径34・中心間44.2（＝1.3R）はベン図として見慣れた重なり具合。 */}
         <svg
           aria-hidden
-          viewBox="0 12 150 76"
+          viewBox="0 8 150 84"
           className="pointer-events-none absolute inset-0 hidden h-full w-full xl:block"
         >
           <defs>
-            {/* 左は挑戦（terracotta）、右は共創（sage）。
-                ブランドの色の決めごとをそのまま使っている
-                （terracotta＝挑戦・行動、sage＝地域・共創）。
-                交点で色が入れ替わるので、変わり目を交点に合わせた */}
-            <linearGradient id="cycle-stroke" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="var(--color-sage)" />
-              <stop offset="50%" stopColor="var(--color-sage)" stopOpacity="0.55" />
-              <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="var(--color-terracotta)" />
-            </linearGradient>
-            <radialGradient id="cycle-glow-l" cx="37%" cy="50%" r="40%">
+            <radialGradient id="cycle-fill-c" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.17" />
-              <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.11" />
-              <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
+              <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0.07" />
             </radialGradient>
-            <radialGradient id="cycle-glow-r" cx="63%" cy="50%" r="40%">
+            <radialGradient id="cycle-fill-t" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.17" />
-              <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.11" />
-              <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
+              <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.07" />
             </radialGradient>
           </defs>
 
-          {/* 2つのループの中を淡く染める。どちらの領域かが一目で分かる */}
+          {/* 面。掛け算で重ねると、重なったところだけ自然に濃くなる。
+              「地域」は色を塗って作るのではなく、2つが重なった結果として出る */}
           <g style={{ mixBlendMode: "multiply" }}>
-            <rect y="12" width="150" height="76" fill="url(#cycle-glow-l)" />
-            <rect y="12" width="150" height="76" fill="url(#cycle-glow-r)" />
+            <circle cx="52.9" cy="50" r="34" fill="url(#cycle-fill-c)" />
+            <circle cx="97.1" cy="50" r="34" fill="url(#cycle-fill-t)" />
           </g>
 
-          {/* 道そのもの */}
-          <path
-            d={PATH}
-            fill="none"
-            stroke="url(#cycle-stroke)"
-            strokeOpacity="0.55"
-            strokeWidth="0.55"
-          />
-
-          {/* 一周する光の帯。pathLength で長さを100に正規化しているので、
-              画面幅が変わっても dasharray を書き直さなくてよい */}
-          <path
-            className="cycle-sweep"
-            d={PATH}
+          {/* 輪郭。画面に入ると、挑戦 → 共創 の順に描かれて止まる。
+              rotate(-90) は、描き始めを3時ではなく12時（01と04の位置）にするため */}
+          <circle
+            className="cycle-ring cycle-ring-a"
+            cx="97.1"
+            cy="50"
+            r="34"
             pathLength={100}
+            transform="rotate(-90 97.1 50)"
             fill="none"
-            stroke="var(--color-deep-green)"
-            /* 下地（0.55）の2倍以上あると、光ではなく「別の太い線」に見える。
-               見えるだけの差をつけて、それ以上は太くしない */
-            strokeWidth="0.9"
-            strokeOpacity="0.9"
+            stroke="var(--color-terracotta)"
+            strokeOpacity="0.8"
+            strokeWidth="0.7"
             strokeLinecap="round"
-            strokeDasharray="13 87"
-            strokeDashoffset={-20.33}
+          />
+          <circle
+            className="cycle-ring cycle-ring-b"
+            cx="52.9"
+            cy="50"
+            r="34"
+            pathLength={100}
+            transform="rotate(-90 52.9 50)"
+            fill="none"
+            stroke="var(--color-sage)"
+            strokeOpacity="0.8"
+            strokeWidth="0.7"
+            strokeLinecap="round"
           />
         </svg>
 
@@ -639,7 +621,7 @@ export function CycleDiagram({
               transform: `translate(-50%, -50%) rotate(${a.r}deg)`,
             }}
           >
-            <polygon points="1,1 9,5 1,9" fill="var(--color-sage-ink)" fillOpacity="0.75" />
+            <polygon points="1,1 9,5 1,9" fill={a.c} fillOpacity="0.9" />
           </svg>
         ))}
 
@@ -647,7 +629,7 @@ export function CycleDiagram({
         <div
           aria-hidden
           className="absolute hidden xl:block"
-          style={{ left: "69%", top: "50%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "68.73%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <p className="text-center text-[16px] font-bold tracking-[0.04em] text-charcoal/80">
             挑戦
@@ -659,7 +641,7 @@ export function CycleDiagram({
         <div
           aria-hidden
           className="absolute hidden xl:block"
-          style={{ left: "31%", top: "50%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "31.27%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <p className="text-center text-[16px] font-bold tracking-[0.04em] text-charcoal/80">
             共創
@@ -703,7 +685,10 @@ export function CycleDiagram({
               return (
                 <li
                   key={`b-${b.label}`}
-                  className={`${common} relative xl:absolute xl:left-[var(--cx)] xl:top-[var(--cy)] xl:block xl:w-auto xl:-translate-x-1/2 xl:-translate-y-1/2 xl:border-0 xl:bg-transparent xl:p-0`}
+                  /* 事業のタグは図には出さない。
+                     DX・BPO は図の外（事業カード・各サービスページ）にあり、
+                     図の中に入れると段階名とぶつかって、どちらも読めなくなる */
+                  className={`${common} relative xl:hidden`}
                   style={{ "--cx": `${b.x}%`, "--cy": `${b.y}%` } as CSSProperties}
                 >
                   <p className="text-[10px] font-bold tracking-[0.22em] text-deep-green xl:hidden">
@@ -745,16 +730,16 @@ export function CycleDiagram({
 
                 <div
                   style={sideVars[s.side]}
-                  /* 上側の2つ（01・04）は、箱の「下端」を点に合わせて置くので、
-                     タグの有無で箱の高さが変わると、名前の高さがズレる。
-                     高さを揃えて、名前の行が同じ高さに並ぶようにする */
-                  className={`xl:absolute xl:left-0 xl:top-0 xl:w-[13em] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
+                  /* 幅は内容ぶん。ただし説明文が長いので上限をかけて折り返す。
+                     上下の点（01と04、03と06）の間隔は枠の23.1％しかないので、
+                     箱がそれより広いと必ずぶつかる。上限160pxはその内側 */
+                  className={`xl:absolute xl:left-0 xl:top-0 xl:w-max xl:max-w-[160px] xl:[margin:var(--lo)] xl:[transform:var(--lt)] ${
                     s.side === "left"
                       ? "xl:text-right"
                       : s.side === "right"
                         ? ""
                         : "xl:text-center"
-                  } ${s.side === "up" ? "xl:flex xl:min-h-[62px] xl:flex-col xl:justify-start" : ""}`}
+                  }`}
                 >
                   {/* 番号は、進む順を示すもの。順序は矢印・光の帯・輪の並びが
                       すでに示しているので、広い画面では出さない（同じ情報の3回目）。
@@ -762,32 +747,25 @@ export function CycleDiagram({
                   <span className="mt-2 block text-[12px] font-medium leading-none tabular-nums text-charcoal/65 xl:hidden">
                     {s.no}
                   </span>
-                  <h4 className="mt-2 text-[17px] font-semibold leading-[1.4] text-charcoal xl:mt-0 xl:text-[18px] xl:leading-[1.35]">
+                  <h4 className="mt-2 text-[17px] font-semibold leading-[1.4] text-charcoal xl:mt-0 xl:whitespace-nowrap xl:text-[18px] xl:leading-[1.35]">
                     {s.title}
                   </h4>
                   {/* 説明は、狭い画面ではカードに余白があるので必ず出す。
                       広い画面の短い版（TOP）だけ落とす */}
-                  {/* 説明は、広い画面では帯が通ったときだけ出す。
-                      6つ分の説明を常に出すと図のまわりが文字で埋まるが、
-                      名前まで消すと「点滅しているだけの図」になって壊れて見える。
-                      消していいのは説明だけ。狭い画面はカードなので常に出す */}
+                  {/* 箱に上限幅をかけて折り返すようにしたので、
+                      説明を常に出してもぶつからない。消したり出したりしない */}
                   <p
-                    style={{ "--cycle-delay": `${i}s` } as CSSProperties}
-                    className={`mt-2 text-[13px] leading-[1.9] text-charcoal/80 xl:mt-1.5 xl:text-[12px] xl:leading-[1.75] ${
-                      detail ? "cycle-reveal" : "xl:hidden"
+                    className={`mt-2 text-[13px] leading-[1.9] text-charcoal/80 xl:mt-1.5 xl:text-[12px] xl:leading-[1.7] ${
+                      detail ? "" : "xl:hidden"
                     }`}
                   >
                     {s.body}
                   </p>
                   {s.project && (
                     <div
-                      className={`mt-4 xl:mt-2.5 ${
-                        s.side === "left"
-                          ? "xl:text-right"
-                          : s.side === "right"
-                            ? ""
-                            : "xl:text-center"
-                      } ${s.href || detail ? "" : "xl:hidden"}`}
+                      /* プロジェクトのタグも図には出さない（理由は事業タグと同じ）。
+                         行き先は、図の下の導線と各ページにある */
+                      className="mt-4 xl:hidden"
                     >
                       <ProjectTag step={s} />
                     </div>

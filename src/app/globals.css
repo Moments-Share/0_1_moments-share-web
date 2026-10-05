@@ -289,7 +289,30 @@ html[data-js] .rv-load {
    全部消えたままだと、図に手がかりが番号しか残らない */
 [data-on="true"] .cycle-name { opacity: 1; animation: none; }
 
-/* 広い画面の∞でも、節点の説明を帯の通過に合わせて出して消す。
+/* 広い画面の2つの円。画面に入ると、挑戦 → 共創 の順に描かれて止まる。
+   描き終わった状態が、そのまま読める状態になる。 */
+@keyframes cycle-ring-draw {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes cycle-dot-in {
+  from { opacity: 0; scale: 0.4; }
+  to   { opacity: 1; scale: 1; }
+}
+html[data-js] .cycle-ring { stroke-dasharray: 100; stroke-dashoffset: 100; }
+html[data-js] .cycle-dot { opacity: 0; }
+[data-run="1"] .cycle-ring-a {
+  animation: cycle-ring-draw 1.5s cubic-bezier(0.33, 0, 0.1, 1) 0.25s both;
+}
+[data-run="1"] .cycle-ring-b {
+  animation: cycle-ring-draw 1.5s cubic-bezier(0.33, 0, 0.1, 1) 1.35s both;
+}
+[data-run="1"] .cycle-dot {
+  animation: cycle-dot-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--cycle-delay, 0s);
+}
+
+/* 以下は狭い画面の図（縦向きの∞）で使う。
    6つ分の「番号・名前・説明・タグ」を常に出していると、
    図のまわりが文字で埋まって、形が読めなくなる。
 
@@ -299,18 +322,6 @@ html[data-js] .rv-load {
 
    狭い画面には効かせない。あちらは下のカードの列が本体で、
    図は番号だけの飾りなので、ここで消すものが無い。 */
-@media (min-width: 1280px) {
-  .cycle-reveal { opacity: 0; }
-  [data-run="1"] .cycle-reveal {
-    animation: cycle-name 6s linear 1 both;
-    animation-delay: var(--cycle-delay, 0s);
-  }
-  [data-cycle]:hover .cycle-reveal,
-  [data-cycle]:focus-within .cycle-reveal {
-    animation: none;
-    opacity: 1;
-  }
-}
 
 /* 動きを減らす設定のときは止める。
    止めた状態が、そのまま読める状態になるようにしてある
@@ -322,8 +333,9 @@ html[data-js] .rv-load {
      そのときは、いま選ばれている段階の名前だけを出しておく */
   .cycle-name { opacity: 0; }
   [data-on="true"] .cycle-name { opacity: 1; }
-  /* 広い画面も同じ。帯が止まるので、消したままにはしない */
-  .cycle-reveal { opacity: 1; }
+  /* 円は描かずに最初から出しておく */
+  .cycle-ring { stroke-dashoffset: 0; animation: none; }
+  .cycle-dot { opacity: 1; animation: none; }
 }
 
 /* --- 文字が少しずつ現れる（RevealChars）---
