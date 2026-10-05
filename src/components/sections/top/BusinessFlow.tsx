@@ -162,9 +162,9 @@ export function BusinessFlow() {
             <CycleDiagram variant="compact" />
             <Link
               href="/service-produce"
-              className="mt-7 inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+              className="mt-4 inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
             >
-              この循環をつくるのが、地域プロデュース事業 →
+              地域プロデュース事業を見る →
             </Link>
           </div>
         </Reveal>
