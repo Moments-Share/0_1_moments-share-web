@@ -71,13 +71,22 @@ const projects: {
 ];
 
 /* 準備中のプロジェクト。開設・開始が決まっていない段階のものを置く。
-   具体的な内容（場所・料金・時期など）が固まるまでは書かない。
-   固まったら projects へ移すか、専用ページへ昇格させる。 */
+   固まったものだけを書く。固まっていない項目（料金・利用時間など）は
+   書かずに空けておく。固まったら projects へ移すか、専用ページへ昇格させる。
+
+   place はコワーキングスペースの場所であって、会社の所在地ではない。
+   会社の所在地は lib/company.ts にあり、こことは別のもの。
+   フッターの「所在地」をここの住所に差し替えないこと。
+
+   TODO: 料金・利用時間・会員の種類が決まったら足す。
+   TODO: オープンが近づいたら、専用ページを作ってここから昇格させる。 */
 const upcoming = [
   {
     name: "コワーキングスペース",
     cat: "場づくり",
-    desc: "西尾に、働く人が集まれる場所をつくる準備を進めています。詳細が決まり次第、このページでお知らせします。",
+    place: "愛知県西尾市本町5-2 3階",
+    when: "2027年4月（予定）",
+    desc: "働く人が集まれる場所を、西尾につくります。料金・利用時間などの詳細は、決まり次第このページでお知らせします。",
   },
 ];
 
@@ -353,9 +362,17 @@ export default function ServiceProduce() {
                       {u.name}
                     </h3>
                     <span className="rounded-sm border border-sage px-2 py-0.5 text-[11px] font-bold tracking-[0.08em] text-sage-ink">
-                      {u.cat}・準備中
+                      {u.cat}
                     </span>
                   </div>
+                  {/* 決まっていることだけを、文章ではなく項目で出す。
+                      ここは「場所」。会社の所在地ではないので、そう書かない */}
+                  <dl className="mt-5 grid max-w-[36em] grid-cols-[4.5em_1fr] gap-x-4 gap-y-1 text-[14px] leading-[1.9] text-charcoal/80">
+                    <dt className="text-charcoal/55">場所</dt>
+                    <dd>{u.place}</dd>
+                    <dt className="text-charcoal/55">オープン</dt>
+                    <dd>{u.when}</dd>
+                  </dl>
                   <p className="mt-4 max-w-[36em] text-[15px] md:text-[16px] leading-[2] text-charcoal/75">
                     {u.desc}
                   </p>
