@@ -39,6 +39,7 @@ const jsonLd = {
     "url": "https://moments-share.com",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "本町5-2 3階",
       "addressLocality": "西尾市",
       "addressRegion": "愛知県",
       "addressCountry": "JP",

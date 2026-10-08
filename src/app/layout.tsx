@@ -52,6 +52,7 @@ const organizationJsonLd = {
       "email": "branding@momentsshare.com",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "本町5-2 3階",
         "addressLocality": "西尾市",
         "addressRegion": "愛知県",
         "addressCountry": "JP",
