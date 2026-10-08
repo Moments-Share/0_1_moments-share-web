@@ -9,8 +9,27 @@ const notoSansJP = Noto_Sans_JP({
   display: "swap",
 });
 
+/**
+ * Google Search Console の所有権確認トークン。
+ *
+ * DNS（TXTレコード）での確認がうまくいかないときの代わりになる。
+ * Search Console で「URLプレフィックス」プロパティを作り、確認方法に
+ * 「HTMLタグ」を選ぶと、こういう文字列が出る：
+ *   <meta name="google-site-verification" content="abc123..." />
+ * その content の中身だけを、ここの "" の中に貼る。
+ *
+ * 空のあいだはタグ自体が出ない（間違ったトークンを出すより安全）。
+ * 貼ってデプロイしたあと、Search Console の「確認」を押せば通る。
+ * 一度確認が通ったあとも、タグは消さずに残しておくこと。
+ * 消すと所有権が外れる。
+ */
+const GOOGLE_SITE_VERIFICATION = "";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://moments-share.com"),
+  ...(GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: GOOGLE_SITE_VERIFICATION } }
+    : {}),
   title: "Moments Share合同会社 — 地域愛を地域発展の力に。",
   description:
     "愛知県西尾市発。DX×BPO×地域プロデュースで、やらなくていい仕事をなくし、地域に挑戦と共創の循環を生み出す会社です。",
