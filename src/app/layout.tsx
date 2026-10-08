@@ -23,7 +23,7 @@ const notoSansJP = Noto_Sans_JP({
  * 一度確認が通ったあとも、タグは消さずに残しておくこと。
  * 消すと所有権が外れる。
  */
-const GOOGLE_SITE_VERIFICATION = "";
+const GOOGLE_SITE_VERIFICATION = "r4e3NFaOppjZsPYt71lJ-qkzv0q6M0zeemU56CLPqlU";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://moments-share.com"),
