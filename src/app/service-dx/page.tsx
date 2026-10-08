@@ -95,6 +95,9 @@ export const metadata: Metadata = {
   description:
     "愛知県西尾市の中小企業向け、業務効率化・AI導入の伴走支援「Core Shift」。DX（業務のデジタル化）に加え、AX（AIを前提に仕事のやり方そのものを組み替える）まで支援します。入力・転記・集計を手放せば、1日60分の手作業が年間240時間になって戻ります。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "西尾市の業務効率化・AI導入・DX/AX支援｜Moments Share",
     description:
       "人がやらなくてもいい仕事を減らす。人の時間を、価値創造へ。入力・転記・集計をAIと自動化で手放す、伴走型のDX/AX支援。愛知県西尾市発。",

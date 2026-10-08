@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     "愛知県西尾市のキャリア教育・職場体験プロジェクト「西尾働き方図鑑」。小中高大生が世代を越えてチームを組み、地域の企業を取材・体験し、記事と動画で発信します。地元にどんな仕事があるのかを知る機会をつくる取り組み。受け入れ企業と参加者を募集中。",
   alternates: { canonical: "https://moments-share.com/nishio-hatarakikata-zukan/" },
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "西尾市のキャリア教育・職場体験｜西尾働き方図鑑",
     description:
       "小学生から大学生までが世代を越えてチームを組み、西尾市の企業を取材・体験して発信するキャリア教育プロジェクト。",

@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   description:
     "Moments Share合同会社の会社概要と存在意義。すべてがつながる瞬間を、共創する。愛知県西尾市を拠点に、DX/AX支援・BPO・地域プロデュースの3事業を展開しています。信念・行動指針・原点・会社情報をご紹介します。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "会社概要・存在意義｜Moments Share合同会社",
     description:
       "すべてがつながる瞬間を、共創する。「生きててよかった！」があふれる世界へ。Moments Shareの存在意義と歩み。愛知県西尾市発。",

@@ -81,7 +81,11 @@ const organizationJsonLd = {
       "@type": "WebSite",
       "@id": "https://moments-share.com/#website",
       "url": "https://moments-share.com/",
-      "name": "Moments Share合同会社｜西尾市の業務効率化・DX/AX支援",
+      /* ここはページのタイトルではなく「サイトの名前」。
+         Google は検索結果のURLの上に出す「サイト名」を、まずこの値から取る。
+         タイトル（会社名＋説明）を入れると、Google 側で切り詰められる */
+      "name": "Moments Share合同会社",
+      "alternateName": ["Moments Share", "モーメンツシェア"],
       "publisher": {
         "@id": "https://moments-share.com/#organization",
       },

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   description:
     "愛知県西尾市の中小企業向けに、業務効率化・AI導入・DX/AX支援を伴走型で提供。請求書処理・データ転記・日報集計などの定型業務を自動化し、1日60分の手作業から年間240時間を取り戻します。BPO・地域プロデュースも。初回のご相談は無料です。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "Moments Share合同会社｜西尾市の業務効率化・DX/AX支援",
     description:
       "愛知県西尾市の中小企業向け。業務効率化・DX・AX（AI活用）を伴走支援。BPO・地域プロデュースも。",

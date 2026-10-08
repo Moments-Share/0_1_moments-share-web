@@ -108,6 +108,9 @@ export const metadata: Metadata = {
   description:
     "愛知県西尾市の地域プロデュース事業。地域の課題と、人や企業の「やってみたい」をつなぎ、新しいプロジェクトや事業が生まれる場をつくります。西尾働き方図鑑・西尾筋肉祭り・AI活用研究会など、挑戦と共創が循環する地域へ。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "西尾市の地域プロデュース・地域活性化｜Moments Share",
     description: "想いを、挑戦へ。人・企業・地域をつなぎ、挑戦と共創の循環をつくります。",
     locale: "ja_JP",

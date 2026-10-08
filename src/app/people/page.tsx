@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description:
     "Moments Shareでは、ともに歩む一人ひとりを「Fellow」と呼びます。自分の人生を主体的に生きながら、志が重なるとき、ともに挑戦し、ともに未来を創る人。専門人材・副業・子育て中・学生・地域の人など、多様な関わり方があります。愛知県西尾市発。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "メンバー・Fellow紹介｜Moments Share",
     description:
       "自分の人生を主体的に生きながら、志が重なるとき、ともに挑戦し、ともに未来を創る人。Moments Shareの「Fellow」という関わり方。",

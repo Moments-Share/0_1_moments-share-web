@@ -35,6 +35,9 @@ export async function generateMetadata({
     description: item.lead,
     alternates: { canonical: `https://moments-share.com/news/${item.slug}/` },
     openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
       title,
       description: item.lead,
       locale: "ja_JP",
