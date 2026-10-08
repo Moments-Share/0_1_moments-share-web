@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description:
     "愛知県西尾市のMoments Share合同会社へのご相談・お問い合わせ。この作業、減らせないか。人が足りない。地域で何か始めたい。まずはお気軽にお問い合わせください。初回のご相談は無料です。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "お問い合わせ・無料相談｜Moments Share",
     description: "DX/AX・BPO・地域プロデュースのご相談。まずは30分、話してみませんか。",
     type: "website",

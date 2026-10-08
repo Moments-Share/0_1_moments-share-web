@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   description:
     "Moments Share合同会社のお知らせ・プロジェクト情報・サービスリリース。愛知県西尾市での取り組みや、新聞・ニュースへの掲載情報をお届けします。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "ニュース・お知らせ｜Moments Share",
     description: "Moments Share合同会社のお知らせ・プロジェクト・サービス情報。",
     locale: "ja_JP",

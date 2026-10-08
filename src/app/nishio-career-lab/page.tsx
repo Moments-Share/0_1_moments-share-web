@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     "愛知県西尾市・三河地域の大学生のためのキャリアコミュニティ「西尾キャリアLab」。地域企業との出会い、キャリア交流会、企業訪問、実践型インターンを通じて、知らなかった仕事や生き方を知り、行動するきっかけをつくります。やりたいことが未定でも歓迎。",
   alternates: { canonical: "https://moments-share.com/nishio-career-lab/" },
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "西尾市の大学生インターン・キャリア｜西尾キャリアLab",
     description:
       "興味は知識に比例する。好きは行動から生まれる。大学生が自分らしいキャリアを描くためのコミュニティです。",

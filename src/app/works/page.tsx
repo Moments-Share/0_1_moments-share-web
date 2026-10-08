@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description:
     "Moments Shareがカタチにしてきた仕事。企業のDX・業務改善から地域プロジェクトまで、お客様や仲間と一緒につくってきた実績をご紹介します。",
   openGraph: {
+    /* サイト名。layout で指定していても、ページ側で openGraph を
+       書き直すと丸ごと差し替わって消えるので、各ページに書く */
+    siteName: "Moments Share合同会社",
     title: "実績（Works）｜Moments Share",
     description:
       "企業のDX・業務改善から地域プロジェクトまで。Moments Shareがつくってきた仕事の実績。",
