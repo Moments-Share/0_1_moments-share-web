@@ -125,26 +125,35 @@ const stances = [
   { en: "Build Systems", ja: "仕組みを創ろう。" },
 ];
 
-/* 3事業。Aboutでは「名前＋一行」まで。詳しい説明はTOPと各サービスページにある */
+/* 3事業。Aboutでは「名前＋一行」まで。詳しい説明はTOPと各サービスページにある。
+   見た目（番号・塗りのカード・並び）はTOPの事業紹介に合わせてある。
+   同じ3つの話なので、ページが変わるたびに見え方が変わらないようにする */
 const businesses = [
   {
+    no: "01",
     name: "DX・AX支援",
     body: "人がやらなくてもいい仕事を減らし、挑戦するための余白をつくる。",
     href: "/service-dx",
   },
   {
+    no: "02",
     name: "BPO",
     body: "必要な仕事と多様な人の力をつなぎ、挑戦を続けられる体制をつくる。",
     href: "/service-bpo",
   },
   {
+    no: "03",
     name: "地域プロデュース",
     body: "人・企業・想いが出会い、新しい挑戦が生まれるきっかけをつくる。",
     href: "/service-produce",
   },
 ];
 
-/* 3事業の先に起きること。最後は最初へ戻る */
+/* 上の3事業が生み出すもの。1つずつ次を呼んで、最後は最初へ戻る。
+   TOPと地域プロデュースにある「挑戦の円・共創の円」とは別の図。
+   あちらは地域の人から見た循環、こちらは3事業から見た循環なので、
+   形も変えてある（あちらは円、こちらは横に進む流れ）。
+   2つとも円で描くと、どちらが会社の考えなのか分からなくなる */
 const cycle = [
   "余白が生まれる",
   "人と仕事がつながる",
@@ -153,24 +162,9 @@ const cycle = [
   "実績ができる",
 ];
 
-/* 循環の5点の位置（コンテナ幅・高さに対する%）。真上から時計回りに72度ずつ、
-   楕円（横30% / 縦29%）に沿わせてある。縦を36%から詰めたのは、
-   まるの半径（幅の13.5%）ぶんが箱の上下からはみ出していたため。
-
-   left / top を直に書くと md未満（縦一列のとき）にも効いてしまい、
-   項目がずれて横にはみ出す。md でだけ効かせたいので CSS変数に入れ、
-   md:[left:var(--cx)] で取り出す */
-const cycleSpots = [
-  { "--cx": "50%", "--cy": "21%" },
-  { "--cx": "78.5%", "--cy": "41%" },
-  { "--cx": "67.6%", "--cy": "73.5%" },
-  { "--cx": "32.4%", "--cy": "73.5%" },
-  { "--cx": "21.5%", "--cy": "41%" },
-];
-
-/* 5つの円の色。ロゴマークの粒（ティール・ブルー・パープル・コーラル・
-   オレンジ）をそのまま薄めて使う。太いグラデーションの輪は他社のロゴに
-   寄ってしまうので使わない。ロゴと同じ「まるが集まる」形で見せる */
+/* 5段階の番号の地。下の bubbleInks を薄めたもの。
+   以前はこの色で直径270pxの円を5つ置いていたが、大きすぎて
+   「循環」ではなく「色の塊が5つ」に見えていたので、番号の地だけに使う */
 const bubbleTints = [
   "rgba(44,201,214,0.14)",
   "rgba(65,105,240,0.10)",
@@ -179,18 +173,9 @@ const bubbleTints = [
   "rgba(249,184,78,0.17)",
 ];
 
-/* スマホで軌道の上に置く番号の色。上の円と同じ並び */
+/* 5段階の番号の色。ロゴの粒（ティール・ブルー・パープル・コーラル・
+   オレンジ）をそのまま使う。小さく使うぶんにはサイトの土色と喧嘩しない */
 const bubbleInks = ["#1f9aa4", "#3457c4", "#6a35c0", "#d4566a", "#c98a2a"];
-
-/* ロゴのまわりに散る小さな粒。位置と大きさと色。装飾なので md以上だけ */
-const specks = [
-  { "--cx": "50%", "--cy": "2.5%", "--d": "9px", "--c": "#f9b84e" },
-  { "--cx": "90%", "--cy": "22%", "--d": "7px", "--c": "#4169f0" },
-  { "--cx": "88%", "--cy": "62%", "--d": "11px", "--c": "#ff7b8a" },
-  { "--cx": "50%", "--cy": "94%", "--d": "8px", "--c": "#7b3fe4" },
-  { "--cx": "11%", "--cy": "63%", "--d": "10px", "--c": "#2cc9d6" },
-  { "--cx": "9%", "--cy": "21%", "--d": "6px", "--c": "#f9b84e" },
-];
 
 /* 4th Place が何を指すか。5つ並べて、最後だけ長くする */
 const placeLines = [
@@ -211,25 +196,54 @@ const visionSteps = ["挑戦した。", "失敗した。", "誰かと出会っ�
    以前は「役割（余白をつくる）／英字／事業名／説明／詳しく→」の5段だったが、
    役割と説明の末尾が同じことを言っていた（余白をつくる ↔ …余白をつくる。）。
    3枚とも同じ重複だったので、役割と英字を落とした。 */
-function BusinessCard({ b }: { b: (typeof businesses)[number] }) {
+function BusinessCard({ b, primary }: { b: (typeof businesses)[number]; primary?: boolean }) {
   return (
-    <>
+    <Link
+      href={b.href}
+      /* カード全体をリンクにする。TOPの事業紹介と同じ扱い。
+         節の地が白なので、01は深緑の塗り、02・03はアイボリーの地に枠。
+         （TOPは地がアイボリーなので白いカード。地と逆の色を使う） */
+      className={`group flex h-full flex-col rounded-[18px] p-7 transition-shadow hover:shadow-lg md:p-8 ${
+        primary ? "bg-green-deep text-white" : "border border-charcoal/12 bg-background"
+      }`}
+    >
+      <span
+        className={`text-[13px] font-bold leading-none tabular-nums tracking-[-0.03em] ${
+          primary ? "text-white/60" : "text-sage-ink/75"
+        }`}
+      >
+        {b.no}
+      </span>
       <p
-        className="font-bold leading-[1.45] tracking-[-0.01em] text-charcoal"
-        style={{ fontSize: "clamp(17px, 1.6vw, 20px)" }}
+        className={`mt-4 font-bold leading-[1.45] tracking-[-0.01em] ${
+          primary ? "text-white" : "text-charcoal"
+        }`}
+        style={{ fontSize: "clamp(18px, 1.8vw, 22px)" }}
       >
         {b.name}
       </p>
-      <p className="mt-3 text-[14px] leading-[1.95] text-charcoal/80 md:text-[15px]">{b.body}</p>
-      <Link
-        href={b.href}
-        className="mt-4 inline-block border-b border-navy-ink/40 pb-0.5 text-[13px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+      {/* flex-1 で、3枚の「詳しく →」の高さをそろえる */}
+      <p
+        className={`mt-3 flex-1 text-[14px] leading-[1.95] md:text-[15px] ${
+          primary ? "text-white/85" : "text-charcoal/80"
+        }`}
+      >
+        {b.body}
+      </p>
+      {/* カード全体がリンクなので、ここは見た目だけ。二重リンクにしない */}
+      <span
+        className={`mt-6 inline-block self-start border-b pb-0.5 text-[13px] font-bold transition-colors ${
+          primary
+            ? "border-white/60 text-white group-hover:border-white"
+            : "border-navy-ink/40 text-navy-ink group-hover:border-deep-green group-hover:text-deep-green"
+        }`}
       >
         詳しく →
-      </Link>
-    </>
+      </span>
+    </Link>
   );
 }
+
 
 export default function AboutPage() {
   return (
@@ -487,130 +501,104 @@ export default function AboutPage() {
               </div>
             </Reveal>
 
-            {/* 3事業。循環はこの下のリングが受け持つので、ここは矢印を
-                  付けず静かな3列で並べる。図を2つ重ねると、どちらも
-                  「ぐるぐる回る絵」になって読み手の目が散る */}
+            {/* 3事業。TOPの事業紹介と同じパネルで並べる。
+                  以前は区切り線だけの3列だったが、面が無いので
+                  「3つある」ことがひと目で分からなかった */}
             <Reveal delay={0.12}>
-              <ol className="mt-12 grid grid-cols-1 gap-y-9 border-t border-charcoal/15 md:mt-16 md:grid-cols-3 md:gap-x-10 md:gap-y-0">
+              <ol className="mt-12 grid grid-cols-1 gap-5 md:mt-16 md:grid-cols-3 md:gap-6">
                 {businesses.map((b, i) => (
-                  <li
-                    key={b.name}
-                    className={`pt-7 md:px-8 md:first:pl-0 md:last:pr-0 ${
-                      i > 0 ? "border-t border-charcoal/15 md:border-l md:border-t-0" : ""
-                    }`}
-                  >
-                    <BusinessCard b={b} />
+                  <li key={b.name}>
+                    <BusinessCard b={b} primary={i === 0} />
                   </li>
                 ))}
               </ol>
             </Reveal>
 
-            {/* 3事業の先に起きること。
+            {/* 上の3事業が生み出すもの。
 
-                  太いグラデーションの輪はやめ、ロゴマークと同じ
-                  「まるが集まる」形にした。細い軌道の上に、ロゴの粒と
-                  同じ色のやわらかい円を5つ置き、中心にロゴを据える。
+                  以前は直径270pxのやわらかい円を5つ、楕円の軌道に置いていた。
+                  ただ、軌道の線も矢印も無いので「循環」には見えず、色の塊が
+                  5つ散っているだけになっていた。中心のロゴと文言も円に埋もれ、
+                  いちばん言いたい「挑戦の循環ができる」が一番読みにくかった。
+                  縦に1000px以上使っていたわりに、伝わる量が少ない。
 
-                  スマホ：軌道＋番号だけを図で見せ、文字はその下に
-                          同じ番号を振って並べる（円の中に日本語が入りきらない）。
-                  md以上：円の中に文字を入れ、中心に文言も出す。
+                  横に進む流れに変え、最後に最初へ戻る線を引いた。
+                  TOPと地域プロデュースの「挑戦の円・共創の円」は円のままなので、
+                  形で見分けがつく（あちらは地域の循環、こちらは事業が生むもの）。
 
-                  文章は1つしか持たない（重複して書かない）ので、
-                  検索・AI検索にも読み上げにも同じ内容が1回だけ渡る */}
+                  ロゴの粒の色は、番号の小さな丸に残してある。 */}
             <Reveal delay={0.18}>
-              <div className="mt-24 md:mt-32">
-                {/* md以上では同じ文をロゴの下に出すので、
-                    こちらは目に見えないまま読み上げ用に残す */}
-                <p className="text-[11px] font-bold tracking-[0.24em] text-charcoal/60 md:sr-only">
-                  そして、挑戦の循環ができる
+              <div className="mt-20 md:mt-28">
+                <p className="text-[11px] font-bold tracking-[0.24em] text-charcoal/55 md:text-center">
+                  AND THEN
                 </p>
+                <h3
+                  className="mt-5 font-bold leading-[1.45] tracking-[-0.015em] text-charcoal md:text-center"
+                  style={{ fontSize: "clamp(20px, 2.4vw, 28px)" }}
+                >
+                  そして、挑戦の循環ができる。
+                </h3>
 
-                <div className="relative mt-9 md:mx-auto md:mt-0 md:aspect-[16/11] md:w-full md:max-w-[1000px]">
-                  {/* 図の箱。スマホでは普通に流れ、md以上では親に重なる */}
-                  <div className="relative mx-auto aspect-square w-full max-w-[290px] md:absolute md:inset-0 md:aspect-auto md:max-w-none">
-                    {/* ロゴのまわりに散る小さな粒。ロゴマークの造形をそのまま借りる */}
-                    {specks.map((sp, i) => (
-                      <span
-                        key={`speck-${i}`}
-                        aria-hidden
-                        className="pop-md hidden rounded-full md:absolute md:block md:h-[var(--d)] md:w-[var(--d)] md:-translate-x-1/2 md:-translate-y-1/2 md:bg-[var(--c)] md:opacity-70 md:[left:var(--cx)] md:[top:var(--cy)]"
-                        style={{ ...sp, "--bi": 6 } as CSSProperties}
-                      />
-                    ))}
+                <div className="relative mx-auto mt-12 max-w-[940px] md:mt-16">
+                  {/* 5つの点をつなぐ横線。点の中心（上から11px）に合わせる。
+                      両端は端の点の位置（1/10 と 9/10）で止める */}
+                  <span
+                    aria-hidden
+                    className="absolute left-[10%] right-[10%] top-[11px] hidden h-px bg-charcoal/15 md:block"
+                  />
 
-                    {/* スマホだけ、軌道の上に番号を置く。下の一覧と対応させる */}
-                    {cycleSpots.map((sp, i) => (
-                      <span
-                        key={`no-${i}`}
-                        aria-hidden
-                        className="pop absolute flex h-[54px] w-[54px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[13px] font-bold tabular-nums [background:var(--tint)] [color:var(--ink)] [left:var(--cx)] [top:var(--cy)] md:hidden"
-                        style={
-                          {
-                            ...sp,
-                            "--ink": bubbleInks[i],
-                            "--tint": bubbleTints[i],
-                            "--bi": i + 1,
-                          } as CSSProperties
-                        }
-                      >
-                        {i + 1}
-                      </span>
-                    ))}
-
-                    {/* 中心。ロゴマークを置き、md以上ではその下に文言も出す */}
-                    <div
-                      aria-hidden
-                      /* まるが中心に寄っているので、ロゴと文言の背後に白を敷く。
-                         セクションの地も白なので、円と重なった所だけが明るくなる */
-                      className="pop absolute left-1/2 top-1/2 w-[13em] -translate-x-1/2 -translate-y-1/2 text-center md:w-[15em] md:rounded-full md:bg-white/85 md:px-6 md:py-8"
-                      style={{ "--bi": 0 } as CSSProperties}
-                    >
-                      <span className="relative mx-auto block h-[54px] w-[54px] md:h-[84px] md:w-[84px]">
-                        <Image
-                          src="/logo/logo-3-trim.png"
-                          alt=""
-                          fill
-                          sizes="84px"
-                          className="object-contain"
-                        />
-                      </span>
-                      <p className="mt-4 hidden text-[15px] font-bold leading-[1.9] tracking-[0.04em] text-charcoal/75 md:block">
-                        そして、
-                        <br />
-                        挑戦の循環ができる
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 5つの節。スマホは図の下に番号付きで、
-                      md以上は軌道の上のやわらかい円の中に */}
-                  <ol className="mt-8 space-y-3.5 md:absolute md:inset-0 md:mt-0 md:space-y-0">
+                  <ol className="relative grid grid-cols-1 gap-7 md:grid-cols-5 md:gap-0">
                     {cycle.map((c, i) => (
                       <li
                         key={c}
-                        className="pop-md flex items-baseline gap-3 md:absolute md:aspect-square md:w-[27%] md:-translate-x-1/2 md:-translate-y-1/2 md:flex-col md:items-center md:justify-center md:gap-2 md:rounded-full md:p-8 md:[background:var(--tint)] md:[left:var(--cx)] md:[top:var(--cy)]"
-                        style={
-                          {
-                            ...cycleSpots[i],
-                            "--tint": bubbleTints[i],
-                            "--ink": bubbleInks[i],
-                            "--bi": i + 1,
-                          } as CSSProperties
-                        }
+                        className="pop relative flex items-start gap-4 md:flex-col md:items-center md:gap-0 md:px-3"
+                        style={{ "--bi": i + 1 } as CSSProperties}
                       >
-                        {/* 番号。軌道の線を引かないので、順番はこれで示す */}
+                        {/* 狭い画面で点と点をつなぐ縦線。最後の点には引かない */}
+                        {i < cycle.length - 1 && (
+                          <span
+                            aria-hidden
+                            className="absolute -bottom-7 left-[11px] top-[26px] w-px bg-charcoal/15 md:hidden"
+                          />
+                        )}
                         <span
                           aria-hidden
-                          className="w-4 shrink-0 text-[12px] font-bold tabular-nums [color:var(--ink)] md:w-auto"
+                          className="relative flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full text-[11px] font-bold tabular-nums [background:var(--tint)] [color:var(--ink)]"
+                          style={
+                            { "--tint": bubbleTints[i], "--ink": bubbleInks[i] } as CSSProperties
+                          }
                         >
                           {i + 1}
                         </span>
-                        <p className="text-[15px] font-semibold leading-[1.8] text-charcoal md:text-center md:text-[14px] md:leading-[1.75]">
+                        <p /* 「新しい仕事・事業が生まれる」だけ2行になる。balance で
+                             行の長さをそろえ、最後の行に「れる」だけ残さない */
+                          className="text-[15px] font-semibold leading-[1.75] text-charcoal md:mt-4 md:text-balance md:text-center md:text-[14px]">
                           {c}
                         </p>
                       </li>
                     ))}
                   </ol>
+
+                  {/* 最後から最初へ戻る線。両端は端の点に合わせて 10% 内側。
+                      枠だけだと入力欄に見えるので、左端に上向きの矢印を置いて
+                      「5 から 1 へ戻っている」ことを示す */}
+                  <div aria-hidden className="relative mx-[10%] mt-7 hidden h-9 md:block">
+                    <span className="absolute inset-0 rounded-b-[18px] border-x border-b border-charcoal/18" />
+                    <svg
+                      viewBox="0 0 10 10"
+                      width="9"
+                      height="9"
+                      className="absolute -top-[5px] left-0 -translate-x-1/2"
+                    >
+                      <polygon points="5,0 10,9 0,9" fill="currentColor" className="text-charcoal/35" />
+                    </svg>
+                  </div>
+                  <p className="mt-7 text-[13px] leading-[1.9] text-charcoal/65 md:mt-5 md:text-center md:text-[13.5px]">
+                    <span aria-hidden className="mr-2 md:hidden">
+                      ↻
+                    </span>
+                    実績が、次の挑戦を呼ぶ。だから、循環する。
+                  </p>
                 </div>
               </div>
             </Reveal>

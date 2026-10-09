@@ -88,11 +88,10 @@ export function Footer() {
             <dl className="mt-6 space-y-1.5 text-[13px] text-charcoal/70 leading-relaxed">
               <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">正式名称</dt><dd>{company.name}</dd></div>
               <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">代表者</dt><dd>{company.representative}</dd></div>
-              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">所在地</dt><dd>{company.address}</dd></div>
-              {/* 所在地（登記）と拠点（実際に働いている場所）は別物なので、
-                  行を分けて、ラベルも分けている。
-                  「所在地」に拠点の住所を入れると、登記と違う住所を
-                  本店所在地として出していることになる */}
+              {/* 出すのは「拠点」だけ。登記上の本店所在地は出していない。
+                  2つ並べると、所在地のほうだけ伏せているように読めたため。
+                  ここに「所在地」というラベルを付け直さないこと。
+                  そう書くと、登記と違う住所を本店所在地として出すことになる */}
               <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">拠点</dt><dd>{company.base}</dd></div>
               <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">設立</dt><dd>{company.founded}</dd></div>
               <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">事業</dt><dd>{company.business}</dd></div>
