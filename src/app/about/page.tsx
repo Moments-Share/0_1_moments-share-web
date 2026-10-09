@@ -3,6 +3,9 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Nav } from "@/components/ui/Nav";
+import { Carousel, CarouselItem } from "@/components/ui/Carousel";
+import { SitePhoto } from "@/components/ui/SitePhoto";
+import type { SiteImageKey } from "@/lib/site-images";
 import { Reveal } from "@/components/ui/Reveal";
 import { RevealChars } from "@/components/ui/RevealChars";
 import { charStarts } from "@/lib/reveal-timing";
@@ -126,24 +129,37 @@ const stances = [
 ];
 
 /* 3事業。Aboutでは「名前＋一行」まで。詳しい説明はTOPと各サービスページにある。
-   見た目（番号・塗りのカード・並び）はTOPの事業紹介に合わせてある。
-   同じ3つの話なので、ページが変わるたびに見え方が変わらないようにする */
-const businesses = [
+
+   見せ方はTOPの事業紹介とそろえてある（横スクロールのカルーセル・写真・
+   番号・01だけ塗りのカード）。同じ3つの話なので、ページが変わるたびに
+   見え方が変わると、別の話に見えてしまう。
+   写真もTOPと同じものを使う。ここで別の写真にすると、同じ事業なのに
+   違う印象になる。 */
+const businesses: {
+  no: string;
+  name: string;
+  body: string;
+  href: string;
+  image: SiteImageKey;
+}[] = [
   {
     no: "01",
     name: "DX・AX支援",
+    image: "dxImage",
     body: "人がやらなくてもいい仕事を減らし、挑戦するための余白をつくる。",
     href: "/service-dx",
   },
   {
     no: "02",
     name: "BPO",
+    image: "bpoImage",
     body: "必要な仕事と多様な人の力をつなぎ、挑戦を続けられる体制をつくる。",
     href: "/service-bpo",
   },
   {
     no: "03",
     name: "地域プロデュース",
+    image: "regionImage",
     body: "人・企業・想いが出会い、新しい挑戦が生まれるきっかけをつくる。",
     href: "/service-produce",
   },
@@ -201,45 +217,59 @@ function BusinessCard({ b, primary }: { b: (typeof businesses)[number]; primary?
     <Link
       href={b.href}
       /* カード全体をリンクにする。TOPの事業紹介と同じ扱い。
-         節の地が白なので、01は深緑の塗り、02・03はアイボリーの地に枠。
-         （TOPは地がアイボリーなので白いカード。地と逆の色を使う） */
-      className={`group flex h-full flex-col rounded-[18px] p-7 transition-shadow hover:shadow-lg md:p-8 ${
+         写真 → 番号＋事業名 → 一行 → 導線、の順も同じ。
+         01だけ深緑の塗りで主力を示す（大きさでは差をつけない。
+         大きくすると、横に送るときに1枚だけ幅が違って落ち着かない） */
+      className={`group flex h-full w-full flex-col overflow-hidden rounded-[18px] transition-shadow hover:shadow-lg ${
         primary ? "bg-green-deep text-white" : "border border-charcoal/12 bg-background"
       }`}
     >
-      <span
-        className={`text-[13px] font-bold leading-none tabular-nums tracking-[-0.03em] ${
-          primary ? "text-white/60" : "text-sage-ink/75"
-        }`}
-      >
-        {b.no}
-      </span>
-      <p
-        className={`mt-4 font-bold leading-[1.45] tracking-[-0.01em] ${
-          primary ? "text-white" : "text-charcoal"
-        }`}
-        style={{ fontSize: "clamp(18px, 1.8vw, 22px)" }}
-      >
-        {b.name}
-      </p>
-      {/* flex-1 で、3枚の「詳しく →」の高さをそろえる */}
-      <p
-        className={`mt-3 flex-1 text-[14px] leading-[1.95] md:text-[15px] ${
-          primary ? "text-white/85" : "text-charcoal/80"
-        }`}
-      >
-        {b.body}
-      </p>
-      {/* カード全体がリンクなので、ここは見た目だけ。二重リンクにしない */}
-      <span
-        className={`mt-6 inline-block self-start border-b pb-0.5 text-[13px] font-bold transition-colors ${
-          primary
-            ? "border-white/60 text-white group-hover:border-white"
-            : "border-navy-ink/40 text-navy-ink group-hover:border-deep-green group-hover:text-deep-green"
-        }`}
-      >
-        詳しく →
-      </span>
+      <SitePhoto
+        name={b.image}
+        ratio="4/3"
+        sizes="(max-width: 640px) 86vw, (max-width: 1024px) 58vw, 33vw"
+      />
+
+      <div className="flex flex-1 flex-col p-6 md:p-7">
+        <div className="flex items-baseline gap-3">
+          <span
+            className={`font-bold leading-none tabular-nums tracking-[-0.03em] ${
+              primary ? "text-white/60" : "text-sage-ink/75"
+            }`}
+            style={{ fontSize: "clamp(14px, 1.3vw, 16px)" }}
+          >
+            {b.no}
+          </span>
+          <span
+            className={`font-bold leading-[1.4] tracking-[-0.01em] ${
+              primary ? "text-white" : "text-charcoal"
+            }`}
+            style={{ fontSize: "clamp(18px, 1.8vw, 22px)" }}
+          >
+            {b.name}
+          </span>
+        </div>
+
+        {/* flex-1 で、3枚の「詳しく →」の高さをそろえる */}
+        <p
+          className={`mt-4 flex-1 text-[14px] leading-[1.95] md:text-[15px] ${
+            primary ? "text-white/85" : "text-charcoal/80"
+          }`}
+        >
+          {b.body}
+        </p>
+
+        {/* カード全体がリンクなので、ここは見た目だけ。二重リンクにしない */}
+        <span
+          className={`mt-6 inline-block self-start border-b pb-0.5 text-[13px] font-bold transition-colors ${
+            primary
+              ? "border-white/60 text-white group-hover:border-white"
+              : "border-navy-ink/40 text-navy-ink group-hover:border-deep-green group-hover:text-deep-green"
+          }`}
+        >
+          詳しく →
+        </span>
+      </div>
     </Link>
   );
 }
@@ -501,17 +531,20 @@ export default function AboutPage() {
               </div>
             </Reveal>
 
-            {/* 3事業。TOPの事業紹介と同じパネルで並べる。
-                  以前は区切り線だけの3列だったが、面が無いので
-                  「3つある」ことがひと目で分からなかった */}
+            {/* 3事業。TOPの事業紹介と同じ横スクロールのカルーセル。
+                  以前は区切り線だけの3列で、面も写真も無いので
+                  「3つある」ことがひと目で分からなかった。
+                  自動送りはしない（既定）。1枚目の主力事業を必ず見せる */}
             <Reveal delay={0.12}>
-              <ol className="mt-12 grid grid-cols-1 gap-5 md:mt-16 md:grid-cols-3 md:gap-6">
-                {businesses.map((b, i) => (
-                  <li key={b.name}>
-                    <BusinessCard b={b} primary={i === 0} />
-                  </li>
-                ))}
-              </ol>
+              <div className="mt-12 md:mt-16">
+                <Carousel label="3つの事業">
+                  {businesses.map((b, i) => (
+                    <CarouselItem key={b.name}>
+                      <BusinessCard b={b} primary={i === 0} />
+                    </CarouselItem>
+                  ))}
+                </Carousel>
+              </div>
             </Reveal>
 
             {/* 上の3事業が生み出すもの。
