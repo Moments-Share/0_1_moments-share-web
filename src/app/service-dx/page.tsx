@@ -29,9 +29,13 @@ const outcomes = [
    仕事の組み立てから変えるものが AX。
    「AXもやります」と名乗るだけでは何も伝わらないので、
    どれがAXなのかを一つずつ示す */
+/* TODO: AIハッカソンの開催条件（時間・人数・費用・オンラインか対面か）が
+         決まったら desc に足す。いまは「何をする会か」だけを書いている。
+         2026年5月の「AIエージェントを創ろう！」が近い形。 */
 const menu = [
   { name: "AI活用支援", kind: "AX", desc: "現場で使えるAIの使いどころを整理し、定着まで伴走。" },
   { name: "AI研修", kind: "AX", desc: "チームがAIを使いこなすための実践研修。" },
+  { name: "AIハッカソン", kind: "AX", desc: "その場で手を動かして、自社の業務に使えるものを形にする。" },
   { name: "業務整理・DXコンサルティング", kind: "DX", desc: "どの作業を減らすべきか、優先順位から設計。" },
   { name: "AI・RPA・GASによる業務自動化", kind: "DX / AX", desc: "入力・転記・集計を自動処理に置き換え。" },
   { name: "Notionなどを使った情報整理", kind: "DX", desc: "散らばった社内情報を一元化。" },
@@ -142,7 +146,15 @@ const jsonLd = {
       "addressCountry": "JP",
     },
   },
-  "serviceType": ["DXコンサルティング", "AX（AI活用）支援", "業務自動化", "AI導入支援", "業務改善コンサルティング"],
+  "serviceType": [
+    "DXコンサルティング",
+    "AX（AI活用）支援",
+    "業務自動化",
+    "AI導入支援",
+    "業務改善コンサルティング",
+    "AI研修",
+    "AIハッカソン",
+  ],
   "areaServed": { "@type": "Place", "name": "愛知県 西尾市" },
   "url": "https://moments-share.com/service-dx",
   "breadcrumb": {
