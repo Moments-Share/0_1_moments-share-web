@@ -662,15 +662,43 @@ export default function AboutPage() {
                       </label>
                       {/* その段階の言葉。5つとも中心の同じ場所に重ねてあり、
                           選ばれた1つだけが見える。場所が固定なので、
-                          どれを押しても図のかたちが変わらない */}
-                      <span className="pointer-events-none absolute left-1/2 top-[58%] w-[11em] -translate-x-1/2 -translate-y-1/2 text-center text-[15px] font-bold leading-[1.6] text-charcoal opacity-0 transition-opacity duration-200 peer-checked:opacity-100 md:text-[17px]">
+                          どれを押しても図のかたちが変わらない。
+
+                          飾り扱い（aria-hidden）にしてある。同じ言葉を
+                          下の一覧にも出しているので、読み上げに2回渡さない */}
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute left-1/2 top-[58%] w-[11em] -translate-x-1/2 -translate-y-1/2 text-center text-[15px] font-bold leading-[1.6] text-charcoal opacity-0 transition-opacity duration-200 peer-checked:opacity-100 md:text-[17px]"
+                      >
                         {c}
                       </span>
                     </div>
                   ))}
                 </fieldset>
 
-                <p className="mt-8 text-[13px] leading-[1.9] text-charcoal/65 md:mt-6 md:text-center md:text-[13.5px]">
+                {/* 5つの言葉の一覧。
+                    上の図は押さないと1つしか出ない。スマホには「マウスを乗せる」が
+                    無いので、押さずに全部読みたい人がここで読めるようにする。
+                    読み上げと検索が読むのはこちら（図の中の言葉は aria-hidden）。 */}
+                <ol className="mx-auto mt-10 flex max-w-[640px] flex-wrap justify-center gap-x-5 gap-y-2 md:mt-9">
+                  {cycle.map((c, i) => (
+                    <li
+                      key={`li-${c}`}
+                      className="flex items-center gap-1.5 text-[13px] leading-[1.8] text-charcoal/70"
+                    >
+                      <span
+                        aria-hidden
+                        className="text-[11px] font-bold tabular-nums [color:var(--ink)]"
+                        style={{ "--ink": bubbleInks[i] } as CSSProperties}
+                      >
+                        {i + 1}
+                      </span>
+                      {c}
+                    </li>
+                  ))}
+                </ol>
+
+                <p className="mt-6 text-[13px] leading-[1.9] text-charcoal/65 md:text-center md:text-[13.5px]">
                   <span aria-hidden className="mr-2">
                     ↻
                   </span>
