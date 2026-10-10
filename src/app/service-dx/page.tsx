@@ -19,6 +19,46 @@ const problems = [
   "何から改善すればいいかわからない",
 ];
 
+/* 担当者の経歴。発注の判断材料になる4つだけに絞っている。
+
+   載せている理由：設立が2025年11月で、会社としての信用がまだ薄い。
+   DX伴走は数ヶ月そばにいてもらう契約なので、「誰が来るか」で決まる。
+   会社で担保できないぶんを、人で担保する。
+
+   資料にはこの他に「大学名」「前職の個人売上2300万円／部門売上6000万円」
+   「就活で200社見た」もあるが、ここには載せない。
+   ・大学名と就活の話は、DXの発注判断には関係しない
+   ・売上の数字は前職（広告メディアの営業成績）のもので、DXの力量を示さない。
+     しかも自社の実績と読み違えられる。経歴は「すごさ」ではなく
+     「だから任せて大丈夫」の説明に絞る。
+
+   TODO: 写真は /photos/33_founder_portrait.jpg（山頂の写真）を使っている。
+         仕事中の写真が撮れたら、こちらのほうが場面に合う。 */
+const founderFacts = [
+  "1997年、愛知県西尾市生まれ。",
+  "広告メディア事業で、大手・中小・学校・自治体など100社以上を担当。",
+  "社員3名から10名へ。社内教育と仕組みづくりに取り組む。",
+  "2024年に独立。2025年11月、Moments Share合同会社を設立。",
+];
+
+/* 「人がやらなくてもいい仕事」の5つの型。出典はご提案資料の「Non Human Task」。
+   上の problems は症状の羅列（7個）なので、それを型として受け止める。
+   型にすると「うちのあれは02だ」と自分の仕事に当てはめられる。
+
+   検索にもAI検索にも効く。独自の呼び名と分類は引用されやすく、
+   5つそれぞれが別々の入口になる。
+
+   注意：資料の02の説明文は、別のスライドの文言が残っていて
+   「方針・施策・フローを整理し…」になっている（サービスの説明であって
+   課題の説明ではない）。ここでは課題として書き直した。資料側も要修正。 */
+const taskTypes = [
+  { no: "01", name: "データ入力・転記", desc: "売上管理の入力、マーケ数字の転記、請求書情報のコピペ。" },
+  { no: "02", name: "データ収集・分析", desc: "あちこちから数字を集めて、形を整えるまでの作業。" },
+  { no: "03", name: "定型の顧客対応", desc: "同じような問い合わせへの返信、電話対応に追われる。" },
+  { no: "04", name: "コンテンツの生成・校正", desc: "レポート、議事録、マニュアルの作成。" },
+  { no: "05", name: "監視・検知・品質管理", desc: "確認してもミスが起きる。ミスに気づけない。" },
+];
+
 const outcomes = [
   { title: "作業時間を減らす。", body: "毎月繰り返している手作業を自動化し、人にしかできない仕事へ時間を戻します。" },
   { title: "ミスを減らす。", body: "転記や集計を仕組み化することで、人的ミスの起きにくい流れに変えます。" },
@@ -240,6 +280,60 @@ export default function ServiceDX() {
                 </ul>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ===== 人がやらなくてもいい仕事の5つの型 =====
+             上の「こんな課題」は症状の羅列。ここで型として受け止める。
+             「うちのあれは02だ」と自分の仕事に当てはめてもらうための節 ===== */}
+        <section className="py-14 md:py-22 px-6 md:px-10 bg-ivory">
+          <div className="mx-auto max-w-[1400px]">
+            <div className="max-w-3xl">
+              <p className="text-[12px] font-bold tracking-[0.18em] text-sage-ink">NON HUMAN TASK</p>
+              <h2
+                className="mt-5 text-charcoal font-semibold leading-[1.25] tracking-[-0.02em]"
+                style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}
+              >
+                人がやらなくてもいい仕事は、
+                <br className="hidden sm:block" />
+                5つの型に分かれます。
+              </h2>
+              <p className="mt-6 text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
+                どれも、現場を支えている大事な作業です。ただ、
+                <strong className="font-semibold text-charcoal">人がやらなくても回る形にできる</strong>
+                ものでもあります。まずは、自社の仕事がどの型に当てはまるかを見ていきます。
+              </p>
+            </div>
+
+            <ol className="mt-12 grid grid-cols-1 gap-px bg-charcoal/10 sm:grid-cols-2 lg:grid-cols-3 md:mt-16">
+              {taskTypes.map((t) => (
+                <li key={t.no} className="bg-ivory p-7 md:p-8">
+                  <span
+                    className="font-medium leading-none tabular-nums text-charcoal/30"
+                    style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
+                  >
+                    {t.no}
+                  </span>
+                  <p
+                    className="mt-4 text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]"
+                    style={{ fontSize: "clamp(17px, 1.8vw, 22px)" }}
+                  >
+                    {t.name}
+                  </p>
+                  <p className="mt-3 text-[14px] md:text-[15px] leading-[1.95] text-charcoal/80">
+                    {t.desc}
+                  </p>
+                </li>
+              ))}
+              {/* 5つだと3列のとき最後の枠が空く。穴を空けずに受けの一言を置く */}
+              <li className="bg-ivory p-7 md:p-8">
+                <p className="text-[14px] md:text-[15px] leading-[1.95] text-charcoal/70">
+                  この5つを減らすと、
+                  <strong className="font-semibold text-charcoal">人にしかできない仕事</strong>
+                  に時間が戻ります。
+                </p>
+              </li>
+            </ol>
           </div>
         </section>
 
@@ -705,6 +799,57 @@ export default function ServiceDX() {
           </div>
         </section>
 
+
+        {/* ===== WHO — 誰が担当するか。
+             進め方のすぐ後に置く。手順が分かった次に出る問いが
+             「で、誰がやるの？」なので、その順にする ===== */}
+        <section className="py-14 md:py-22 px-6 md:px-10 bg-ivory">
+          <div className="mx-auto max-w-[1400px]">
+            <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
+              <div className="lg:col-span-4">
+                <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[18px] lg:max-w-none">
+                  <SitePhotoFill name="founderPortrait" sizes="(max-width: 1024px) 300px, 30vw" />
+                </div>
+              </div>
+              <div className="lg:col-span-8">
+                <p className="text-[12px] font-bold tracking-[0.18em] text-sage-ink">WHO</p>
+                <h2
+                  className="mt-5 text-charcoal font-semibold leading-[1.25] tracking-[-0.02em]"
+                  style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}
+                >
+                  担当するのは、この人です。
+                </h2>
+                <p className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span
+                    className="font-semibold leading-[1.3] tracking-[-0.02em] text-charcoal"
+                    style={{ fontSize: "clamp(19px, 2vw, 26px)" }}
+                  >
+                    中根 隆
+                  </span>
+                  <span className="text-[13px] font-bold tracking-[0.08em] text-charcoal/55">
+                    代表社員 ／ DX伴走パートナー
+                  </span>
+                </p>
+                <ul className="mt-7 border-t border-charcoal/12">
+                  {founderFacts.map((f) => (
+                    <li
+                      key={f}
+                      className="border-b border-charcoal/12 py-4 text-[15px] leading-[1.9] text-charcoal/85 md:text-[16px]"
+                    >
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/people"
+                  className="mt-7 inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+                >
+                  メンバーを見る →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* ===== GOAL — 言明 ===== */}
         <section className="py-14 md:py-24 px-6 md:px-10 bg-ivory">

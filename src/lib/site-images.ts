@@ -160,6 +160,15 @@ const people = {
   teamHand: img("/photos/20_team_hand.jpg", "手を重ねるチーム", "共創・仲間のイメージ。横位置。", "16/9"),
   partnerPlaceholder: img("/photos/21_partner_placeholder.jpg", "人物写真の準備中", "本人の実写に差し替えるまでの代替。縦位置。", "4/5"),
   newsThumbnail: img("/photos/22_news_thumbnail.jpg", "新芽と光", "NEWSの既定サムネイル。横位置。", "4/3"),
+  /* 代表の実写。/people と /service-dx の「担当するのは、この人です」で使う。
+     alt は data/fellows.ts の photoAlt と同じ写真を指しているので、
+     差し替えるときは両方を直すこと */
+  founderPortrait: img(
+    "/photos/33_founder_portrait.jpg",
+    "山頂で片手を上げて笑う代表・中根 隆",
+    "代表の実写。縦位置。仕事中の様子が撮れたら差し替える。",
+    "4/5",
+  ),
 };
 
 /* ---------------------------------------------------------------
