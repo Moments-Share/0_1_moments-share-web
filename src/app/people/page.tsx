@@ -74,11 +74,12 @@ export default function PeoplePage() {
               <div className="text-[13px] font-bold tracking-[0.14em] text-white/70">People</div>
               <h1 className="mt-5 text-white font-semibold leading-[1.16] tracking-[-0.02em]"
                   style={{ fontSize: "clamp(34px, 5vw, 68px)" }}>
-                同じ船に乗る、<br />人たち。
+                一緒に働く、<br />仲間たち。
               </h1>
-              {/* 「Crewとは」の説明は置かない。見出しの「同じ船」とロゴの船で
-                  言葉の意味は伝わるし、説明を足すと定義の節に戻ってしまう。
-                  ここは事実を一行だけ。 */}
+              {/* 見出しは短い名詞句にする。下に「Crewを、紹介します。」の
+                  見出しがあるので、ここで「紹介します」と言うと二度になる。
+                  「Crewとは」の説明も置かない。仲間＝Crew は読めば分かるし、
+                  説明を足すと外したはずの定義の節に戻ってしまう */}
               <p className="mt-8 max-w-lg text-[16px] md:text-[17px] leading-[2] text-white/80">
                 社員だけでなく、社外の人と組んで仕事をつくっています。
               </p>
