@@ -29,8 +29,7 @@ const routes: { path: string; priority: number; changeFrequency: MetadataRoute.S
   { path: "/nishio-career-lab", priority: 0.6, changeFrequency: "monthly" },
   // 大学生インターン募集。募集の増減があるので更新頻度は高めにしておく
   { path: "/student-internship", priority: 0.7, changeFrequency: "weekly" },
-  // /works は内容が整うまで非掲載（ページ側も noindex）。公開時にこの行を戻す
-  // { path: "/works", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/works", priority: 0.7, changeFrequency: "monthly" },
   { path: "/people", priority: 0.6, changeFrequency: "monthly" },
   { path: "/news", priority: 0.6, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.8, changeFrequency: "yearly" },

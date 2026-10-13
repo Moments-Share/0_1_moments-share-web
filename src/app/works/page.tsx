@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   title: "実績（Works）｜Moments Share",
   description:
     "Moments Shareがカタチにしてきた仕事。企業のDX・業務改善から地域プロジェクトまで、お客様や仲間と一緒につくってきた実績をご紹介します。",
+  /* 正規URL。他のページと同じく、末尾スラッシュ違いなどで
+     別のURLとして数えられないようにする。
+     noindex だったあいだは付けていなかった */
+  alternates: { canonical: "https://moments-share.com/works/" },
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
@@ -19,11 +23,25 @@ export const metadata: Metadata = {
     url: "https://moments-share.com/works",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
-  /* 内容が整うまで検索結果に出さない。URLは生きているので、
-     すでにリンクを持っている人は開ける。
-     公開するときは robots と sitemap.ts、Nav の1行を戻す。 */
-  robots: { index: false, follow: false },
 };
+
+/* 2026年10月に公開した。それまでは noindex で、最上部に「準備中です。」の
+   バナーを出していた。公開にあたって次の3つを外している。
+
+   1. 「準備中です。」のバナー
+      準備中と書いてあるページを検索に出すのは矛盾している。
+   2. 「人が必要な仕事を、一緒に支えた事例。」（BPO事例）
+      見出しだけあって中身が「整理中です」の一文しかなかった。
+      空の見出しは、読む人には準備中のページに見え、Googleには
+      中身の薄いページに見える。実例が書けるようになったら戻す。
+   3. 「実際に、どう変わったか。」（お客様の声）
+      同上。許諾済みのコメントが取れたら戻す。
+
+   どちらも架空の事例・コメントは作らないこと。
+
+   TODO: 「ともに働くパートナー 5名」の行を外した。ご提案資料には
+         「外部パートナー2名」とあり、数字が食い違っていたため。
+         正しい人数が分かったら categories に戻す。 */
 
 // 全社KPI（現在の事業数 / 2040年ゴール）
 const kpi = { now: "4", goal: "240", label: "事業" };
@@ -41,10 +59,6 @@ const categories = [
   {
     name: "地域プロデュース",
     items: ["挑戦プロジェクト 4件"],
-  },
-  {
-    name: "PARTNERS",
-    items: ["ともに働くパートナー 5名"],
   },
 ];
 
@@ -90,8 +104,10 @@ const projects = [
   {
     title: "西尾筋肉祭り",
     desc: "地域の人が主役になって楽しむイベント。関わる人の輪を広げる場づくり。",
-    photo: "/photos/service-produce.png",
-    alt: "地域イベントの様子",
+    /* 第1回（2026年5月17日・にししん文化会館）の実写。
+       他の2つはまだ実写が無いのでサービスページの画像を使っている */
+    photo: "/photos/18_region_event.jpg",
+    alt: "西尾筋肉祭りの客席で、出場者と子どもたちがハイタッチしている様子",
   },
   {
     title: "AI活用研究会",
@@ -106,27 +122,6 @@ export default function WorksPage() {
     <>
       <Nav heroTone="dark" />
       <main id="main-content">
-        {/* ===== 準備中の告知。内容が整うまで最上部に出す =====
-            公開するときは、このセクションと metadata.robots を消す */}
-        <section className="pt-28 md:pt-36 pb-12 md:pb-16 px-6 md:px-10 bg-green-deep text-white">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="text-white/75 text-[12px] font-bold tracking-[0.16em]">COMING SOON</div>
-            <p
-              className="mt-5 font-semibold leading-[1.15] tracking-[-0.02em]"
-              style={{ fontSize: "clamp(40px, 7vw, 92px)" }}
-            >
-              準備中です。
-            </p>
-            <p className="mt-7 max-w-[34em] text-[16px] md:text-[18px] leading-[2] text-white/85">
-              実績ページは現在まとめている途中です。以下の内容は暫定のもので、
-              数字や事例は今後更新します。お急ぎの場合は、お問い合わせください。
-            </p>
-            <Link href="/contact" className="btn btn-ghost-on-green px-9 py-4 mt-9 inline-block">
-              実績について問い合わせる →
-            </Link>
-          </div>
-        </section>
-
         {/* ===== HERO — 写真背景ヒーロー（TOPと同じトーン） ===== */}
         <section className="relative min-h-[58vh] md:min-h-[66vh] overflow-hidden bg-[#16281f]">
           <div className="absolute inset-0">
@@ -231,26 +226,6 @@ export default function WorksPage() {
           </div>
         </section>
 
-        {/* ===== BPO CASE — 実データ準備中（TODO） ===== */}
-        <section className="py-16 md:py-24 px-6 md:px-10 bg-white">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-4">
-                <div className="text-[12px] font-bold tracking-[0.14em] text-charcoal/45">BPO事例</div>
-              </div>
-              <div className="lg:col-span-8">
-                <h2 className="text-charcoal font-semibold leading-[1.4] tracking-[-0.01em]" style={{ fontSize: "clamp(22px, 3vw, 38px)" }}>
-                  人が必要な仕事を、<br className="hidden sm:block" />一緒に支えた事例。
-                </h2>
-                {/* TODO: 実在するBPO支援の具体事例（企業名は伏せて内容・成果）を追記する。架空の事例は掲載しない。 */}
-                <p className="mt-8 max-w-2xl text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                  現在、掲載できる事例を整理中です。CS代行・SNS運用・事務代行などの支援実績を順次公開します。
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ===== REGIONAL PROJECTS — 写真を主役に、同じ整列で静かに並べる ===== */}
         <section className="py-16 md:py-28 px-6 md:px-10">
           <div className="mx-auto max-w-[1400px]">
@@ -292,26 +267,6 @@ export default function WorksPage() {
               ほかにも地域のプロジェクトに取り組んでいます。
               <Link href="/service-produce" className="ml-1 text-navy-ink border-b border-navy-ink/40 pb-0.5 font-bold hover:text-deep-green hover:border-deep-green transition-colors">地域プロデュースを見る →</Link>
             </p>
-          </div>
-        </section>
-
-        {/* ===== VOICE — 実データ準備中（TODO） ===== */}
-        <section className="py-16 md:py-24 px-6 md:px-10 bg-white">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-4">
-                <div className="text-[12px] font-bold tracking-[0.14em] text-charcoal/45">お客様の声</div>
-              </div>
-              <div className="lg:col-span-8">
-                <h2 className="text-charcoal font-semibold leading-[1.4] tracking-[-0.01em]" style={{ fontSize: "clamp(22px, 3vw, 38px)" }}>
-                  実際に、どう変わったか。
-                </h2>
-                {/* TODO: 実在するお客様の声（許諾済みのコメント・お名前/イニシャル）を掲載する。架空のコメントは作成しない。 */}
-                <p className="mt-8 max-w-2xl text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                  掲載許諾をいただいたお客様の声を、準備でき次第ご紹介します。
-                </p>
-              </div>
-            </div>
           </div>
         </section>
 
