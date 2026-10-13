@@ -1,5 +1,10 @@
 /* ============================================================
-   Fellow（Moments Shareに関わっている人）の紹介。
+   Crew（Moments Shareに関わっている人）の紹介。
+
+   以前は「Fellow」と呼んでいたが、Crew に変えた。
+   ロゴが船なので、「同じ船に乗る人」で絵と言葉が一致する。
+   Fellow は説明しないと意味が伝わらず、説明すると会員資格の
+   列挙になってしまっていた。Crew は説明がいらない。
 
    本人の実在情報だけを載せる。架空の人物・経歴は作成しない。
    未確認の項目は undefined のままにする。undefined の項目は
@@ -9,7 +14,7 @@
    並び順＝表示順。代表を先頭に置いている。
    ============================================================ */
 
-export type Fellow = {
+export type Crew = {
   name: string;
   /** ローマ字表記。読みが確認できるまで入れない */
   nameEn?: string;
@@ -25,7 +30,7 @@ export type Fellow = {
   why?: string;
 };
 
-export const fellows: Fellow[] = [
+export const crew: Crew[] = [
   {
     name: "中根 隆",
     nameEn: "RYU NAKANE",

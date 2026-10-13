@@ -2,37 +2,38 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Nav } from "@/components/ui/Nav";
-import { fellows } from "@/data/fellows";
+import { crew } from "@/data/crew";
 
 export const metadata: Metadata = {
   /* 正規URL。WordPressから移ってきているので、末尾スラッシュ違いや
      パラメータ付きのURLを別ページとして数えられないよう明示する */
   alternates: { canonical: "https://moments-share.com/people/" },
-  title: "メンバー・Fellow紹介｜Moments Share",
+  title: "メンバー・Crew紹介｜Moments Share",
   description:
-    "Moments Shareには、社員のほかに、案件ごとに力を貸してくれる人がいます。その人たちを「Fellow」と呼んでいます。専門人材・副業・子育て中・学生など、それぞれの事情に合う形で関わっています。愛知県西尾市発。",
+    "Moments Shareには、社員のほかに、案件ごとに力を貸してくれる人がいます。専門人材・副業・子育て中・学生など、それぞれの事情に合う形で関わっています。愛知県西尾市発。",
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
     siteName: "Moments Share合同会社",
-    title: "メンバー・Fellow紹介｜Moments Share",
+    title: "メンバー・Crew紹介｜Moments Share",
     description:
-      "雇う・雇われるではない、もうひとつの関わり方。Moments Shareの「Fellow」という働き方を紹介します。",
+      "雇う・雇われるではない、もうひとつの関わり方。Moments Shareに関わってくれている人たちを紹介します。",
     type: "website",
     url: "https://moments-share.com/people",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
 };
 
-/* 「Fellowは、こんな人。」の4項目（人格の条件）は外した。
+/* 呼び方を「Fellow」から「Crew」に変えた。
 
-   「自分の人生を、主体的に生きている」「心の中に、志ややってみたい
-   ことがある」など、どれも人格のあり方を条件として並べたもので、
-   読む人に「自分はこれに当てはまる人間か」と審査される感じを与えていた。
+   ロゴは船なので、Crew なら「同じ船に乗る人」で絵と言葉が一致する。
+   Fellow は説明しないと意味が伝わらず、説明しようとすると
+   「Fellowとは」という定義の節と、人格の条件の列挙になっていた。
    独自の呼称を定義して資格要件を並べる形は、入会案内と同じ構造になる。
 
-   消しても情報は減らない。下の ways（関わり方）が、同じことを
-   「どういう人か」ではなく「どういう状況の人か」で、具体的に書いている。
+   そこで「Fellowとは」の節ごと外した。Crew は説明がいらない。
+   情報は減らない。下の ways（関わり方）が、同じことを
+   「どういう人か」ではなく「どういう状況の人か」で具体的に書いている。
    人格ではなく、仕組みの話をする。 */
 
 const ways = [
@@ -73,39 +74,25 @@ export default function PeoplePage() {
               <div className="text-[13px] font-bold tracking-[0.14em] text-white/70">People</div>
               <h1 className="mt-5 text-white font-semibold leading-[1.16] tracking-[-0.02em]"
                   style={{ fontSize: "clamp(34px, 5vw, 68px)" }}>
-                関わってくれている、<br />人たち。
+                同じ船に乗る、<br />人たち。
               </h1>
+              {/* ロゴは船。だから一緒に動く人は Crew。
+                  ここで一度そう呼んでおけば、以降は説明がいらない */}
               <p className="mt-8 max-w-lg text-[16px] md:text-[17px] leading-[2] text-white/80">
                 Moments Shareは、社員だけで仕事をしている会社ではありません。
-              社外の人と組みながら、仕事をつくっています。
+                社外の人と組みながら、仕事をつくっています。
+                一緒に乗ってくれている人たちを、Crewと呼んでいます。
               </p>
             </div>
           </div>
         </section>
 
-        {/* ===== 1. Fellowとは — 定義を静かに、大きく読ませる ===== */}
-        <section className="py-16 md:py-28 px-6 md:px-10 bg-white">
-          <div className="mx-auto max-w-[1000px]">
-            <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">FELLOW — Fellowとは</div>
-            <p className="mt-6 text-charcoal font-semibold leading-[1.55] tracking-[-0.01em]"
-               style={{ fontSize: "clamp(23px, 3.4vw, 44px)" }}>
-              雇う・雇われるではない、<br className="hidden sm:block" />
-              もうひとつの関わり方。
-            </p>
-            <p className="mt-8 max-w-2xl text-[16px] md:text-[17px] leading-[2] text-charcoal/80">
-              Moments Shareには、社員として働く人のほかに、案件ごとに力を貸してくれる人がいます。
-              その人たちを「Fellow（フェロー）」と呼んでいます。
-              本業も生活もそれぞれにあって、おもしろそうな仕事があるときに一緒にやる。それだけの関係です。
-            </p>
-          </div>
-        </section>
-
-        {/* ===== 3. 関わり方 — Fellowの多様な関わり方 ===== */}
+        {/* ===== 1. 関わり方 — Crewの多様な関わり方 ===== */}
         <section className="py-16 md:py-28 px-6 md:px-10 bg-white">
           <div className="mx-auto max-w-[1400px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8">
               <div className="lg:col-span-4">
-                <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">Fellowの関わり方</div>
+                <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">Crewの関わり方</div>
                 <h2 className="mt-4 text-charcoal font-semibold leading-[1.35] tracking-[-0.01em]" style={{ fontSize: "clamp(26px, 3.4vw, 42px)" }}>
                   関わり方は、<br />ひとつじゃない。
                 </h2>
@@ -127,22 +114,22 @@ export default function PeoplePage() {
           </div>
         </section>
 
-        {/* ===== 4. Fellow紹介 — 横並びのカードで一覧する ===== */}
+        {/* ===== 2. Crew紹介 — 横並びのカードで一覧する ===== */}
         <section className="py-16 md:py-28 px-6 md:px-10 bg-ivory">
           <div className="mx-auto max-w-[1400px]">
-            <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">Fellow紹介</div>
+            <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">Crew紹介</div>
             <h2 className="mt-4 text-charcoal font-semibold leading-[1.35] tracking-[-0.01em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
-              Fellowを、紹介します。
+              Crewを、紹介します。
             </h2>
 
-            {/* Fellow一覧 — 横並びのカード。
+            {/* Crew一覧 — 横並びのカード。
                 以前は1人ずつ縦に大きく積んでいたが、スクロール量が多いという
                 指摘があったのでカードにした。人数が増えても縦に伸びにくい。
-                内容は src/data/fellows.ts の実在情報のみ。
+                内容は src/data/crew.ts の実在情報のみ。
                 未確認の項目（肩書き・得意なこと等）は undefined にしておけば
                 カードに出ない。空欄も「準備中」も表示しない。 */}
-            <div id="fellow-list" className="mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 items-start">
-              {fellows.map((f) => (
+            <div id="crew-list" className="mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 items-start">
+              {crew.map((f) => (
                 <article
                   key={f.name}
                   className="flex flex-col bg-white border border-charcoal/12"
@@ -214,7 +201,7 @@ export default function PeoplePage() {
               ))}
             </div>
 
-            {/* これから加わるFellow — 活動中の場面で。実在情報が揃うまで名前・肩書きは載せない。架空の人物は作成しない。 */}
+            {/* これから加わるCrew — 実在情報が揃うまで名前・肩書きは載せない。架空の人物は作成しない。 */}
             <div className="mt-20 md:mt-28 border-t border-charcoal/10 pt-14 md:pt-20">
               <div className="max-w-2xl">
                 <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">これから</div>
@@ -225,23 +212,21 @@ export default function PeoplePage() {
                   専門人材、副業、子育て中、学生。いろいろな人が関わってくれています。
                   本人の了解が取れた順に、ここで紹介していきます。
                 </p>
-                {/* TODO: 実在するFellowを、写真／名前／得意なこと／担当／関わる理由の5項目で追記する。
+                {/* TODO: 実在するCrewを、写真／名前／得意なこと／担当／関わる理由の5項目で追記する。
                          架空の人物は作成しない。掲載は本人の了解を取ってから。
-
-                    ここにあった「※ 他のFellowは準備中。掲載は本人の実在情報のみ。」は外した。
-                    社内の編集ルールであって、訪問者に向けた文ではなかった。
-                    伝えたいこと（順次増える／本人の了解を取る）は上の本文に入れた。 */}
+                         人数（現在5名）はサイトには出さない方針。数を書くと
+                         「増えていない」ことが先に伝わるので、載せるのは紹介できる人だけ。 */}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ===== 5. Fellowになる — 参加CTA。Deep Green のバンド ===== */}
+        {/* ===== 3. Crewになる — 参加CTA。Deep Green のバンド ===== */}
         <section id="contact" className="scroll-mt-20 py-20 md:py-28 px-6 md:px-10 bg-green-deep text-white">
           <div className="mx-auto max-w-[1400px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
               <div className="lg:col-span-8">
-                <div className="text-white/60 text-[12px] font-bold tracking-[0.16em]">Fellowになる</div>
+                <div className="text-white/60 text-[12px] font-bold tracking-[0.16em]">Crewになる</div>
                 <h2 className="mt-4 font-semibold leading-[1.2] tracking-[-0.01em]" style={{ fontSize: "clamp(30px, 4.4vw, 60px)" }}>
                   おもしろそうだと<br />思ったら。
                 </h2>

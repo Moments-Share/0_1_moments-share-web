@@ -800,9 +800,20 @@ export default function ServiceDX() {
         </section>
 
 
-        {/* ===== WHO — 誰が担当するか。
+        {/* ===== 誰が伴走するか。
              進め方のすぐ後に置く。手順が分かった次に出る問いが
-             「で、誰がやるの？」なので、その順にする ===== */}
+             「で、誰がやるの？」なので、その順にする。
+
+             見出しは「担当するのは、この人です。」から変えた。
+             ・このページの見出しは体言止めか読み手への問いで揃っていて、
+               「〜です」で紹介する形はここだけ浮いていた
+             ・すぐ下に名前が出るので「この人」は指示語として余っていた
+             ・「担当する」は代理店が担当者をあてがう言い方に聞こえ、
+               代表が自分で手を動かすという強みを消していた
+
+             英字ラベル「WHO」も外した。このページの英字ラベルは
+             DX・AX のように本文に出てくる固有の言葉だけで、
+             節の見出しに英語を被せる使い方はしていない ===== */}
         <section className="py-14 md:py-22 px-6 md:px-10 bg-ivory">
           <div className="mx-auto max-w-[1400px]">
             <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
@@ -812,12 +823,11 @@ export default function ServiceDX() {
                 </div>
               </div>
               <div className="lg:col-span-8">
-                <p className="text-[12px] font-bold tracking-[0.18em] text-sage-ink">WHO</p>
                 <h2
-                  className="mt-5 text-charcoal font-semibold leading-[1.25] tracking-[-0.02em]"
+                  className="text-charcoal font-semibold leading-[1.25] tracking-[-0.02em]"
                   style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}
                 >
-                  担当するのは、この人です。
+                  誰が伴走するか。
                 </h2>
                 <p className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1">
                   <span
