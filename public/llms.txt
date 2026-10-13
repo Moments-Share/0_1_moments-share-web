@@ -100,7 +100,6 @@
 - 西尾キャリアLab: https://moments-share.com/nishio-career-lab/
 - 大学生インターン募集: https://moments-share.com/student-internship/
 - 私たちについて: https://moments-share.com/about/
-- 実績: https://moments-share.com/works/
 - お知らせ: https://moments-share.com/news/
 - お問い合わせ: https://moments-share.com/contact/
 

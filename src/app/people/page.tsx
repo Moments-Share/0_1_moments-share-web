@@ -76,12 +76,11 @@ export default function PeoplePage() {
                   style={{ fontSize: "clamp(34px, 5vw, 68px)" }}>
                 同じ船に乗る、<br />人たち。
               </h1>
-              {/* ロゴは船。だから一緒に動く人は Crew。
-                  ここで一度そう呼んでおけば、以降は説明がいらない */}
+              {/* 「Crewとは」の説明は置かない。見出しの「同じ船」とロゴの船で
+                  言葉の意味は伝わるし、説明を足すと定義の節に戻ってしまう。
+                  ここは事実を一行だけ。 */}
               <p className="mt-8 max-w-lg text-[16px] md:text-[17px] leading-[2] text-white/80">
-                Moments Shareは、社員だけで仕事をしている会社ではありません。
-                社外の人と組みながら、仕事をつくっています。
-                一緒に乗ってくれている人たちを、Crewと呼んでいます。
+                社員だけでなく、社外の人と組んで仕事をつくっています。
               </p>
             </div>
           </div>
@@ -233,10 +232,13 @@ export default function PeoplePage() {
               </div>
               <div className="lg:col-span-4 lg:pb-3">
                 <p className="text-[15px] leading-[2] text-white/75">
-                  働き方も場所も問いません。専門でも、副業でも、学生でも。まずは気軽に話すところから。
+                  働き方も場所も問いません。専門でも、副業でも、学生でも。
                 </p>
+                {/* 「話を聞いてみる」から変更。お問い合わせフォームの種別に
+                    「採用・複業・パートナー参加」があるので、押したあとに
+                    応募として受けられる。入口の言葉と受け皿が食い違わない */}
                 <Link href="/contact" className="mt-6 btn btn-ghost-on-green px-9 py-4">
-                  話を聞いてみる →
+                  応募してみる →
                 </Link>
               </div>
             </div>

@@ -8,6 +8,6 @@
 
     { "source": "/mvv", "destination": "/about/", "permanent": true },
     { "source": "/group", "destination": "/about/", "permanent": true },
-    { "source": "/projects", "destination": "/works/", "permanent": true }
+    { "source": "/projects", "destination": "/service-produce/", "permanent": true }
   ]
 }
