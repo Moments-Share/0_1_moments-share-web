@@ -10,27 +10,30 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://moments-share.com/people/" },
   title: "メンバー・Fellow紹介｜Moments Share",
   description:
-    "Moments Shareでは、ともに歩む一人ひとりを「Fellow」と呼びます。自分の人生を主体的に生きながら、志が重なるとき、ともに挑戦し、ともに未来を創る人。専門人材・副業・子育て中・学生・地域の人など、多様な関わり方があります。愛知県西尾市発。",
+    "Moments Shareには、社員のほかに、案件ごとに力を貸してくれる人がいます。その人たちを「Fellow」と呼んでいます。専門人材・副業・子育て中・学生など、それぞれの事情に合う形で関わっています。愛知県西尾市発。",
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
     siteName: "Moments Share合同会社",
     title: "メンバー・Fellow紹介｜Moments Share",
     description:
-      "自分の人生を主体的に生きながら、志が重なるとき、ともに挑戦し、ともに未来を創る人。Moments Shareの「Fellow」という関わり方。",
+      "雇う・雇われるではない、もうひとつの関わり方。Moments Shareの「Fellow」という働き方を紹介します。",
     type: "website",
     url: "https://moments-share.com/people",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
 };
 
-// Fellowの定義を分解した「こんな人」（定義文に忠実な言い換え）
-const fellowTraits = [
-  "自分の人生を、主体的に生きている。",
-  "心の中に、志ややってみたいことがある。",
-  "志が重なったら、立場を超えて手を組める。",
-  "ともに挑戦し、未来を創ることを楽しめる。",
-];
+/* 「Fellowは、こんな人。」の4項目（人格の条件）は外した。
+
+   「自分の人生を、主体的に生きている」「心の中に、志ややってみたい
+   ことがある」など、どれも人格のあり方を条件として並べたもので、
+   読む人に「自分はこれに当てはまる人間か」と審査される感じを与えていた。
+   独自の呼称を定義して資格要件を並べる形は、入会案内と同じ構造になる。
+
+   消しても情報は減らない。下の ways（関わり方）が、同じことを
+   「どういう人か」ではなく「どういう状況の人か」で、具体的に書いている。
+   人格ではなく、仕組みの話をする。 */
 
 const ways = [
   { title: "専門性を活かして企業を支える", desc: "得意分野のスキルで、企業の業務やプロジェクトに関わる。" },
@@ -70,11 +73,11 @@ export default function PeoplePage() {
               <div className="text-[13px] font-bold tracking-[0.14em] text-white/70">People</div>
               <h1 className="mt-5 text-white font-semibold leading-[1.16] tracking-[-0.02em]"
                   style={{ fontSize: "clamp(34px, 5vw, 68px)" }}>
-                ともに未来を創る、<br />仲間たち。
+                関わってくれている、<br />人たち。
               </h1>
               <p className="mt-8 max-w-lg text-[16px] md:text-[17px] leading-[2] text-white/80">
-                Moments Shareは、社員だけで仕事をする会社ではありません。
-                ここに関わる一人ひとりを、私たちは「Fellow（フェロー）」と呼んでいます。
+                Moments Shareは、社員だけで仕事をしている会社ではありません。
+              社外の人と組みながら、仕事をつくっています。
               </p>
             </div>
           </div>
@@ -86,40 +89,14 @@ export default function PeoplePage() {
             <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">FELLOW — Fellowとは</div>
             <p className="mt-6 text-charcoal font-semibold leading-[1.55] tracking-[-0.01em]"
                style={{ fontSize: "clamp(23px, 3.4vw, 44px)" }}>
-              自分の人生を主体的に生きながら、<br className="hidden sm:block" />
-              志が重なるとき、ともに挑戦し、<br className="hidden sm:block" />
-              ともに未来を創る人。
+              雇う・雇われるではない、<br className="hidden sm:block" />
+              もうひとつの関わり方。
             </p>
             <p className="mt-8 max-w-2xl text-[16px] md:text-[17px] leading-[2] text-charcoal/80">
-              Moments Shareでは、ともに歩む一人ひとりを「Fellow（フェロー）」と呼んでいます。
-              雇う・雇われるの関係ではなく、それぞれが自分の人生を生きながら、
-              志が重なったときに手を組む——そんな関係を大切にしています。
+              Moments Shareには、社員として働く人のほかに、案件ごとに力を貸してくれる人がいます。
+              その人たちを「Fellow（フェロー）」と呼んでいます。
+              本業も生活もそれぞれにあって、おもしろそうな仕事があるときに一緒にやる。それだけの関係です。
             </p>
-          </div>
-        </section>
-
-        {/* ===== 2. こんな人 — 定義を分解。カードにせず一覧で ===== */}
-        <section className="py-16 md:py-28 px-6 md:px-10 bg-ivory">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8">
-              <div className="lg:col-span-4">
-                <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">こんな人</div>
-                <h2 className="mt-4 text-charcoal font-semibold leading-[1.35] tracking-[-0.01em]" style={{ fontSize: "clamp(26px, 3.4vw, 42px)" }}>
-                  Fellowは、<br />こんな人。
-                </h2>
-              </div>
-              <div className="lg:col-span-8">
-                <ul className="divide-y divide-charcoal/10 border-t border-charcoal/10">
-                  {fellowTraits.map((t) => (
-                    <li key={t} className="py-6 md:py-8">
-                      <p className="text-charcoal font-medium leading-[1.5] tracking-[-0.01em]" style={{ fontSize: "clamp(19px, 2.4vw, 28px)" }}>
-                        {t}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -242,13 +219,18 @@ export default function PeoplePage() {
               <div className="max-w-2xl">
                 <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/70">これから</div>
                 <h3 className="mt-4 text-charcoal font-semibold leading-[1.4] tracking-[-0.01em]" style={{ fontSize: "clamp(23px, 3vw, 38px)" }}>
-                  これから、Fellowが増えていく。
+                  紹介は、これから増えます。
                 </h3>
                 <p className="mt-6 text-[15px] leading-[2] text-charcoal/70">
-                  専門人材、副業、子育て中、学生——。それぞれの持ち場から関わるFellowを、順次紹介していきます。
+                  専門人材、副業、子育て中、学生。いろいろな人が関わってくれています。
+                  本人の了解が取れた順に、ここで紹介していきます。
                 </p>
-                {/* TODO: 実在するFellowを、写真／名前／得意なこと／担当／関わる理由の5項目で追記する。架空の人物は作成しない。 */}
-                <p className="mt-6 text-[13px] tracking-[0.04em] text-muted">※ 他のFellowは準備中。掲載は本人の実在情報のみ。</p>
+                {/* TODO: 実在するFellowを、写真／名前／得意なこと／担当／関わる理由の5項目で追記する。
+                         架空の人物は作成しない。掲載は本人の了解を取ってから。
+
+                    ここにあった「※ 他のFellowは準備中。掲載は本人の実在情報のみ。」は外した。
+                    社内の編集ルールであって、訪問者に向けた文ではなかった。
+                    伝えたいこと（順次増える／本人の了解を取る）は上の本文に入れた。 */}
               </div>
             </div>
           </div>
@@ -261,7 +243,7 @@ export default function PeoplePage() {
               <div className="lg:col-span-8">
                 <div className="text-white/60 text-[12px] font-bold tracking-[0.16em]">Fellowになる</div>
                 <h2 className="mt-4 font-semibold leading-[1.2] tracking-[-0.01em]" style={{ fontSize: "clamp(30px, 4.4vw, 60px)" }}>
-                  志が重なったら、<br />ともに。
+                  おもしろそうだと<br />思ったら。
                 </h2>
               </div>
               <div className="lg:col-span-4 lg:pb-3">
@@ -269,7 +251,7 @@ export default function PeoplePage() {
                   働き方も場所も問いません。専門でも、副業でも、学生でも。まずは気軽に話すところから。
                 </p>
                 <Link href="/contact" className="mt-6 btn btn-ghost-on-green px-9 py-4">
-                  Fellowとして関わる →
+                  話を聞いてみる →
                 </Link>
               </div>
             </div>
