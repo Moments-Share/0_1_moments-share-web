@@ -161,7 +161,7 @@ const people = {
   partnerPlaceholder: img("/photos/21_partner_placeholder.jpg", "人物写真の準備中", "本人の実写に差し替えるまでの代替。縦位置。", "4/5"),
   newsThumbnail: img("/photos/22_news_thumbnail.jpg", "新芽と光", "NEWSの既定サムネイル。横位置。", "4/3"),
   /* 代表の実写。/people と /service-dx の「誰が伴走するか。」で使う。
-     alt は data/crew.ts の photoAlt と同じ写真を指しているので、
+     alt は data/members.ts の photoAlt と同じ写真を指しているので、
      差し替えるときは両方を直すこと */
   founderPortrait: img(
     "/photos/33_founder_portrait.jpg",

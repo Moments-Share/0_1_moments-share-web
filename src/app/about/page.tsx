@@ -596,11 +596,42 @@ export default function AboutPage() {
                 <fieldset className="relative mx-auto mt-12 aspect-square w-full max-w-[300px] md:mt-14 md:max-w-[460px]">
                   <legend className="sr-only">3つの事業が生み出すもの</legend>
 
-                  {/* 輪。半径38%＝枠から12%内側 */}
-                  <span
+                  {/* 輪。半径38%＝枠から12%内側。
+                      細い地の円の上を、光の弧が10秒で1周する。
+
+                      光の弧の太さ(0.55)は viewBox の単位。幅460pxのとき約2.5px。
+                      vector-effect="non-scaling-stroke" は使わない。付けると
+                      dasharray が画面の単位で測られ、pathLength="100" の正規化が
+                      効かなくなって、1本であるはずの光が何本にも割れる。
+                      地の円のほうは破線ではないので、太さ一定のままでよい。 */}
+                  <svg
                     aria-hidden
-                    className="absolute inset-[12%] rounded-full border border-charcoal/12"
-                  />
+                    viewBox="0 0 100 100"
+                    className="absolute inset-0 h-full w-full -rotate-90"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="38"
+                      fill="none"
+                      stroke="var(--color-charcoal)"
+                      strokeOpacity="0.12"
+                      strokeWidth="1"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                    <circle
+                      className="about-ring-flow"
+                      cx="50"
+                      cy="50"
+                      r="38"
+                      fill="none"
+                      pathLength={100}
+                      stroke="var(--color-deep-green)"
+                      strokeOpacity="0.55"
+                      strokeWidth="0.55"
+                      strokeLinecap="round"
+                    />
+                  </svg>
 
                   {/* 進む向き。点と点の中間に置く */}
                   {ringArrows.map((a, i) => (
@@ -610,14 +641,19 @@ export default function AboutPage() {
                       viewBox="0 0 10 10"
                       width="14"
                       height="14"
-                      className="absolute"
-                      style={{
-                        left: `${a.x}%`,
-                        top: `${a.y}%`,
-                        transform: `translate(-50%, -50%) rotate(${a.r}deg)`,
-                      }}
+                      className="about-ring-pass absolute"
+                      style={
+                        {
+                          left: `${a.x}%`,
+                          top: `${a.y}%`,
+                          transform: `translate(-50%, -50%) rotate(${a.r}deg)`,
+                          /* 光が1周10秒。矢印は点と点の中間にあるので、
+                             1つめが1秒、以降2秒おきに通りかかる */
+                          "--ring-delay": `${1 + i * 2}s`,
+                        } as CSSProperties
+                      }
                     >
-                      <polygon points="1,1 9,5 1,9" fill="var(--color-charcoal)" fillOpacity="0.45" />
+                      <polygon points="1,1 9,5 1,9" fill="var(--color-charcoal)" />
                     </svg>
                   ))}
 
@@ -645,10 +681,24 @@ export default function AboutPage() {
                         defaultChecked={i === 0}
                         className="peer sr-only"
                       />
+                      {/* 光が通りかかった番号の、外に広がる輪。飾りなので押せない。
+                          番号そのものは動かさない（押す的が動くと狙えない） */}
+                      <span
+                        aria-hidden
+                        className="about-ring-halo pointer-events-none absolute h-[42px] w-[42px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 [border-color:var(--ink)] md:h-[48px] md:w-[48px]"
+                        style={
+                          {
+                            left: `${ringSpots[i].x}%`,
+                            top: `${ringSpots[i].y}%`,
+                            "--ink": bubbleInks[i],
+                            "--ring-delay": `${i * 2}s`,
+                          } as CSSProperties
+                        }
+                      />
                       {/* 番号。これが押すところ */}
                       <label
                         htmlFor={`about-cycle-${i}`}
-                        className="absolute flex h-[42px] w-[42px] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border text-[13px] font-bold tabular-nums transition-all duration-200 [background:var(--tint)] [border-color:var(--ink)] [color:var(--ink)] hover:scale-110 peer-checked:scale-110 peer-checked:text-white peer-checked:[background:var(--ink)] peer-focus-visible:ring-2 peer-focus-visible:ring-deep-green peer-focus-visible:ring-offset-2 md:h-[48px] md:w-[48px] md:text-[14px]"
+                        className="absolute flex h-[42px] w-[42px] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border text-[13px] font-bold tabular-nums transition-all duration-200 bg-white [background-image:linear-gradient(var(--tint),var(--tint))] [border-color:var(--ink)] [color:var(--ink)] hover:scale-110 peer-checked:scale-110 peer-checked:text-white peer-checked:[background-image:linear-gradient(var(--ink),var(--ink))] peer-focus-visible:ring-2 peer-focus-visible:ring-deep-green peer-focus-visible:ring-offset-2 md:h-[48px] md:w-[48px] md:text-[14px]"
                         style={
                           {
                             left: `${ringSpots[i].x}%`,

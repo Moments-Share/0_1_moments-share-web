@@ -371,3 +371,64 @@ html[data-js] .rv-in .pop {
     animation: none;
   }
 }
+
+/* --- Aboutの「挑戦の循環」：図の上を光が1周し続ける ---------------------
+
+   1周10秒。5つの段階なので、1段階ぶんが2秒。
+   止まった絵を5つ並べるより、ひと回りするところを見せたほうが
+   「循環する」という言葉が一度で伝わる。
+
+   動かすのは3つだけ。
+     about-ring-flow … 輪の上を走る光の弧（stroke-dashoffset）
+     about-ring-halo … 光が通りかかった番号の、外側に広がる輪
+     about-ring-pass … 光が通りかかった矢印が、少し濃くなる
+
+   番号そのもの（押せるラベル）は動かさない。押す的が動くと狙えないし、
+   選ばれている状態（peer-checked の拡大）とぶつかる。
+
+   位置の指定に Tailwind の translate ユーティリティを使っているので、
+   ここで動かすのは opacity と scale だけにしてある
+   （Tailwind v4 は translate を単独のプロパティで出すため、
+     keyframes に transform と書くと位置指定を打ち消してしまう）。 */
+@keyframes about-ring-flow {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -100; }
+}
+.about-ring-flow {
+  /* pathLength="100" で長さを正規化してあるので、円の実寸を変えても
+     ここの数字は書き直さなくてよい。14 が光、86 が暗い部分 */
+  stroke-dasharray: 14 86;
+  animation: about-ring-flow 10s linear infinite;
+}
+
+@keyframes about-ring-halo {
+  0%   { opacity: 0;    scale: 1; }
+  4%   { opacity: 0.55; scale: 1.35; }
+  16%  { opacity: 0;    scale: 1.6; }
+  100% { opacity: 0;    scale: 1; }
+}
+.about-ring-halo {
+  opacity: 0;
+  animation: about-ring-halo 10s linear infinite;
+  animation-delay: var(--ring-delay, 0s);
+}
+
+@keyframes about-ring-pass {
+  0%   { opacity: 0.45; }
+  3%   { opacity: 1; }
+  12%  { opacity: 0.45; }
+  100% { opacity: 0.45; }
+}
+.about-ring-pass {
+  opacity: 0.45;
+  animation: about-ring-pass 10s linear infinite;
+  animation-delay: var(--ring-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-ring-flow,
+  .about-ring-halo,
+  .about-ring-pass { animation: none; }
+  /* 動かさない環境では、光の弧は輪と同じ細い線として出しておく */
+  .about-ring-flow { stroke-dasharray: none; opacity: 0.28; }
+}

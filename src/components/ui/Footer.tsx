@@ -32,6 +32,13 @@ const snsLinks = [
   { href: "https://note.com/momentsshare", label: "note" },
 ];
 
+/* 設立(2025年11月)から今年まで。年が変わっても直さなくていいよう、
+   終わりの年はビルド時の年から取る。静的書き出しなので、値が入れ替わるのは
+   次にビルドしたとき。文字列を1つにまとめてあるのは、JSXで分けて書くと
+   書き出したHTMLにReactの区切り(<!-- -->)が挟まるため */
+const thisYear = new Date().getFullYear();
+const copyright = `© ${thisYear > 2025 ? `2025-${thisYear}` : "2025"} Moments Share合同会社. All rights reserved.`;
+
 export function Footer() {
   // フッターは全ページ共通で明るいクローム(ivory地)。ロゴ(白背景前提)の舞台に合わせ、文字はネイビー/charcoal。
   return (
@@ -97,7 +104,10 @@ export function Footer() {
         </div>
 
         <div className="mt-14 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <p className="text-[12px] text-charcoal/70">© 2025 Moments Share合同会社. All rights reserved.</p>
+          {/* 設立(2025年11月)から今年まで。年が変わっても直さなくていいよう、
+              終わりの年はビルド時の年から取る。静的書き出しなので、
+              値が入れ替わるのは次にビルドしたとき */}
+          <p className="text-[12px] text-charcoal/70">{copyright}</p>
           <div className="flex items-center gap-6 text-[13px] text-charcoal/80">
             {snsLinks.map(({ href, label }) => (
               <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="hover:text-deep-green transition-colors">{label}</a>
