@@ -74,7 +74,7 @@ export default function PeoplePage() {
               <div className="text-[13px] font-bold tracking-[0.14em] text-white/70">People</div>
               <h1 className="mt-5 text-white font-semibold leading-[1.16] tracking-[-0.02em]"
                   style={{ fontSize: "clamp(34px, 5vw, 68px)" }}>
-                一緒に働く、<br />仲間たち。
+                一緒に働いてくれる<br />人たち。
               </h1>
               {/* 見出しは短い名詞句にする。下に「Crewを、紹介します。」の
                   見出しがあるので、ここで「紹介します」と言うと二度になる。
