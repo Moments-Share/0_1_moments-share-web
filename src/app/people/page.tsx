@@ -240,22 +240,25 @@ export default function PeoplePage() {
           <div className="mx-auto max-w-[1400px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
               <div className="lg:col-span-8">
-                <div className="text-white/60 text-[12px] font-bold tracking-[0.16em]">応募してみる</div>
+                <div className="text-white/60 text-[12px] font-bold tracking-[0.16em]">メンバー募集</div>
                 {/* 「おもしろそうだと思ったら。」から変えた。
                     このページには具体的な案件の話がないので、「おもしろそう」が
-                    何を指すのか書いていなかった。条件を付けると、
-                    「そこまでおもしろいとは思っていない」人が自分で降りる */}
+                    何を指すのか書いていなかった。
+                    会社からの案内として読める言い方に揃える。
+
+                    改行は「ご興味を／お持ちの方へ。」で固定。スマホ(390px)では
+                    見出しが30pxになり、11文字だと1行に収まらない */}
                 <h2 className="mt-4 font-semibold leading-[1.2] tracking-[-0.01em]" style={{ fontSize: "clamp(30px, 4.4vw, 60px)" }}>
-                  できることが、<br />ひとつあれば。
+                  ご興味を<br />お持ちの方へ。
                 </h2>
               </div>
               <div className="lg:col-span-4 lg:pb-3">
                 {/* 「決まった形はありません」は外した。上の
                     「関わり方は、ひとつじゃない。」「無理のない形で」で
-                    既に2回言っている。代わりに、事実として言える
-                    障壁下げ（フォームに履歴書の欄はない）を1つ置く */}
+                    既に2回言っている。
+                    返信の早さなど、約束として固まっていないことは書かない */}
                 <p className="text-[15px] leading-[2] text-white/75">
-                  履歴書はいりません。できることと、動ける時間だけ書いて送ってください。
+                  働き方や場所は問いません。できることと、ご都合のつく時間をお知らせください。
                 </p>
                 {/* ボタンは、押した先に何があるかを書く。この節のラベルが
                     「応募してみる」なので、ボタンも同じ言葉だと二度になる。
