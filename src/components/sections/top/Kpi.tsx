@@ -18,7 +18,7 @@ const indicators = [
   { value: 3, unit: "社", label: "BPO支援", accent: "text-terracotta-ink", underline: "bg-terracotta-ink" },
   { value: 4, unit: "件", label: "地域プロジェクト", accent: "text-sage-ink", underline: "bg-sage-ink" },
   { value: 5, unit: "名", label: "共創パートナー", accent: "text-deep-green", underline: "bg-deep-green" },
-  { value: 2, unit: "名", label: "新規挑戦者", accent: "text-terracotta-ink", underline: "bg-terracotta-ink" },
+  { value: 2, unit: "名", label: "受入学生インターン", accent: "text-terracotta-ink", underline: "bg-terracotta-ink" },
 ];
 
 /* 1つずつ決まっていく見え方にするための間隔（ミリ秒） */
