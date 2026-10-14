@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@/components/ui/Analytics";
 import { Footer } from "@/components/ui/Footer";
 
 const notoSansJP = Noto_Sans_JP({
@@ -140,6 +141,8 @@ export default function RootLayout({
         </a>
         {children}
         <Footer />
+        {/* アクセス解析。測定IDが空のあいだは何も読み込まない */}
+        <Analytics />
       </body>
     </html>
   );

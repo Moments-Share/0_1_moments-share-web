@@ -182,8 +182,10 @@ export function ContactForm() {
           />
         </div>
         <div>
+          {/* 必須から任意にした。応募や相談の最初の一歩で電話番号を
+              必須にすると、そこで止まる人が出る。連絡はメールでも取れる */}
           <label htmlFor="tel" className={labelClass}>
-            お電話番号 <Req />
+            お電話番号 <Opt />
           </label>
           {/* inputMode="tel" でスマホに数字キーパッドを出す。
               type="tel" だけだと機種によって通常キーボードが出る */}
@@ -192,13 +194,12 @@ export function ContactForm() {
             name="お電話番号"
             type="tel"
             inputMode="tel"
-            required
             autoComplete="tel"
             disabled={disabled}
             placeholder="09012345678"
             className={inputClass}
           />
-          {/* 必須で求める以上、何に使うのかをその場で伝える */}
+          {/* 任意でも、何に使うのかはその場で伝える */}
           <p className="mt-2 text-[12px] leading-[1.8] text-charcoal/70">{TEL_PURPOSE}</p>
         </div>
       </div>

@@ -58,4 +58,4 @@ export const FIRST_CONSULT_FREE = "初回のご相談は無料です。";
 export const REPLY_WITHIN = "2営業日以内";
 
 /** 電話番号を必須にしている理由。相手には必須で求めているので、用途を明示する */
-export const TEL_PURPOSE = "折り返しのご連絡にのみ使います。営業のご連絡はしません。";
+export const TEL_PURPOSE = "お急ぎの場合のみ。折り返しのご連絡に使い、営業のご連絡はしません。";
