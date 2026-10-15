@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CONTACT_EMAIL, CONTACT_ENDPOINT, TEL_PURPOSE } from "@/lib/contact";
+import { trackContactSubmit } from "@/lib/analytics";
 import { company, hasTel, telHref } from "@/lib/company";
 
 /* ============================================================
@@ -85,6 +86,7 @@ export function ContactForm() {
 
       form.reset();
       setStatus("success");
+      trackContactSubmit();
     } catch (err) {
       setErrorDetail(err instanceof Error ? err.message : "原因を特定できませんでした");
       setStatus("error");
@@ -132,6 +134,11 @@ export function ContactForm() {
         className="hidden"
       />
       <input type="hidden" name="_subject" value="【Webお問い合わせ】Moments Share" />
+      {/* JSが動かない環境では、ブラウザがこのフォームを直接POSTする。
+          そのとき送信サービス側の既定ページに飛ばされると、
+          英語の画面が出て「送れたのか」が分からない。
+          自前の完了ページに戻す。JSが動く環境ではこの値は使われない */}
+      <input type="hidden" name="_next" value="https://moments-share.com/contact/thanks/" />
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <div>

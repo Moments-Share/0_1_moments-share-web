@@ -25,3 +25,16 @@
 export const GA_MEASUREMENT_ID = "";
 
 export const hasAnalytics = /^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID.trim());
+
+/** 問い合わせ送信をGA4に送る。測定IDが空のあいだは何も起きない。
+
+    フォームはJSで送信して画面内に完了を出すので、ページの移動が起きない。
+    そのままだと解析ツールから見て「問い合わせページを見ただけ」と
+    区別がつかないので、送信できたときにこの1件を送る。
+    JSが動かない環境では /contact/thanks/ に移動するので、
+    そちらはページビューとして数えられる。 */
+export function trackContactSubmit() {
+  if (!hasAnalytics) return;
+  const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+  w.gtag?.("event", "generate_lead", { form: "contact" });
+}
