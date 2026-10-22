@@ -1,0 +1,27 @@
+# 依存パッケージに脆弱性や更新が出たら、GitHubが自動でPRを作る。
+# 人が npm audit を思い出す必要がなくなる。無料。
+#
+# 週1回・月曜の朝にまとめてチェックする。毎日だとPRが溜まって
+# 見なくなるので、週1にしてある。
+#
+# 届いたPRの扱い:
+#   パッチ版・マイナー版の更新 … まとめて1本のPRで届く。CIが通れば取り込む
+#   メジャー版の更新           … 壊れる可能性があるので1本ずつ届く。中身を見てから
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      # パッチ・マイナーは1本にまとめる。1件ずつ来るとPRが増えすぎる
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch

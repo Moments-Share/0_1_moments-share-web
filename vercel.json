@@ -1,13 +1,71 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/about-us", "destination": "/about/", "permanent": true },
-    { "source": "/service", "destination": "/service-dx/", "permanent": true },
-    { "source": "/service-dx-support", "destination": "/service-dx/", "permanent": true },
-    { "source": "/member", "destination": "/people/", "permanent": true },
-
-    { "source": "/mvv", "destination": "/about/", "permanent": true },
-    { "source": "/group", "destination": "/about/", "permanent": true },
-    { "source": "/projects", "destination": "/service-produce/", "permanent": true }
+    {
+      "source": "/about-us",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/service",
+      "destination": "/service-dx/",
+      "permanent": true
+    },
+    {
+      "source": "/service-dx-support",
+      "destination": "/service-dx/",
+      "permanent": true
+    },
+    {
+      "source": "/member",
+      "destination": "/people/",
+      "permanent": true
+    },
+    {
+      "source": "/mvv",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/group",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/projects",
+      "destination": "/service-produce/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.canva.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000"
+        }
+      ]
+    }
   ]
 }
