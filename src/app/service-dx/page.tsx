@@ -696,6 +696,35 @@ export default function ServiceDX() {
                   決まった料金表はありません。減らせる仕事は会社ごとに違うので、
                   対象が決まってから金額をお出ししています。
                 </p>
+
+                {/* 比べる相手を示しておく。金額を出していないぶん、
+                    読む人は「高いのか安いのか」の手がかりを持てない。
+                    このサービスが代わりになるのは他社の見積りではなく、
+                    DX担当者を1人採用することなので、そちらと並べる。
+                    金額は書かない。並べるだけで差は伝わる */}
+                <div className="mt-9 grid grid-cols-2 gap-px overflow-hidden bg-charcoal/10">
+                  {/* 地が白の節なので、左は白にすると枠に見えない。薄く敷く */}
+                  <div className="bg-ivory p-5">
+                    <p className="text-[12px] font-bold tracking-[0.14em] text-charcoal/50">
+                      採用する
+                    </p>
+                    <ul className="mt-3 space-y-2 text-[13px] leading-[1.75] text-charcoal/70">
+                      <li>給与・社会保険・採用費</li>
+                      <li>育つまでに数ヶ月</li>
+                      <li>合わなくても、辞めてもらえない</li>
+                    </ul>
+                  </div>
+                  <div className="bg-green-deep p-5 text-white">
+                    <p className="text-[12px] font-bold tracking-[0.14em] text-white/70">
+                      伴走を頼む
+                    </p>
+                    <ul className="mt-3 space-y-2 text-[13px] leading-[1.75] text-white/85">
+                      <li>必要な期間だけ</li>
+                      <li>初月から動ける</li>
+                      <li>合わなければ、続けなくていい</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
 
               <div className="lg:col-span-7">
