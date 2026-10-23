@@ -8,6 +8,7 @@ import { SitePhoto, SitePhotoFill } from "@/components/ui/SitePhoto";
 import { dxCases } from "@/data/dx-cases";
 import { dxResults } from "@/data/dx-results";
 import { VIDEO_EMBED_URL, VIDEO_LEAD, VIDEO_TITLE, hasVideo } from "@/lib/video";
+import { BeforeAfterBar, DxAxDiagram, StepRail, TaskGlyph, taskGlyphOrder } from "@/components/ui/ServiceVisuals";
 
 const problems = [
   "Excelやシステムへの転記が多い",
@@ -299,21 +300,28 @@ export default function ServiceDX() {
                 5つの型に分かれます。
               </h2>
               <p className="mt-6 text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                どれも、現場を支えている大事な作業です。ただ、
+                どれも大事な作業ですが、
                 <strong className="font-semibold text-charcoal">人がやらなくても回る形にできる</strong>
-                ものでもあります。まずは、自社の仕事がどの型に当てはまるかを見ていきます。
+                ものです。
               </p>
             </div>
 
-            <ol className="mt-12 grid grid-cols-1 gap-px bg-charcoal/10 sm:grid-cols-2 lg:grid-cols-3 md:mt-16">
-              {taskTypes.map((t) => (
-                <li key={t.no} className="bg-ivory p-7 md:p-8">
-                  <span
-                    className="font-medium leading-none tabular-nums text-charcoal/30"
-                    style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
-                  >
-                    {t.no}
-                  </span>
+            {/* スマホでも2列。1列で縦に積むと、この5枚だけで0.8画面ぶん伸びる。
+                2列にするぶん、狭い画面では余白と文字を詰める */}
+            <ol className="mt-12 grid grid-cols-2 gap-px bg-charcoal/10 lg:grid-cols-3 md:mt-16">
+              {taskTypes.map((t, i) => (
+                <li key={t.no} className="bg-ivory p-4 md:p-8">
+                  {/* 絵を1つ添える。番号と名前だけだと5枚が同じ見た目になり、
+                      自分の仕事がどれかを探せない */}
+                  <div className="flex items-center justify-between gap-4">
+                    <span
+                      className="font-medium leading-none tabular-nums text-charcoal/30"
+                      style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
+                    >
+                      {t.no}
+                    </span>
+                    <TaskGlyph name={taskGlyphOrder[i]} className="text-sage-ink/70" />
+                  </div>
                   <p
                     className="mt-4 text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]"
                     style={{ fontSize: "clamp(17px, 1.8vw, 22px)" }}
@@ -325,8 +333,8 @@ export default function ServiceDX() {
                   </p>
                 </li>
               ))}
-              {/* 5つだと3列のとき最後の枠が空く。穴を空けずに受けの一言を置く */}
-              <li className="bg-ivory p-7 md:p-8">
+              {/* 5つだと列が埋まらない。穴を空けずに受けの一言を置く */}
+              <li className="bg-ivory p-4 md:p-8">
                 <p className="text-[14px] md:text-[15px] leading-[1.95] text-charcoal/70">
                   この5つを減らすと、
                   <strong className="font-semibold text-charcoal">人にしかできない仕事</strong>
@@ -344,9 +352,9 @@ export default function ServiceDX() {
               <h2 className="text-charcoal font-semibold leading-[1.2] tracking-[-0.02em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
                 何が変わる？
               </h2>
-              <p className="mt-6 max-w-[34em] text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                大切なのは、ツールを入れることではありません。「人がやらなくていい仕事（Non Human Task）」を減らし、時間を価値ある仕事へ戻すことです。これがDX（業務のデジタル化による変革）であり、AX（AI活用による変革）で目指すところです。
-              </p>
+              {/* ここにあった110字のリードは外した。DXとAXが何かは
+                  下の「DXと、AX。」で図つきで説明していて、二度同じ話だった。
+                  この節は数字から始めたほうが早い */}
             </div>
 
             {/* §3 削減規模の試算。カードにせず、罫線と数字だけで静かに見せる */}
@@ -441,12 +449,18 @@ export default function ServiceDX() {
                 <h3 className="text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]" style={{ fontSize: "clamp(22px, 2.6vw, 34px)" }}>
                   投稿作業を、30分 → 約6分へ。
                 </h3>
-                <p className="mt-5 max-w-md text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                  投稿の企画から公開までの流れを自動化し、毎日の作業を大幅に削減。
-                </p>
-                <p className="mt-4 max-w-md text-[12px] leading-[1.9] text-charcoal/55">
-                  ※ 特定業務での一例です。効果を保証するものではありません。
-                </p>
+                {/* 「30分 → 約6分」は、長さの差で見せたほうが早い。
+                    棒の比率は実数のまま（6/30）。見栄えのために変えない */}
+                <div className="mt-6 max-w-md">
+                  <BeforeAfterBar
+                    beforeLabel="これまで"
+                    beforeValue={30}
+                    afterLabel="いま"
+                    afterValue={6}
+                    unit="分／日"
+                    note="投稿の企画から公開までの流れを自動化しました。※ 特定業務での一例です。効果を保証するものではありません。"
+                  />
+                </div>
               </div>
             </div>
 
@@ -565,7 +579,6 @@ export default function ServiceDX() {
                     </p>
                     <p className="mt-4 text-[14px] md:text-[15px] leading-[1.95] text-charcoal/80">
                       紙をなくす。転記をなくす。集計を自動にする。
-                      <strong className="font-semibold text-charcoal">やり方は変えずに、速くします。</strong>
                     </p>
                   </div>
                   <div className="bg-green-deep p-7 text-white md:p-8">
@@ -574,14 +587,18 @@ export default function ServiceDX() {
                       仕事のやり方を、組み替える。
                     </p>
                     <p className="mt-4 text-[14px] md:text-[15px] leading-[1.95] text-white/85">
-                      AIがある前提で考え直します。「この作業を速くするには」ではなく、
                       <strong className="font-semibold text-white">「この作業は、そもそも人がやる必要があるのか」</strong>
-                      から始めます。
+                      から考え直します。
                     </p>
                   </div>
                 </div>
-                <p className="mt-7 max-w-[42em] text-[14px] md:text-[15px] leading-[1.95] text-charcoal/80">
-                  目的は同じです。人がやらなくてもいい仕事を減らし、人にしかできない仕事へ時間を戻すこと。違うのは、どこから考えるかだけです。どちらが必要かは業務によって変わるので、まず業務を分解してから決めます。
+                {/* 2つの違いを、同じ仕事の流れを3段に並べて見せる。
+                    言い換えを重ねるより、並べたほうが一度で伝わる */}
+                <div className="mt-9">
+                  <DxAxDiagram />
+                </div>
+                <p className="mt-7 max-w-[34em] text-[14px] md:text-[15px] leading-[1.95] text-charcoal/80">
+                  目的は同じです。どちらが必要かは業務によって変わるので、まず業務を分解してから決めます。
                 </p>
               </div>
             </div>
@@ -598,20 +615,22 @@ export default function ServiceDX() {
               <div className="lg:col-span-8">
                 <ul className="border-t border-charcoal/10">
                   {menu.map((m, i) => (
-                    <li key={m.name} className="flex items-baseline gap-6 border-b border-charcoal/10 py-6">
-                      <span className="text-charcoal/30 font-medium tabular-nums leading-none w-10 shrink-0" style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
+                    <li key={m.name} className="flex items-baseline gap-3 border-b border-charcoal/10 py-4 md:gap-6 md:py-6">
+                      <span className="w-6 shrink-0 font-medium leading-none tabular-nums text-charcoal/30 md:w-10" style={{ fontSize: "clamp(14px, 2vw, 28px)" }}>
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                          <p className="text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]" style={{ fontSize: "clamp(18px, 2vw, 26px)" }}>
+                          <p className="text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]" style={{ fontSize: "clamp(16px, 2vw, 26px)" }}>
                             {m.name}
                           </p>
-                          <span className="border border-charcoal/25 px-2 py-0.5 text-[11px] font-bold tracking-[0.08em] text-charcoal/70">
+                          <span className="border border-charcoal/25 px-2 py-0.5 text-[10px] font-bold tracking-[0.08em] text-charcoal/70 md:text-[11px]">
                             {m.kind}
                           </span>
                         </div>
-                        <p className="mt-2 max-w-[30em] text-[14px] md:text-[15px] leading-[1.9] text-charcoal/70">
+                        {/* 説明はスマホでは出さない。名前とDX/AXの別で何をするかは伝わるし、
+                            7項目それぞれに1行足すと、この一覧だけで0.5画面ぶん伸びる */}
+                        <p className="mt-2 hidden max-w-[30em] text-[14px] leading-[1.9] text-charcoal/70 md:block md:text-[15px]">
                           {m.desc}
                         </p>
                       </div>
@@ -783,18 +802,10 @@ export default function ServiceDX() {
               </dl>
             </div>
 
-            <div className="mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-9 md:gap-x-8 md:gap-y-12">
-              {steps.map((s) => (
-                <div key={s.num} className="border-t border-charcoal/10 pt-5">
-                  <div className="text-charcoal/30 font-medium tabular-nums leading-none" style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
-                    {s.num}
-                  </div>
-                  <h3 className="mt-4 text-charcoal font-semibold tracking-[-0.02em]" style={{ fontSize: "clamp(18px, 2vw, 24px)" }}>
-                    {s.title}
-                  </h3>
-                  <p className="mt-3 text-[14px] md:text-[15px] leading-[1.9] text-charcoal/80">{s.desc}</p>
-                </div>
-              ))}
+            {/* 1本のレールに5つの番号を並べる。縦に5枚積むより、
+                「全部で5段階ある」ことが先に伝わる */}
+            <div className="mt-12 md:mt-16">
+              <StepRail steps={steps} />
             </div>
           </div>
         </section>
@@ -867,10 +878,10 @@ export default function ServiceDX() {
             <h2 className="max-w-5xl text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]" style={{ fontSize: "clamp(26px, 3.6vw, 48px)" }}>
               AIを使える会社ではなく、<br className="hidden sm:block" />仕事を改善し続けられる会社へ。
             </h2>
+            {/* 本文3文は外した。「改善を続けられる状態」は見出しが言い切っていて、
+                同じことを言い換えているだけだった。言明は短いほど効く */}
             <p className="mt-8 max-w-[38em] text-[15px] md:text-[16px] leading-[2] text-charcoal/75">
-              業務効率化は一度きりの作業ではありません。DX・AXの本質は、
-              仕組みを入れることではなく、改善を続けられる状態をつくることです。
-              愛知県西尾市を拠点に、導入して終わりにしない伴走支援を行っています。
+              愛知県西尾市から、導入して終わりにしない伴走支援を。
             </p>
           </div>
         </section>
@@ -905,18 +916,18 @@ export default function ServiceDX() {
                 </details>
               ))}
             </div>
+
+            {/* 資料は独立した節にしていたが、節を分けると上下の余白だけで
+                1画面の1割を使う。FAQの続き＝「もっと知りたい人向け」として同じ節に置く */}
+            <div className="mt-14 md:mt-20 border-t border-charcoal/15 pt-12 md:pt-16">
+              <h2 className="text-charcoal font-semibold leading-[1.2] tracking-[-0.02em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
+                資料で詳しく。
+              </h2>
+              <DeckEmbed />
+            </div>
           </div>
         </section>
 
-        {/* ===== DECK — サービス紹介資料。CTAの直前、詳しく知りたい人の受け皿 ===== */}
-        <section className="py-14 md:py-20 px-6 md:px-10 bg-white">
-          <div className="mx-auto max-w-[1400px]">
-            <h2 className="text-charcoal font-semibold leading-[1.2] tracking-[-0.02em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
-              資料で詳しく。
-            </h2>
-            <DeckEmbed />
-          </div>
-        </section>
 
         {/* ===== CTA — 緑のバンド＋テラコッタボタン ===== */}
         <section id="contact" className="scroll-mt-20 py-16 md:py-24 px-6 md:px-10 bg-green-deep text-white">

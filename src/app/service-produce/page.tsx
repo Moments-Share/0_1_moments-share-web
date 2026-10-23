@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { StepRail } from "@/components/ui/ServiceVisuals";
 import Link from "next/link";
 import Image from "next/image";
 import { Nav } from "@/components/ui/Nav";
@@ -516,31 +517,10 @@ export default function ServiceProduce() {
               </h2>
             </div>
 
-            <div className="mt-14 md:mt-20 flex flex-col divide-y divide-charcoal/10">
-              {howWeWork.map((h) => (
-                <div
-                  key={h.step}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-12 items-baseline py-8 md:py-10"
-                >
-                  <div className="md:col-span-3">
-                    <span
-                      className="text-charcoal/30 font-medium tabular-nums leading-none"
-                      style={{ fontSize: "clamp(18px, 2vw, 28px)" }}
-                    >
-                      {h.step}
-                    </span>
-                  </div>
-                  <h3
-                    className="md:col-span-4 text-charcoal font-semibold tracking-[-0.02em] leading-[1.3]"
-                    style={{ fontSize: "clamp(22px, 2.4vw, 30px)" }}
-                  >
-                    {h.title}
-                  </h3>
-                  <p className="md:col-span-5 text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                    {h.body}
-                  </p>
-                </div>
-              ))}
+            {/* 1本のレールに4つの番号を並べる。縦に4枚積むより
+                「全部で4段階ある」ことが先に伝わる（/service-dx と同じ部品） */}
+            <div className="mt-14 md:mt-20">
+              <StepRail steps={howWeWork.map((h) => ({ num: h.step, title: h.title, desc: h.body }))} />
             </div>
           </div>
         </section>

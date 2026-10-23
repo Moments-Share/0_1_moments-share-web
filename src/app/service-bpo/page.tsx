@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { StepRail } from "@/components/ui/ServiceVisuals";
 import Link from "next/link";
 import { Nav } from "@/components/ui/Nav";
 import { SitePhoto, SitePhotoFill } from "@/components/ui/SitePhoto";
@@ -256,18 +257,10 @@ export default function ServiceBPO() {
                 進め方。
               </h2>
             </div>
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-8 gap-y-12 border-t border-charcoal/10 pt-12">
-              {process.map((p) => (
-                <div key={p.step}>
-                  <div className="text-charcoal/30 font-medium tabular-nums leading-none" style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
-                    {p.step}
-                  </div>
-                  <h3 className="mt-5 text-charcoal font-semibold tracking-[-0.02em] leading-[1.3]" style={{ fontSize: "clamp(19px, 2vw, 22px)" }}>
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 text-[14px] md:text-[15px] leading-[1.9] text-muted">{p.body}</p>
-                </div>
-              ))}
+            {/* 1本のレールに5つの番号を並べる。縦に5枚積むより
+                「全部で5段階ある」ことが先に伝わる（/service-dx と同じ部品） */}
+            <div className="mt-14 border-t border-charcoal/10 pt-12">
+              <StepRail steps={process.map((p) => ({ num: p.step, title: p.title, desc: p.body }))} />
             </div>
           </div>
         </section>
