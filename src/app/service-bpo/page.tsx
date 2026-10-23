@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://moments-share.com/service-bpo/" },
   title: "西尾市のBPO・業務委託（営業・事務・CS）｜Moments Share",
   description:
-    "愛知県西尾市のBPO・業務委託サービス。採用して人を増やす前に、仕事を外に出すという選択肢があります。営業支援・カスタマーサクセス・SNS運用・経理事務を、必要な分だけ受託。まず仕事そのものを整理してから、外に出す範囲を決めます。",
+    "愛知県西尾市のBPO・業務委託サービス。採用して人を増やす前に、仕事を外に出すという選択肢があります。事務代行・SNS代行・CS代行を、必要な分だけ受託。まず仕事そのものを整理し、自動化できるものは減らしてから、外に出す範囲を決めます。",
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
@@ -36,7 +36,7 @@ const jsonLd = {
   "@type": "Service",
   "name": "BPO（業務プロセスアウトソーシング）",
   "description":
-    "採用して人を増やす前に、仕事を外に出すという選択肢。カスタマーサクセス・営業支援・SNS運用・経理事務など、人が必要な仕事だけを、必要な分だけ支えます。",
+    "採用して人を増やす前に、仕事を外に出すという選択肢。事務代行・SNS代行・CS代行。人が必要な仕事だけを、必要な分だけ支えます。",
   "provider": {
     "@type": "LocalBusiness",
     "name": "Moments Share合同会社",
@@ -70,13 +70,30 @@ const painPoints = [
   "何を外注できるかわからない",
 ];
 
+/* お受けする仕事は、この3つだけにしている。
+
+   以前は「営業支援（リスト作成・アポイント）」と「その他（外部に任せられる
+   仕事を一緒に考えます）」も並べていたが、どちらも外した。
+
+   営業支援＝営業代行は、成果が相手次第で、こちらで減らしようがない仕事。
+   「人がやらなくてもいい仕事を減らす」という会社がやる仕事ではない。
+   「その他」は、業務の範囲を決めておく意味を自分で打ち消していた。
+   事務は放っておくと際限なく増えるので、受ける範囲は書いておく。
+
+   この3つは /works の実績（CS・SNS運用・事務の3社）とも一致している。 */
 const services = [
-  { title: "カスタマーサクセス", desc: "顧客対応・フォロー・継続支援など" },
-  { title: "営業支援", desc: "リスト作成・アポイント・フォローなど" },
-  { title: "SNS運用", desc: "投稿企画・作成・運用など" },
-  { title: "経理・事務", desc: "データ入力・請求処理・日程調整・書類整理など" },
-  { title: "その他", desc: "業務を整理し、外部に任せられる仕事を一緒に考えます" },
+  { title: "事務代行", desc: "データ入力・請求処理・日程調整・書類整理など" },
+  { title: "SNS代行", desc: "投稿企画・作成・運用など" },
+  { title: "CS代行", desc: "顧客対応・フォロー・継続支援など" },
 ];
+
+/* お受けしていない仕事。書いている会社は少ないので、書くと効く。
+   断る理由が、そのまま自社の考え方の説明になっている */
+const notServices = {
+  title: "営業代行",
+  reason:
+    "成果が相手次第になる仕事は、お引き受けしていません。私たちが引き受けるのは、減らせる仕事です。",
+};
 
 const team = [
   { label: "専門人材", desc: "各領域の経験を持つプロフェッショナル" },
@@ -124,7 +141,7 @@ export default function ServiceBPO() {
               人手不足に、<br />社外の力を。
             </h1>
             <p className="mt-8 max-w-xl text-[15px] md:text-[16px] leading-[2] text-white/80">
-              採用して人を増やす前に、仕事を外に出すという選択肢があります。カスタマーサクセス。営業支援。SNS。経理・事務。必要な仕事を、必要な分だけ支えます。
+              採用して人を増やす前に、仕事を外に出すという選択肢があります。事務。SNS。カスタマーサクセス。必要な仕事を、必要な分だけ支えます。
             </p>
             <Link
               href="/contact"
@@ -196,6 +213,23 @@ export default function ServiceBPO() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* お受けしていない仕事。「何でもやります」と書く会社が多いので、
+                書いてあるだけで目にとまる。断る理由が考え方の説明になる */}
+            <div className="mt-12 border border-charcoal/15 bg-ivory p-6 md:mt-16 md:p-8">
+              <p className="text-[12px] font-bold tracking-[0.16em] text-charcoal/55">
+                お受けしていないこと
+              </p>
+              <p
+                className="mt-3 text-charcoal font-semibold leading-[1.4] tracking-[-0.02em]"
+                style={{ fontSize: "clamp(18px, 2vw, 24px)" }}
+              >
+                {notServices.title}
+              </p>
+              <p className="mt-3 max-w-[34em] text-[14px] leading-[1.95] text-charcoal/75 md:text-[15px]">
+                {notServices.reason}
+              </p>
             </div>
           </div>
         </section>

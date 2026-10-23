@@ -9,6 +9,7 @@ import { dxCases } from "@/data/dx-cases";
 import { dxResults } from "@/data/dx-results";
 import { VIDEO_EMBED_URL, VIDEO_LEAD, VIDEO_TITLE, hasVideo } from "@/lib/video";
 import { BeforeAfterBar, DxAxDiagram, StepRail, TaskGlyph, taskGlyphOrder } from "@/components/ui/ServiceVisuals";
+import { TaskDiagnosis } from "@/components/ui/TaskDiagnosis";
 
 const problems = [
   "Excelやシステムへの転記が多い",
@@ -81,14 +82,6 @@ const menu = [
   { name: "AI・RPA・GASによる業務自動化", kind: "DX / AX", desc: "入力・転記・集計を自動処理に置き換え。" },
   { name: "Notionなどを使った情報整理", kind: "DX", desc: "散らばった社内情報を一元化。" },
   { name: "AIエージェント構築", kind: "AX", desc: "定型業務を任せられる仕組みをつくる。" },
-];
-
-/* §3 時間とコストの試算。試算であることは本文の注記で明示する */
-const savings = [
-  { value: "60", unit: "分", label: "1日の手作業" },
-  { value: "20", unit: "時間", label: "月あたり（20日換算）" },
-  { value: "240", unit: "時間", label: "年間で戻る時間" },
-  { value: "72", unit: "万円", label: "年間の削減額（試算）" },
 ];
 
 const steps = [
@@ -357,31 +350,13 @@ export default function ServiceDX() {
                   この節は数字から始めたほうが早い */}
             </div>
 
-            {/* §3 削減規模の試算。カードにせず、罫線と数字だけで静かに見せる */}
+            {/* ここには「1日60分＝年240時間＝年72万円」という固定の試算を
+                置いていた。1人・1時間の想定なので、読む人の規模に合わない。
+                伴走が月20万円（年240万円）だと、72万円と並べたときに
+                「割に合わない」と読まれてしまう。
+                読む人が自分の数字を入れる形にすれば、規模に合う数字が出る */}
             <div className="mt-10 md:mt-14">
-              <div className="grid grid-cols-2 border-t border-charcoal/15 md:grid-cols-4 md:border-b">
-                {savings.map((s) => (
-                  <div
-                    key={s.label}
-                    className="border-t border-charcoal/15 py-7 even:border-l md:border-t-0 md:border-l md:px-7 md:py-9 md:first:border-l-0 md:first:pl-0"
-                  >
-                    <div className="flex items-baseline gap-1.5">
-                      <span
-                        className="font-semibold leading-none tracking-[-0.03em] tabular-nums text-charcoal"
-                        style={{ fontSize: "clamp(38px, 4.4vw, 60px)" }}
-                      >
-                        {s.value}
-                      </span>
-                      <span className="text-[14px] font-bold text-sage-ink">{s.unit}</span>
-                    </div>
-                    <div className="mt-3 text-[13px] leading-[1.8] text-charcoal/60">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 max-w-[40em] text-[12px] leading-[1.9] text-charcoal/55">
-                1日60分 × 月20日 ＝ 月20時間、年間240時間。削減額は時給3,000〜3,500円で試算しています。
-                ※ 試算および一例です。業務内容によって結果は異なり、効果を保証するものではありません。
-              </p>
+              <TaskDiagnosis />
             </div>
 
             <div className="mt-10 md:mt-14 flex flex-col divide-y divide-charcoal/10 border-t border-charcoal/10">
