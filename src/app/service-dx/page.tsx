@@ -131,7 +131,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://moments-share.com/service-dx/" },
   title: "西尾市の業務効率化・AI導入・DX/AX支援｜Moments Share",
   description:
-    "愛知県西尾市の中小企業向け、業務効率化・AI導入の伴走支援「Core Shift」。DX（業務のデジタル化）に加え、AX（AIを前提に仕事のやり方そのものを組み替える）まで支援します。入力・転記・集計を手放せば、1日60分の手作業が年間240時間になって戻ります。",
+    "愛知県西尾市の中小企業向け、業務効率化・AI導入の伴走支援「Core Shift」。DX（業務のデジタル化）に加え、AX（AIを前提に仕事のやり方そのものを組み替える）まで支援します。入力・転記・集計を手放し、人にしかできない仕事へ時間を戻します。",
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
@@ -236,7 +236,7 @@ export default function ServiceDX() {
               人の時間を、価値創造へ。
             </p>
             <p className="mt-7 max-w-xl text-[16px] md:text-[17px] leading-[2] text-white/80">
-              愛知県西尾市から、中小企業の業務効率化とAI導入を伴走支援。毎日の入力・転記・集計・定型対応を、AIと自動化で手放す。1日60分の手作業をなくすだけで、年間240時間があなたの会社に戻ります。
+              毎日の入力・転記・集計・定型対応を、AIと自動化で手放す。愛知県西尾市から、中小企業の業務効率化とAI導入を伴走支援します。
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
               <Link

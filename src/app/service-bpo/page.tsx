@@ -215,51 +215,10 @@ export default function ServiceBPO() {
               ))}
             </div>
 
-            {/* ご契約の条件。金額は出していないが、期間は先に書いておく。
-                「最低6ヶ月」だけだと縛りに見えるので、3ヶ月目の見直しと
-                セットで書く。同じ6ヶ月でも、縛りではなく計画になる。
-
-                6ヶ月にしている理由は実務上のもので、最初の数ヶ月は
-                引き受けた業務を把握しながら自動化できるところを探す期間になる。
-                3ヶ月で終わると、減らせる前に終わってしまう */}
-            <div className="mt-12 border-t border-charcoal/15 pt-10 md:mt-16 md:pt-12">
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
-                <div className="md:col-span-4">
-                  <p className="text-[12px] font-bold tracking-[0.16em] text-charcoal/55">
-                    ご契約について
-                  </p>
-                  <p
-                    className="mt-4 text-charcoal font-semibold leading-[1.4] tracking-[-0.02em]"
-                    style={{ fontSize: "clamp(19px, 2.2vw, 26px)" }}
-                  >
-                    3ヶ月目に、<br className="hidden sm:block" />一緒に見直します。
-                  </p>
-                </div>
-                <div className="md:col-span-8">
-                  <dl className="border-t border-charcoal/15">
-                    <div className="grid grid-cols-1 gap-1 border-b border-charcoal/15 py-5 sm:grid-cols-12 sm:gap-6">
-                      <dt className="text-[14px] font-bold text-charcoal sm:col-span-4">最低期間</dt>
-                      <dd className="text-[15px] leading-[1.9] text-charcoal/80 sm:col-span-8">
-                        6ヶ月からお受けしています。引き受けた仕事を把握し、減らせるところを見つけるまでに、それくらいかかるためです。
-                      </dd>
-                    </div>
-                    <div className="grid grid-cols-1 gap-1 border-b border-charcoal/15 py-5 sm:grid-cols-12 sm:gap-6">
-                      <dt className="text-[14px] font-bold text-charcoal sm:col-span-4">3ヶ月目の見直し</dt>
-                      <dd className="text-[15px] leading-[1.9] text-charcoal/80 sm:col-span-8">
-                        どれだけ減らせたかを一緒に確認します。空いた分は、別の業務をお引き受けするか、ご契約の内容を調整します。
-                      </dd>
-                    </div>
-                    <div className="grid grid-cols-1 gap-1 border-b border-charcoal/15 py-5 sm:grid-cols-12 sm:gap-6">
-                      <dt className="text-[14px] font-bold text-charcoal sm:col-span-4">費用</dt>
-                      <dd className="text-[15px] leading-[1.9] text-charcoal/80 sm:col-span-8">
-                        お引き受けする業務の範囲によって変わります。初回のご相談は無料です。
-                      </dd>
-                    </div>
-                  </dl>
-                </div>
-              </div>
-            </div>
-
+            {/* ここに「ご契約について（最低6ヶ月・3ヶ月目の見直し・費用）」を
+                置いていたが、外した。商談で話せばいい条件を、サイトで先に
+                説明していた。読む人がこの段階で知りたいのは、何を頼めるかであって、
+                契約の決まりではない */}
             {/* お受けしていない仕事。「何でもやります」と書く会社が多いので、
                 書いてあるだけで目にとまる。断る理由が考え方の説明になる */}
             <div className="mt-12 border border-charcoal/15 bg-ivory p-6 md:mt-16 md:p-8">

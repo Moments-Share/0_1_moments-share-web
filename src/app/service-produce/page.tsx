@@ -232,8 +232,8 @@ export default function ServiceProduce() {
                 </h2>
                 <div className="mt-10 max-w-2xl space-y-6 text-[16px] md:text-[18px] leading-[2.1] text-charcoal/85">
                   <p>
-                    地域を良くするために、最初から大きなことをする必要はないと思っています。
-                    好きなお店に行く。面白い人を誰かに紹介する。地域のイベントに参加する。「こんなことをやってみたい」と声にする。
+                    最初から大きなことをする必要はありません。
+                    好きな店に行く。面白い人を紹介する。「やってみたい」と声にする。
                   </p>
                   <p>
                     そんな一人ひとりの小さな行動が、人をつなぎ、新しい挑戦を生み、やがて地域を動かす力になっていく。
@@ -493,9 +493,8 @@ export default function ServiceProduce() {
               </div>
               <div className="md:col-span-7 md:pl-6">
                 <p className="max-w-xl text-[16px] md:text-[18px] leading-[2.1] text-charcoal/85">
-                  数を追うことが目的ではありません。一つひとつの事業の裏には、挑戦した人がいます。
-                  一人の「やってみたい」から挑戦が始まり、仲間が集まり、仕事や事業が生まれる。
-                  その積み重ねが地域に根づいている状態を、西尾からつくります。
+                  数を追うことが目的ではありません。一つひとつの裏に、挑戦した人がいます。
+                  その積み重ねが根づいた地域を、西尾からつくります。
                 </p>
                 <p className="mt-6 text-[13px] text-muted">
                   ※ 240事業はVisionではなく、私たちが掲げる中期目標です。
