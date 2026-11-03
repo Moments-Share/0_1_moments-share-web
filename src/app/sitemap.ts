@@ -33,6 +33,8 @@ const routes: { path: string; priority: number; changeFrequency: MetadataRoute.S
   { path: "/people", priority: 0.6, changeFrequency: "monthly" },
   { path: "/news", priority: 0.6, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.8, changeFrequency: "yearly" },
+  // 英語版。いまは1枚だけ。増やしたらここにも足す
+  { path: "/en", priority: 0.5, changeFrequency: "yearly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -19,7 +19,29 @@ const businessLinks = [
   { href: "/service-produce", label: "地域プロデュース" },
 ];
 
-export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
+/* lang は、いま表示しているページの言語。
+   切り替えリンクの行き先と文言を決めるためだけに使う。
+   英語ページは /en/ の1枚なので、日本語のどのページからも /en/ へ、
+   英語ページからは日本語トップへ戻す。
+   英語ページが増えたら、ここを対応表に変える */
+export function Nav({
+  heroTone = "light",
+  lang = "ja",
+}: {
+  heroTone?: "dark" | "light";
+  lang?: "ja" | "en";
+}) {
+  const langSwitch =
+    lang === "en"
+      ? { href: "/", label: "日本語", title: "日本語のページへ" }
+      : { href: "/en", label: "English", title: "View in English" };
+  /* 英語ページでは About / Business / People / News を出さない。
+     行き先がすべて日本語のページなので、押した人を日本語に放り出すだけになる。
+     英語ページが増えたら、英語版の行き先に差し替える。
+     お問い合わせは、フォームが日本語でも送れるので残す（英語で書いてよい、と
+     英語ページ本文に書いてある） */
+  const showNavLinks = lang === "ja";
+  const contactLabel = lang === "en" ? "Contact" : "お問い合わせ";
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [businessOpen, setBusinessOpen] = useState(false);
@@ -72,7 +94,7 @@ export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
           </Link>
 
           {/* Desktop links */}
-          <nav className="hidden md:flex items-center gap-9 text-[13px] font-bold">
+          <nav className={`${showNavLinks ? "hidden md:flex" : "hidden"} items-center gap-9 text-[13px] font-bold`}>
             {navLinks.map(({ href, label }) =>
               href === "/#business" ? (
                 <div
@@ -130,11 +152,23 @@ export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
               )
             )}
           </nav>
+          {/* 言語の切り替え。お問い合わせの左に、控えめに置く。
+              hreflang と合わせて、翻訳があることを人にも機械にも伝える */}
+          <Link
+            href={langSwitch.href}
+            hrefLang={lang === "en" ? "ja" : "en"}
+            title={langSwitch.title}
+            className={`hidden md:inline-block text-[12px] font-bold tracking-[0.08em] transition-colors ${
+              whiteText ? "text-white/70 hover:text-white" : "text-navy-ink/65 hover:text-deep-green"
+            }`}
+          >
+            {langSwitch.label}
+          </Link>
           <Link
             href="/contact"
             className={`hidden md:inline-flex btn text-[13px] px-5 py-2.5 ${whiteText ? "btn-ghost-on-dark" : "btn-ghost-navy"}`}
           >
-            お問い合わせ
+            {contactLabel}
           </Link>
 
           {/* 狭い画面：お問い合わせ＋MENU。
@@ -152,7 +186,7 @@ export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
               href="/contact"
               className={`btn text-[12px] px-4 py-2 ${whiteText ? "btn-ghost-on-dark" : "btn-ghost-navy"}`}
             >
-              相談する
+              {lang === "en" ? "Contact" : "相談する"}
             </Link>
             <button
               className={`text-[13px] font-black tracking-[0.16em] transition-colors duration-200 ${whiteText ? "text-white" : "text-navy-ink"}`}
@@ -200,7 +234,7 @@ export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
             </div>
 
             <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-center">
-              {navLinks.map(({ href, label, en }) =>
+              {(showNavLinks ? navLinks : []).map(({ href, label, en }) =>
                 href === "/#business" ? (
                   <div key={href} className="border-b border-charcoal/10">
                     <Link
@@ -240,11 +274,19 @@ export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
 
             <div className="px-6 pb-10 shrink-0">
               <Link
+                href={langSwitch.href}
+                hrefLang={lang === "en" ? "ja" : "en"}
+                onClick={() => setOpen(false)}
+                className="mb-5 inline-block text-[13px] font-bold tracking-[0.08em] text-navy-ink/65 transition-colors hover:text-deep-green"
+              >
+                {langSwitch.label}
+              </Link>
+              <Link
                 href="/contact"
                 className="btn w-full btn-ghost-navy text-[15px] px-8 py-4"
                 onClick={() => setOpen(false)}
               >
-                お問い合わせ
+                {contactLabel}
               </Link>
             </div>
           </motion.div>

@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { company, hasTel, telHref } from "@/lib/company";
@@ -39,7 +42,37 @@ const snsLinks = [
 const thisYear = new Date().getFullYear();
 const copyright = `© ${thisYear > 2025 ? `2025-${thisYear}` : "2025"} Moments Share合同会社. All rights reserved.`;
 
+/* フッターは layout.tsx が全ページに出しているので、どのページに
+   いるかを props では受け取れない。URLから見る。
+   静的書き出しでは、ページごとにHTMLを作るときに usePathname が
+   そのページのパスを返すので、英語ページのHTMLには最初から英語が入る
+   （読み込んでから日本語→英語に入れ替わる、という見え方にはならない）。
+   ビルド後のHTMLで確認すること。 */
+const labels = {
+  ja: {
+    tagline: "地域に、挑戦と共創の循環を。",
+    name: "正式名称",
+    rep: "代表者",
+    base: "拠点",
+    founded: "設立",
+    business: "事業",
+    note: null as string | null,
+  },
+  en: {
+    tagline: "Less of the work nobody needs to do.",
+    name: "Legal name",
+    rep: "Representative",
+    base: "Based in",
+    founded: "Founded",
+    business: "Business",
+    note: "The links below lead to Japanese pages.",
+  },
+};
+
 export function Footer() {
+  const pathname = usePathname();
+  const lang: "ja" | "en" = pathname?.startsWith("/en") ? "en" : "ja";
+  const t = labels[lang];
   // フッターは全ページ共通で明るいクローム(ivory地)。ロゴ(白背景前提)の舞台に合わせ、文字はネイビー/charcoal。
   return (
     <footer className="bg-ivory text-charcoal border-t border-border">
@@ -56,18 +89,18 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-5 text-[15px] font-bold leading-heading text-navy-ink">
-              地域に、挑戦と共創の循環を。
+              {t.tagline}
             </p>
             <dl className="mt-6 space-y-1.5 text-[13px] text-charcoal/70 leading-relaxed">
-              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">正式名称</dt><dd>{company.name}</dd></div>
-              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">代表者</dt><dd>{company.representative}</dd></div>
+              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">{t.name}</dt><dd>{company.name}</dd></div>
+              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">{t.rep}</dt><dd>{company.representative}</dd></div>
               {/* 出すのは「拠点」だけ。登記上の本店所在地は出していない。
                   2つ並べると、所在地のほうだけ伏せているように読めたため。
                   ここに「所在地」というラベルを付け直さないこと。
                   そう書くと、登記と違う住所を本店所在地として出すことになる */}
-              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">拠点</dt><dd>{company.base}</dd></div>
-              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">設立</dt><dd>{company.founded}</dd></div>
-              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">事業</dt><dd>{company.business}</dd></div>
+              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">{t.base}</dt><dd>{company.base}</dd></div>
+              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">{t.founded}</dt><dd>{company.founded}</dd></div>
+              <div className="flex gap-3"><dt className="w-16 shrink-0 text-charcoal/50">{t.business}</dt><dd>{company.business}</dd></div>
               {/* 電話番号は company.tel が入ったときだけ出す。空欄の行を見せない */}
               {hasTel && (
                 <div className="flex gap-3">
@@ -84,6 +117,9 @@ export function Footer() {
 
           {/* Business */}
           <nav aria-label="Business">
+            {t.note && (
+              <p className="mb-5 text-[11px] leading-[1.7] text-charcoal/55">{t.note}</p>
+            )}
             <div className="text-[11px] font-bold tracking-widest-label text-navy-ink">BUSINESS</div>
             <ul className="mt-5 space-y-3 text-[14px] text-charcoal/80">
               {businessLinks.map(({ href, label }) => (

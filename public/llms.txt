@@ -104,6 +104,7 @@
 - 私たちについて: https://moments-share.com/about/
 - お知らせ: https://moments-share.com/news/
 - お問い合わせ: https://moments-share.com/contact/
+- English: https://moments-share.com/en/（会社概要と3事業の要約。本体は日本語）
 
 ## 留意事項
 
