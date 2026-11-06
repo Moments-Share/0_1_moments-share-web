@@ -1,0 +1,16 @@
+# Cloudflare Pages 用のリダイレクト設定（vercel.json の redirects と同じ内容）。
+# 書式: 元のパス  転送先  ステータス。末尾スラッシュ有り/無しの両方を書いている。
+/about-us /about/ 301
+/about-us/ /about/ 301
+/service /service-dx/ 301
+/service/ /service-dx/ 301
+/service-dx-support /service-dx/ 301
+/service-dx-support/ /service-dx/ 301
+/member /people/ 301
+/member/ /people/ 301
+/mvv /about/ 301
+/mvv/ /about/ 301
+/group /about/ 301
+/group/ /about/ 301
+/projects /service-produce/ 301
+/projects/ /service-produce/ 301
