@@ -34,8 +34,7 @@ const problems = [
      しかも自社の実績と読み違えられる。経歴は「すごさ」ではなく
      「だから任せて大丈夫」の説明に絞る。
 
-   TODO: 写真は /photos/33_founder_portrait.jpg（山頂の写真）を使っている。
-         仕事中の写真が撮れたら、こちらのほうが場面に合う。 */
+   写真は /photos/34_founder_business.jpg（ジャケット姿の写真）を使っている。 */
 const founderFacts = [
   "1997年、愛知県西尾市生まれ。",
   "広告メディア事業で、大手・中小・学校・自治体など100社以上を担当。",
@@ -67,21 +66,37 @@ const outcomes = [
   { title: "属人化を減らす。", body: "「あの人しかわからない」をなくし、誰が担当しても回る状態をつくります。" },
 ];
 
-/* kind は、やり方は変えずに速くするものが DX、
+/* できること。7つあった項目を、進め方と同じ順の3つにまとめた。
+   名前で並べると「どれを頼めばいいか」を読み手が選ばないといけないが、
+   「整える → 減らす → 使いこなす」なら自社がいまどの段階かで選べる。
+
+   kind は、やり方は変えずに速くするものが DX、
    仕事の組み立てから変えるものが AX。
-   「AXもやります」と名乗るだけでは何も伝わらないので、
-   どれがAXなのかを一つずつ示す */
+
+   個々のサービス名（業務自動化・AIエージェント・AI研修・AIハッカソンなど）は
+   name と desc に残してある。検索用の serviceType（構造化データ）も変えていない。 */
 /* TODO: AIハッカソンの開催条件（時間・人数・費用・オンラインか対面か）が
-         決まったら desc に足す。いまは「何をする会か」だけを書いている。
+         決まったら、別ページかFAQで説明する。
          2026年5月の「AIエージェントを創ろう！」が近い形。 */
 const menu = [
-  { name: "AI活用支援", kind: "AX", desc: "現場で使えるAIの使いどころを整理し、定着まで伴走。" },
-  { name: "AI研修", kind: "AX", desc: "チームがAIを使いこなすための実践研修。" },
-  { name: "AIハッカソン", kind: "AX", desc: "その場で手を動かして、自社の業務に使えるものを形にする。" },
-  { name: "業務整理・DXコンサルティング", kind: "DX", desc: "どの作業を減らすべきか、優先順位から設計。" },
-  { name: "AI・RPA・GASによる業務自動化", kind: "DX / AX", desc: "入力・転記・集計を自動処理に置き換え。" },
-  { name: "Notionなどを使った情報整理", kind: "DX", desc: "散らばった社内情報を一元化。" },
-  { name: "AIエージェント構築", kind: "AX", desc: "定型業務を任せられる仕組みをつくる。" },
+  {
+    label: "整える",
+    name: "業務整理・情報整理",
+    kind: "DX",
+    desc: "どの作業を減らすべきかを優先順位から決め、散らばった社内情報をNotionなどで一元化します。",
+  },
+  {
+    label: "減らす",
+    name: "業務自動化・AIエージェント構築",
+    kind: "DX / AX",
+    desc: "入力・転記・集計をAI・RPA・GASで自動化し、定型業務はAIエージェントに任せます。",
+  },
+  {
+    label: "使いこなす",
+    name: "AI研修・ハッカソン・定着支援",
+    kind: "AX",
+    desc: "研修やハッカソンで現場が手を動かし、AIの使いどころが定着するまで伴走します。",
+  },
 ];
 
 const steps = [
@@ -534,7 +549,7 @@ export default function ServiceDX() {
           </section>
         )}
 
-        {/* ===== SERVICE — できること。6項目を番号付きリストに ===== */}
+        {/* ===== SERVICE — できること。進め方と同じ順の3項目 ===== */}
         <section className="py-14 md:py-22 px-6 md:px-10 bg-ivory">
           <div className="mx-auto max-w-[1400px]">
             {/* DXとAXの違い。言葉を名乗るだけでは伝わらないので、
@@ -584,34 +599,34 @@ export default function ServiceDX() {
                   できること。
                 </h2>
                 <p className="mt-5 max-w-[24em] text-[14px] leading-[1.9] text-charcoal/75">
-                  どれがDXで、どれがAXかを付けてあります。
+                  整える、減らす、使いこなす。いまの段階に合わせて、どこからでもご依頼いただけます。
                 </p>
               </div>
               <div className="lg:col-span-8">
-                <ul className="border-t border-charcoal/10">
+                <ol className="border-t border-charcoal/10">
                   {menu.map((m, i) => (
-                    <li key={m.name} className="flex items-baseline gap-3 border-b border-charcoal/10 py-4 md:gap-6 md:py-6">
+                    <li key={m.label} className="flex items-baseline gap-3 border-b border-charcoal/10 py-6 md:gap-6 md:py-8">
                       <span className="w-6 shrink-0 font-medium leading-none tabular-nums text-charcoal/30 md:w-10" style={{ fontSize: "clamp(14px, 2vw, 28px)" }}>
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <div className="min-w-0">
-                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                          <p className="text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]" style={{ fontSize: "clamp(16px, 2vw, 26px)" }}>
+                        <p className="text-[13px] font-bold tracking-[0.06em] text-deep-green md:text-[14px]">{m.label}</p>
+                        <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                          <p className="text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]" style={{ fontSize: "clamp(17px, 2vw, 26px)" }}>
                             {m.name}
                           </p>
                           <span className="border border-charcoal/25 px-2 py-0.5 text-[10px] font-bold tracking-[0.08em] text-charcoal/70 md:text-[11px]">
                             {m.kind}
                           </span>
                         </div>
-                        {/* 説明はスマホでは出さない。名前とDX/AXの別で何をするかは伝わるし、
-                            7項目それぞれに1行足すと、この一覧だけで0.5画面ぶん伸びる */}
-                        <p className="mt-2 hidden max-w-[30em] text-[14px] leading-[1.9] text-charcoal/70 md:block md:text-[15px]">
+                        {/* 3項目になったので、説明はスマホでも出す */}
+                        <p className="mt-3 max-w-[32em] text-[14px] leading-[1.9] text-charcoal/70 md:text-[15px]">
                           {m.desc}
                         </p>
                       </div>
                     </li>
                   ))}
-                </ul>
+                </ol>
               </div>
             </div>
           </div>

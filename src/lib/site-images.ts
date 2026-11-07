@@ -164,10 +164,17 @@ const people = {
      alt は data/members.ts の photoAlt と同じ写真を指しているので、
      差し替えるときは両方を直すこと */
   founderPortrait: img(
-    "/photos/33_founder_portrait.jpg",
-    "山頂で片手を上げて笑う代表・中根 隆",
-    "代表の実写。縦位置。仕事中の様子が撮れたら差し替える。",
+    "/photos/34_founder_business.jpg",
+    "ジャケット姿で笑顔を見せる代表・中根 隆",
+    "代表の実写。正方形の元画像を縦位置で切り抜いて使う。元画像が512pxなので、高解像度の版があれば差し替える。",
     "4/5",
+  ),
+  /* 同じ写真を、ニュースの記事用に正方形で使う */
+  founderPortraitSquare: img(
+    "/photos/34_founder_business.jpg",
+    "ジャケット姿で笑顔を見せる代表・中根 隆",
+    "代表の実写。ニュースで講師として紹介するときに使う。正方形。",
+    "1/1",
   ),
 };
 
@@ -202,6 +209,7 @@ export const newsImages: Record<string, SiteImage> = {
   "kinniku-matsuri-press": siteImages.regionEventStage,
   "saiyo-marke-ax-seminar": siteImages.seminarSaiyoAx,
   "ai-agent-workshop": siteImages.workshopAiAgent,
+  "nishio-ai-gyomu-kaizen-workshop": siteImages.founderPortraitSquare,
 };
 
 /* ---------------------------------------------------------------
