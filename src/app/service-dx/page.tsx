@@ -69,18 +69,41 @@ const outcomes = [
 /* kind は、やり方は変えずに速くするものが DX、
    仕事の組み立てから変えるものが AX。
    「AXもやります」と名乗るだけでは何も伝わらないので、
-   どれがAXなのかを一つずつ示す */
+   どれがAXなのかを一つずつ示す。
+
+   7つを「整える → 減らす → 使いこなす」の3つに分けて並べる。
+   下の「進め方」（業務整理 → 導入・開発 → 運用・改善）と同じ順番なので、
+   どこから頼めばよいかが、並びを見ただけで分かる。
+   以前はAXの3つが先頭に来て、DXとAXが交互に混ざっていた */
 /* TODO: AIハッカソンの開催条件（時間・人数・費用・オンラインか対面か）が
          決まったら desc に足す。いまは「何をする会か」だけを書いている。
          2026年5月の「AIエージェントを創ろう！」が近い形。 */
-const menu = [
-  { name: "AI活用支援", kind: "AX", desc: "現場で使えるAIの使いどころを整理し、定着まで伴走。" },
-  { name: "AI研修", kind: "AX", desc: "チームがAIを使いこなすための実践研修。" },
-  { name: "AIハッカソン", kind: "AX", desc: "その場で手を動かして、自社の業務に使えるものを形にする。" },
-  { name: "業務整理・DXコンサルティング", kind: "DX", desc: "どの作業を減らすべきか、優先順位から設計。" },
-  { name: "AI・RPA・GASによる業務自動化", kind: "DX / AX", desc: "入力・転記・集計を自動処理に置き換え。" },
-  { name: "Notionなどを使った情報整理", kind: "DX", desc: "散らばった社内情報を一元化。" },
-  { name: "AIエージェント構築", kind: "AX", desc: "定型業務を任せられる仕組みをつくる。" },
+const menuGroups = [
+  {
+    label: "整える",
+    lead: "業務と情報を整理する",
+    items: [
+      { name: "業務整理・DXコンサルティング", kind: "DX", desc: "どの作業を減らすべきか、優先順位から設計。" },
+      { name: "Notionなどを使った情報整理", kind: "DX", desc: "散らばった社内情報を一元化。" },
+    ],
+  },
+  {
+    label: "減らす",
+    lead: "作業を自動化する",
+    items: [
+      { name: "AI・RPA・GASによる業務自動化", kind: "DX / AX", desc: "入力・転記・集計を自動処理に置き換え。" },
+      { name: "AIエージェント構築", kind: "AX", desc: "定型業務を任せられる仕組みを創る。" },
+    ],
+  },
+  {
+    label: "使いこなす",
+    lead: "AIを現場に根づかせる",
+    items: [
+      { name: "AI活用支援", kind: "AX", desc: "現場で使えるAIの使いどころを整理し、定着まで伴走。" },
+      { name: "AI研修", kind: "AX", desc: "チームがAIを使いこなすための実践研修。" },
+      { name: "AIハッカソン", kind: "AX", desc: "その場で手を動かして、自社の業務に使えるものを形にする。" },
+    ],
+  },
 ];
 
 const steps = [
@@ -533,7 +556,7 @@ export default function ServiceDX() {
           </section>
         )}
 
-        {/* ===== SERVICE — できること。6項目を番号付きリストに ===== */}
+        {/* ===== SERVICE — できること。7項目を3つのまとまりに分けた番号付きリスト ===== */}
         <section className="py-14 md:py-22 px-6 md:px-10 bg-ivory">
           <div className="mx-auto max-w-[1400px]">
             {/* DXとAXの違い。言葉を名乗るだけでは伝わらないので、
@@ -583,34 +606,48 @@ export default function ServiceDX() {
                   できること。
                 </h2>
                 <p className="mt-5 max-w-[24em] text-[14px] leading-[1.9] text-charcoal/75">
-                  どれがDXで、どれがAXかを付けてあります。
+                  整える、減らす、使いこなす。進め方と同じ順に並べ、DXかAXかを付けてあります。
                 </p>
               </div>
               <div className="lg:col-span-8">
-                <ul className="border-t border-charcoal/10">
-                  {menu.map((m, i) => (
-                    <li key={m.name} className="flex items-baseline gap-3 border-b border-charcoal/10 py-4 md:gap-6 md:py-6">
-                      <span className="w-6 shrink-0 font-medium leading-none tabular-nums text-charcoal/30 md:w-10" style={{ fontSize: "clamp(14px, 2vw, 28px)" }}>
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                          <p className="text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]" style={{ fontSize: "clamp(16px, 2vw, 26px)" }}>
-                            {m.name}
-                          </p>
-                          <span className="border border-charcoal/25 px-2 py-0.5 text-[10px] font-bold tracking-[0.08em] text-charcoal/70 md:text-[11px]">
-                            {m.kind}
-                          </span>
-                        </div>
-                        {/* 説明はスマホでは出さない。名前とDX/AXの別で何をするかは伝わるし、
-                            7項目それぞれに1行足すと、この一覧だけで0.5画面ぶん伸びる */}
-                        <p className="mt-2 hidden max-w-[30em] text-[14px] leading-[1.9] text-charcoal/70 md:block md:text-[15px]">
-                          {m.desc}
+                <div className="space-y-10 md:space-y-12">
+                  {menuGroups.map((g, gi) => {
+                    /* 番号は3つのまとまりをまたいで 01〜07 と通す */
+                    const offset = menuGroups.slice(0, gi).reduce((n, x) => n + x.items.length, 0);
+                    return (
+                      <div key={g.label}>
+                        <p className="flex items-baseline gap-3">
+                          <span className="text-[15px] font-bold tracking-[0.04em] text-deep-green md:text-[16px]">{g.label}</span>
+                          <span className="text-[13px] text-charcoal/60">{g.lead}</span>
                         </p>
+                        <ul className="mt-3 border-t border-charcoal/10">
+                          {g.items.map((m, i) => (
+                            <li key={m.name} className="flex items-baseline gap-3 border-b border-charcoal/10 py-4 md:gap-6 md:py-6">
+                              <span className="w-6 shrink-0 font-medium leading-none tabular-nums text-charcoal/30 md:w-10" style={{ fontSize: "clamp(14px, 2vw, 28px)" }}>
+                                {String(offset + i + 1).padStart(2, "0")}
+                              </span>
+                              <div className="min-w-0">
+                                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                                  <p className="text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]" style={{ fontSize: "clamp(16px, 2vw, 26px)" }}>
+                                    {m.name}
+                                  </p>
+                                  <span className="border border-charcoal/25 px-2 py-0.5 text-[10px] font-bold tracking-[0.08em] text-charcoal/70 md:text-[11px]">
+                                    {m.kind}
+                                  </span>
+                                </div>
+                                {/* 説明はスマホでは出さない。まとまりの見出しと名前で何をするかは伝わるし、
+                                    7項目それぞれに1行足すと、この一覧だけで0.5画面ぶん伸びる */}
+                                <p className="mt-2 hidden max-w-[30em] text-[14px] leading-[1.9] text-charcoal/70 md:block md:text-[15px]">
+                                  {m.desc}
+                                </p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    </li>
-                  ))}
-                </ul>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
