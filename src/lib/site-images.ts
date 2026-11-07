@@ -202,6 +202,8 @@ export const newsImages: Record<string, SiteImage> = {
   "kinniku-matsuri-press": siteImages.regionEventStage,
   "saiyo-marke-ax-seminar": siteImages.seminarSaiyoAx,
   "ai-agent-workshop": siteImages.workshopAiAgent,
+  // TODO: セミナーチラシの画像があれば差し替える（告知バナーと同じく fit: "contain" で）
+  "nishio-ai-gyomu-kaizen-workshop": siteImages.dxMeeting,
 };
 
 /* ---------------------------------------------------------------
