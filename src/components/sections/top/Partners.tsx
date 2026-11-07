@@ -72,7 +72,7 @@ export function Partners() {
               {/* 一文だけ。下に入口のカードが2枚あるので、
                   ここで働き方まで説明すると同じことを二度言うことになる */}
               <p className="mt-8 max-w-[26em] text-[16px] leading-[2] text-charcoal md:text-[18px]">
-                弊社は、一緒に働ける仲間を募集しています。
+                私たちは、一緒に働ける仲間を募集しています。
               </p>
             </Reveal>
           </div>
