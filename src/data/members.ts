@@ -37,8 +37,8 @@ export const members: Member[] = [
     name: "中根 隆",
     nameEn: "RYU NAKANE",
     role: "代表社員 / Founder",
-    photo: "/photos/33_founder_portrait.jpg",
-    photoAlt: "山頂で片手を上げて笑う代表・中根 隆",
+    photo: "/photos/34_founder_business.jpg",
+    photoAlt: "ジャケット姿で笑顔を見せる代表・中根 隆",
     /* caption（写真に添える一行）は置かない。「西尾から、挑戦と共創の
        循環をつくる。」と書いていたが、下の why がほぼ同じ文で、
        同じカードの中で二度同じことを言っていた。
