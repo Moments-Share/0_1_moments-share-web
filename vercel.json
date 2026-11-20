@@ -35,6 +35,26 @@
       "source": "/projects",
       "destination": "/service-produce/",
       "permanent": true
+    },
+    {
+      "source": "/792-2/:rest*",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/core-shift/:rest*",
+      "destination": "/service-dx/",
+      "permanent": true
+    },
+    {
+      "source": "/dx-bpo/:rest*",
+      "destination": "/service-dx/",
+      "permanent": true
+    },
+    {
+      "source": "/bpo/:rest*",
+      "destination": "/service-bpo/",
+      "permanent": true
     }
   ],
   "headers": [

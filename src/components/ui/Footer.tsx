@@ -12,8 +12,9 @@ const businessLinks = [
   { href: "/service-dx", label: "DX・AX支援" },
   { href: "/service-bpo", label: "BPO" },
   { href: "/service-produce", label: "地域プロデュース" },
-  // /works は準備中のため一時的に非表示。公開時にこの行のコメントを外す
-  // { href: "/works", label: "Works（実績）" },
+  // 実績と年間プラン（2026年11月に公開）
+  { href: "/works", label: "Works（実績）" },
+  { href: "/annual-plan", label: "AI導入伴走 年間プラン" },
   { href: "/nishio-hatarakikata-zukan", label: "西尾働き方図鑑" },
   { href: "/nishio-career-lab", label: "西尾キャリアLab" },
 ];

@@ -3,100 +3,43 @@ import Link from "next/link";
 import Image from "next/image";
 import { Nav } from "@/components/ui/Nav";
 import { PhotoNeeded } from "@/components/ui/PhotoNeeded";
+import { BookingLink } from "@/components/ui/BookingLink";
+import { CaseCard, CasesNote } from "@/components/ui/CaseCard";
+import { cases } from "@/data/cases";
+import { PLAN_CONTACT_HREF } from "@/lib/plans";
 
 export const metadata: Metadata = {
-  title: "実績（Works）｜Moments Share",
+  alternates: { canonical: "https://moments-share.com/works/" },
+  title: "実績・導入事例｜AI導入・業務自動化｜Moments Share",
   description:
-    "Moments Shareがカタチにしてきた仕事。企業のDX・業務改善から地域プロジェクトまで、お客様や仲間と一緒につくってきた実績をご紹介します。",
+    "中小企業のAI導入・業務自動化の実績。FAXのAI仕分け、台帳の統合、申込から請求案内までの自動化、月額伴走での並行開発など。お困りごと・やったこと・結果をご紹介します。",
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
     siteName: "Moments Share合同会社",
-    title: "実績（Works）｜Moments Share",
+    title: "実績・導入事例｜AI導入・業務自動化｜Moments Share",
     description:
-      "企業のDX・業務改善から地域プロジェクトまで。Moments Shareがつくってきた仕事の実績。",
+      "お困りごと → やったこと → 結果。中小企業のAI導入・業務自動化の実績をご紹介します。",
+    locale: "ja_JP",
     type: "website",
-    url: "https://moments-share.com/works",
+    url: "https://moments-share.com/works/",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
-  /* 内容を整えてから出したいので、検索結果には出さない。
-     URLは生きているので、リンクを持っている人は開ける（下書きの確認用）。
-     canonical は noindex のあいだ付けない。
-     公開するときは robots を消し、sitemap.ts・Nav・llms.txt の
-     1行ずつと canonical を戻す。 */
-  robots: { index: false, follow: false },
 };
 
-/* 2026年10月にいったん公開したが、中身をもっと整理してから出したいので
-   非公開（noindex・導線なし）に戻した。ページ自体は残してあるので、
-   URLを直接開けば下書きとして確認できる。
+/* 2026年11月に公開に戻した。
+   10月に一度公開したあと「中身を整えてから」と noindex にしていたが、
+   DX・AXの事例を src/data/cases.ts にまとめ直したので出す。
 
-   公開のときに外し、いまも外したままにしているもの：
+   以前ここにあった次のものは外した：
+   ・「SNS投稿 30分 → 約6分（約80％削減）」などのHP掲載事例3件。
+     実績集でも支援先と測った記録の紐付けが「要確認」のままで、
+     実測と言える出典が見つからなかった。出典が確かめられたら cases.ts に足す。
+   ・「事業 4 / 240」と、カテゴリ別の件数（AI研修 2社 など）。
+     数えた範囲と時点が書かれておらず、事例の一覧と数が合わなかった。
 
-   1. 「人が必要な仕事を、一緒に支えた事例。」（BPO事例）
-      見出しだけあって中身が「整理中です」の一文しかなかった。
-      空の見出しは、読む人には準備中のページに見え、Googleには
-      中身の薄いページに見える。実例が書けるようになったら戻す。
-   2. 「実際に、どう変わったか。」（お客様の声）
-      同上。許諾済みのコメントが取れたら戻す。
-
-   どちらも架空の事例・コメントは作らないこと。
-
-   「ともに働くパートナー 5名」の行は外したままにする。
-   正しい人数は5名（ご提案資料の「外部パートナー2名」のほうが古い）。
-   数字が間違っていたのではなく、載せない方針。戻さないこと。
-   資料側の2名は、次に資料を直すときに合わせる。 */
-
-// 全社KPI（現在の事業数 / 2040年ゴール）
-const kpi = { now: "4", goal: "240", label: "事業" };
-
-// カテゴリ別の実績
-const categories = [
-  {
-    name: "DX",
-    items: ["AI導入支援 1社", "AI研修 2社", "システム開発 2件実施中", "効率化フロー 7件"],
-  },
-  {
-    name: "BPO",
-    items: ["業務代行支援 3社", "CS、SNS運用、事務"],
-  },
-  {
-    name: "地域プロデュース",
-    items: ["挑戦プロジェクト 4件"],
-  },
-];
-
-const dxCases = [
-  {
-    tag: "DX",
-    title: "SNS投稿の自動化",
-    result: "30分 → 約6分",
-    note: "作業時間 約80％削減",
-    big: "80",
-    bigUnit: "％削減",
-    desc: "AIが企画し、X・Threadsへ自動投稿するフローを構築。毎日の投稿作業を大幅に削減。",
-    photo: "/photos/service-dx.png",
-    alt: "ホワイトボードでの業務整理",
-  },
-  {
-    tag: "DX",
-    title: "請求書発行の自動化",
-    result: "手作業 → 自動化",
-    note: "転記・送付をゼロに",
-    desc: "フォーム入力から請求書の自動発行・メール送信までを一気通貫で自動化。",
-    photo: "/photos/service-dx.png",
-    alt: "自動化した請求書の記録",
-  },
-  {
-    tag: "DX",
-    title: "在庫管理の一元化",
-    result: "紙＋Excel → 一元管理",
-    note: "転記作業を削減",
-    desc: "スマホ入力・クラウド管理・検索・アラートを実装し、Excel転記作業をなくした。",
-    photo: "/photos/service-bpo.png",
-    alt: "一元管理した在庫データの記録",
-  },
-];
+   BPOの事例・お客様の声は、引き続き載せていない。
+   どちらも架空の事例・コメントは作らないこと。 */
 
 const projects = [
   {
@@ -153,79 +96,52 @@ export default function WorksPage() {
               ひとつずつ、<br />形に。
             </h1>
             <p className="mt-8 max-w-xl text-[16px] md:text-[17px] leading-[2] text-white/80">
-              企業の業務改善から、地域のプロジェクトまで。
+              中小企業のAI導入・業務自動化から、地域のプロジェクトまで。
               お客様や仲間と一緒につくってきた仕事をご紹介します。
             </p>
           </div>
         </section>
 
-        {/* ===== 数字 — 4つを同じ大きさ・同じ重みで ===== */}
+        {/* ===== DX・AXの事例 — お困りごと → やったこと → 結果 ===== */}
         <section className="py-16 md:py-24 px-6 md:px-10 bg-white">
           <div className="mx-auto max-w-[1400px]">
-            <div className="text-[12px] font-bold tracking-[0.16em] text-charcoal/45">数字で見る Moments Share</div>
-
-            {/* 全社KPI — 事業 4 / 240 */}
-            <div className="mt-10 flex items-baseline gap-2.5 border-t border-charcoal/10 pt-10">
-              <span className="text-[15px] font-bold text-charcoal/70">{kpi.label}</span>
-              <span className="text-charcoal font-semibold leading-none tracking-[-0.02em]" style={{ fontSize: "clamp(52px, 6.5vw, 84px)" }}>{kpi.now}</span>
-              <span className="text-charcoal/40 font-semibold leading-none" style={{ fontSize: "clamp(24px, 3vw, 34px)" }}>/ {kpi.goal}</span>
-            </div>
-
-            {/* カテゴリ別 */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
-              {categories.map((c) => (
-                <div key={c.name}>
-                  <div className="text-[13px] font-bold tracking-[0.12em] text-charcoal">{c.name}</div>
-                  <ul className="mt-3 space-y-2">
-                    {c.items.map((it) => (
-                      <li key={it} className="text-[14px] leading-[1.8] text-charcoal/75">{it}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ===== DX CASE — 代表事例を大きく、残りは静かなリストで ===== */}
-        <section className="py-16 md:py-28 px-6 md:px-10">
-          <div className="mx-auto max-w-[1400px]">
-            <div className="max-w-3xl">
-              <h2 className="text-charcoal font-semibold leading-[1.35] tracking-[-0.01em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
-                業務を、余白に変えた事例。
-              </h2>
-            </div>
-
-            {/* 代表事例 — 写真を主役に、成果はテキストで添える */}
-            <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
-              <div className="md:col-span-6">
-                <PhotoNeeded ratio="4/3" kind="MOMENTS" note="SNS自動化の運用・作業画面と手元（横）" />
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-12">
+              <div className="lg:col-span-5">
+                <p className="text-[12px] font-bold tracking-[0.18em] text-sage-ink">DX・AX CASES</p>
+                <h2 className="mt-5 text-charcoal font-semibold leading-[1.35] tracking-[-0.01em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
+                  業務を、余白に変えた事例。
+                </h2>
               </div>
-              <div className="md:col-span-6">
-                <div className="text-charcoal/45 text-[12px] font-semibold tracking-[0.08em]">{dxCases[0].tag}</div>
-                <h3 className="mt-4 text-charcoal font-semibold leading-[1.4] tracking-[-0.01em]" style={{ fontSize: "clamp(22px, 2.8vw, 34px)" }}>{dxCases[0].title}</h3>
-                <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-charcoal font-semibold leading-none tracking-[-0.02em]" style={{ fontSize: "clamp(40px, 5.4vw, 64px)" }}>約{dxCases[0].big}</span>
-                  <span className="text-charcoal font-semibold text-[17px] md:text-[20px] pb-1.5">{dxCases[0].bigUnit}</span>
-                </div>
-                <div className="mt-2 text-[15px] font-bold text-charcoal/80">{dxCases[0].result}</div>
-                <p className="mt-4 max-w-md text-[15px] md:text-[16px] leading-[2] text-charcoal/80">{dxCases[0].desc}</p>
-              </div>
+              <p className="lg:col-span-7 lg:pt-10 max-w-[38em] text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
+                お客様の現場で動いている仕組みの一部です。
+                どれも「どこに時間がかかっているか」を一緒に整理するところから始めました。
+              </p>
             </div>
 
-            {/* 残り2事例 — 静かな読み物リスト */}
-            <div className="mt-14 md:mt-20 flex flex-col divide-y divide-charcoal/10 border-t border-charcoal/10">
-              {dxCases.slice(1).map((c) => (
-                <div key={c.title} className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-10 items-baseline py-8 md:py-10">
-                  <div className="md:col-span-3 text-charcoal/40 text-[12px] font-bold tracking-[0.14em]">{c.tag}</div>
-                  <div className="md:col-span-4">
-                    <h3 className="text-charcoal font-semibold leading-[1.45] tracking-[-0.01em]" style={{ fontSize: "clamp(19px, 2.2vw, 26px)" }}>{c.title}</h3>
-                    <div className="mt-2 text-[15px] font-bold text-charcoal/80">{c.result}</div>
-                    <div className="mt-1 text-[13px] text-charcoal/55">{c.note}</div>
-                  </div>
-                  <p className="md:col-span-5 text-[15px] leading-[2] text-charcoal/80">{c.desc}</p>
-                </div>
+            <ul className="mt-12 grid grid-cols-1 gap-6 md:mt-16 lg:grid-cols-2">
+              {cases.map((c) => (
+                <li key={c.id}>
+                  <CaseCard c={c} />
+                </li>
               ))}
+            </ul>
+            <CasesNote />
+
+            {/* 事例を読み終えた人への導線。年間プランへ渡す */}
+            <div className="mt-14 flex flex-col gap-6 border-y border-charcoal/15 py-10 md:mt-20 md:flex-row md:items-center md:justify-between md:py-12">
+              <div>
+                <h2 className="font-semibold leading-[1.35] tracking-[-0.02em] text-charcoal" style={{ fontSize: "clamp(20px, 2.4vw, 30px)" }}>
+                  1本つくって終わりにしない。毎月1本ずつ、1年かけて。
+                </h2>
+                <p className="mt-4 max-w-[36em] text-[15px] leading-[2] text-charcoal/75">
+                  「AI導入伴走 年間プラン」では、毎月ひとつずつ自動化をつくり、効果をレポートでお渡しします。
+                </p>
+              </div>
+              <div className="flex shrink-0 flex-col items-start gap-4">
+                <Link href="/annual-plan" className="btn btn-solid-green px-9 py-4">
+                  年間プランを見る →
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -285,9 +201,12 @@ export default function WorksPage() {
                 <p className="text-[15px] leading-[2] text-white/75">
                   「うちに合うかわからない」でも大丈夫です。まだ課題が整理できていなくても構いません。
                 </p>
-                <Link href="/contact" className="mt-6 btn btn-ghost-on-green px-9 py-4">
-                  30分相談する →
+                <Link href={PLAN_CONTACT_HREF} className="mt-6 btn btn-ghost-on-green px-9 py-4">
+                  無料で相談する →
                 </Link>
+                <p className="mt-5 text-[14px] leading-[1.9] text-white/70">
+                  日程が決まっている方は <BookingLink variant="onGreen">予約ページから</BookingLink>
+                </p>
               </div>
             </div>
           </div>

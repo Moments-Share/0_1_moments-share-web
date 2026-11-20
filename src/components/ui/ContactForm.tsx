@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CONTACT_EMAIL, CONTACT_ENDPOINT, TEL_PURPOSE } from "@/lib/contact";
 import { trackContactSubmit } from "@/lib/analytics";
 import { company, hasTel, telHref } from "@/lib/company";
@@ -14,13 +14,24 @@ import { company, hasTel, telHref } from "@/lib/company";
    その場で送信し、ページ遷移せずに完了メッセージへ切り替える。
    ============================================================ */
 
+/* 先頭は主力の年間プラン。/annual-plan/ などから ?topic=annual-plan で
+   来たときは、これを選んだ状態で開く（下の topicToCategory）。
+   選択肢の文言を変えるときは topicToCategory も合わせて直す */
 const categories = [
+  "AI導入伴走 年間プラン・AI研修",
   "DX・AX支援（AI導入・業務自動化）",
   "BPO・業務代行",
   "地域プロデュース",
   "採用・複業・パートナー参加",
   "その他",
 ];
+
+/** URLの ?topic= と、最初から選んでおく選択肢の対応 */
+const topicToCategory: Record<string, string> = {
+  "annual-plan": "AI導入伴走 年間プラン・AI研修",
+  training: "AI導入伴走 年間プラン・AI研修",
+  dx: "DX・AX支援（AI導入・業務自動化）",
+};
 
 /* 色はコントラストを実測して決めている（背景 #f8f5ef に対して）。
    ラベル   charcoal/75 → 6.63:1  本文基準 4.5:1 を満たす
@@ -65,6 +76,17 @@ export function ContactForm() {
   const [errorDetail, setErrorDetail] = useState("");
 
   const disabled = status === "submitting";
+  const categoryRef = useRef<HTMLSelectElement>(null);
+
+  /* 静的書き出しのため、URLのパラメータは表示後にブラウザで読む。
+     JSが動かない環境では未選択のまま（必須なので選んでもらえる） */
+  useEffect(() => {
+    const topic = new URLSearchParams(window.location.search).get("topic") ?? "";
+    const preset = topicToCategory[topic];
+    if (preset && categoryRef.current && !categoryRef.current.value) {
+      categoryRef.current.value = preset;
+    }
+  }, [status]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -219,6 +241,7 @@ export function ContactForm() {
         </label>
         <select
           id="category"
+          ref={categoryRef}
           name="ご相談の種類"
           required
           defaultValue=""

@@ -52,7 +52,7 @@ const businesses: Business[] = [
     no: "02",
     label: "BPO",
     title: "人手不足に、社外の力を。",
-    body: "営業・事務・CS等を受託し、社外パートナーとチームを組んで企業を支えます。",
+    body: "事務・SNS運用・CSを受託し、社外パートナーとチームを組んで企業を支えます。",
     href: "/service-bpo",
     image: "bpoImage",
   },

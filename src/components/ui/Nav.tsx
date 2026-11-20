@@ -7,8 +7,8 @@ import { useState, useEffect } from "react";
 const navLinks = [
   { href: "/about", label: "About", en: "私たちについて" },
   { href: "/#business", label: "Business", en: "3つの事業" },
-  // 非公開のあいだは出さない（Footer も同じ理由でコメントアウトしてある）
-  // { href: "/works", label: "Works", en: "実績" },
+  { href: "/works", label: "Works", en: "実績" },
+  { href: "/annual-plan", label: "Plan", en: "年間プラン" },
   { href: "/people", label: "People", en: "関わる人たち" },
   { href: "/news", label: "News", en: "お知らせ" },
 ];
@@ -72,7 +72,7 @@ export function Nav({ heroTone = "light" }: { heroTone?: "dark" | "light" }) {
           </Link>
 
           {/* Desktop links */}
-          <nav className="hidden md:flex items-center gap-9 text-[13px] font-bold">
+          <nav className="hidden md:flex items-center gap-5 lg:gap-9 text-[13px] font-bold">
             {navLinks.map(({ href, label }) =>
               href === "/#business" ? (
                 <div

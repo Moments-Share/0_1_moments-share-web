@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/Hero";
 import { AboutIntro } from "@/components/sections/top/AboutIntro";
 import { BusinessFlow } from "@/components/sections/top/BusinessFlow";
 import { Kpi } from "@/components/sections/top/Kpi";
+import { CasesPreview } from "@/components/sections/top/CasesPreview";
 import { Partners } from "@/components/sections/top/Partners";
 import { VisionNishio } from "@/components/sections/VisionNishio";
 import { NewsPreview } from "@/components/sections/top/NewsPreview";
@@ -15,17 +16,17 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://moments-share.com/" },
   title: "Moments Share合同会社｜西尾市の業務効率化・DX/AX支援",
   description:
-    "愛知県西尾市の中小企業向けに、業務効率化・AI導入・DX/AX支援を伴走型で提供。請求書処理・データ転記・日報集計などの定型業務を自動化し、1日60分の手作業から年間240時間を取り戻します。BPO・地域プロデュースも。初回のご相談は無料です。",
+    "愛知県西尾市の中小企業向けに、AI導入・業務自動化を1年かけて伴走する「AI導入伴走 年間プラン」を提供。FAXのAI仕分けや台帳の統合など、現場で動いている実績を掲載しています。BPO・地域プロデュースも。初回のご相談は無料です。",
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
     siteName: "Moments Share合同会社",
     title: "Moments Share合同会社｜西尾市の業務効率化・DX/AX支援",
     description:
-      "愛知県西尾市の中小企業向け。業務効率化・DX・AX（AI活用）を伴走支援。BPO・地域プロデュースも。",
+      "愛知県西尾市の中小企業向け。AI導入・業務自動化を年間で伴走支援。BPO・地域プロデュースも。",
     locale: "ja_JP",
     type: "website",
-    url: "https://moments-share.com",
+    url: "https://moments-share.com/",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
 };
@@ -51,6 +52,9 @@ export default function Home() {
 
         {/* 3つの事業で、地域に循環をつくる。 — DXを主役に、循環は細い線で示す */}
         <BusinessFlow />
+
+        {/* 実績（先頭3件）と、AI導入伴走 年間プラン */}
+        <CasesPreview />
 
         {/* ひとつずつ、形に。 */}
         <Kpi />
@@ -91,7 +95,7 @@ export default function Home() {
               </div>
               <div className="lg:col-span-5 lg:pb-2">
                 <Link href="/contact" className="btn btn-ghost-on-green px-9 py-4">
-                  お問い合わせをしてみる →
+                  無料で相談する →
                 </Link>
               </div>
             </div>

@@ -4,11 +4,13 @@ import { Nav } from "@/components/ui/Nav";
 import { BookingLink } from "@/components/ui/BookingLink";
 import { DeckEmbed } from "@/components/ui/DeckEmbed";
 import { PRICE_FROM, hasPrice, priceFactors, priceSteps } from "@/lib/pricing";
-import { SitePhoto, SitePhotoFill } from "@/components/ui/SitePhoto";
-import { dxCases } from "@/data/dx-cases";
+import { SitePhotoFill } from "@/components/ui/SitePhoto";
+import { highlightCases } from "@/data/cases";
+import { CaseCard, CasesNote } from "@/components/ui/CaseCard";
+import { displayPrice, plans, PLAN_CONTACT_HREF } from "@/lib/plans";
 import { dxResults } from "@/data/dx-results";
 import { VIDEO_EMBED_URL, VIDEO_LEAD, VIDEO_TITLE, hasVideo } from "@/lib/video";
-import { BeforeAfterBar, DxAxDiagram, StepRail, TaskGlyph, taskGlyphOrder } from "@/components/ui/ServiceVisuals";
+import { DxAxDiagram, StepRail, TaskGlyph, taskGlyphOrder } from "@/components/ui/ServiceVisuals";
 import { TaskDiagnosis } from "@/components/ui/TaskDiagnosis";
 
 const problems = [
@@ -372,7 +374,11 @@ export default function ServiceDX() {
           </div>
         </section>
 
-        {/* ===== CASE — 実績。80％削減を主役に ===== */}
+        {/* ===== CASE — 実績。src/data/cases.ts の先頭3件。
+             以前はここに「SNS投稿 30分 → 約6分（約80％削減）」「請求書」「在庫管理」の
+             3件を直書きしていたが、実績集でも測った記録と支援先の紐付けが
+             「要確認」のままだったので外した。出典が確かめられたら cases.ts に足す。
+             dx-results.ts（実績の数字）は、空のあいだは行ごと出ない ===== */}
         <section className="py-14 md:py-22 px-6 md:px-10 bg-white">
           <div className="mx-auto max-w-[1400px]">
             <div className="max-w-3xl">
@@ -381,8 +387,6 @@ export default function ServiceDX() {
               </h2>
             </div>
 
-            {/* 実績の数字。dx-results.ts が空のあいだは行ごと出ない。
-                数字だけ大きく、単位と説明は小さく。カードにはしない */}
             {dxResults.length > 0 && (
               <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-9 border-t border-charcoal/15 pt-10 md:mt-14 md:grid-cols-4 md:gap-x-10">
                 {dxResults.map((r) => (
@@ -409,89 +413,21 @@ export default function ServiceDX() {
               </dl>
             )}
 
-            {/* 主役：SNS自動化 約80％削減。数字は信頼を伝える情報として扱う */}
-            <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 items-end">
-              <div className="md:col-span-5">
-                <div className="text-[13px] font-semibold tracking-[0.08em] text-charcoal/45 mb-4">SNS自動化</div>
-                <div className="flex items-end gap-3">
-                  <span className="text-charcoal font-semibold leading-[0.9] tracking-[-0.03em]" style={{ fontSize: "clamp(48px, 6vw, 72px)" }}>
-                    約80
-                  </span>
-                  <span className="text-charcoal font-semibold pb-2" style={{ fontSize: "clamp(18px, 2.2vw, 26px)" }}>％削減</span>
-                </div>
-              </div>
-              <div className="md:col-span-7 md:pb-4">
-                <h3 className="text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]" style={{ fontSize: "clamp(22px, 2.6vw, 34px)" }}>
-                  投稿作業を、30分 → 約6分へ。
-                </h3>
-                {/* 「30分 → 約6分」は、長さの差で見せたほうが早い。
-                    棒の比率は実数のまま（6/30）。見栄えのために変えない */}
-                <div className="mt-6 max-w-md">
-                  <BeforeAfterBar
-                    beforeLabel="これまで"
-                    beforeValue={30}
-                    afterLabel="いま"
-                    afterValue={6}
-                    unit="分／日"
-                    note="投稿の企画から公開までの流れを自動化しました。※ 特定業務での一例です。効果を保証するものではありません。"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 主役事例の現場写真。左揃え・横位置 */}
-            <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-12">
-              <div className="md:col-span-8">
-                <SitePhoto name="dxWorkflow" sizes="(max-width: 768px) 100vw, 50vw" />
-                <p className="mt-3 text-[12px] text-muted">毎日の投稿作業が、6分に。</p>
-              </div>
-            </div>
-
-            {/* 請求書自動化。テキスト事例 */}
-            <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 items-baseline border-t border-charcoal/10 pt-10 md:pt-12">
-              <div className="md:col-span-4 text-[13px] font-semibold tracking-[0.08em] text-charcoal/45">請求書</div>
-              <div className="md:col-span-8">
-                <h3 className="text-charcoal font-semibold leading-[1.3] tracking-[-0.02em]" style={{ fontSize: "clamp(22px, 2.8vw, 36px)" }}>
-                  請求書発行の自動化
-                </h3>
-                <div className="mt-3 text-charcoal font-semibold tracking-[-0.02em]" style={{ fontSize: "clamp(19px, 2.2vw, 27px)" }}>
-                  手作業 → 自動化<span className="text-charcoal/60 text-[15px] font-medium ml-3 align-middle">発行・送付を仕組み化</span>
-                </div>
-                <p className="mt-5 max-w-md text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                  手作業だった請求書の作成・送付を自動化し、転記の手間を解消。
-                </p>
-              </div>
-            </div>
-
-            {/* 在庫管理 — 左揃えで統一 */}
-            <div className="mt-10 md:mt-14 border-t border-charcoal/10 pt-10 md:pt-12">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 items-end">
-                <div className="md:col-span-7">
-                  <div className="text-[13px] font-semibold tracking-[0.08em] text-charcoal/45">在庫管理</div>
-                  <h3 className="mt-5 text-charcoal font-semibold leading-[1.15] tracking-[-0.02em]" style={{ fontSize: "clamp(24px, 3.4vw, 48px)" }}>
-                    紙＋Excel →<br />一元管理
-                  </h3>
-                </div>
-                <div className="md:col-span-5 md:pb-2">
-                  <div className="text-charcoal font-semibold tracking-[-0.02em]" style={{ fontSize: "clamp(18px, 2vw, 24px)" }}>
-                    在庫管理の一元化
-                  </div>
-                  <div className="mt-2 text-[13px] font-medium text-charcoal/50">二重管理を解消</div>
-                  <p className="mt-4 max-w-md text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                    紙とExcelに分かれていた在庫情報を一元管理し、探す・照合する手間を削減。
-                  </p>
-                </div>
-              </div>
-            </div>
+            <ul className="mt-10 grid grid-cols-1 gap-6 md:mt-14 lg:grid-cols-3">
+              {highlightCases.map((c) => (
+                <li key={c.id}>
+                  <CaseCard c={c} variant="compact" />
+                </li>
+              ))}
+            </ul>
+            <CasesNote />
 
             <div className="mt-10 md:mt-14">
-              {/* /works が準備中のため、いまは問い合わせへ渡す。
-                  実績ページを公開したら href="/works" と「実績をもっと見る →」に戻す */}
               <Link
-                href="/contact"
+                href="/works"
                 className="inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
               >
-                他の事例について聞いてみる →
+                実績をもっと見る →
               </Link>
             </div>
           </div>
@@ -617,56 +553,6 @@ export default function ServiceDX() {
           </div>
         </section>
 
-        {/* ===== 事例 — 中身が入るまでは、セクションごと出さない。
-                 「実績はこちら」と書いて空のページに送るほうが信用を落とす。
-                 src/data/dx-cases.ts に1件足せば、ここに現れる ===== */}
-        {dxCases.length > 0 && (
-          <section className="py-14 md:py-22 px-6 md:px-10 bg-white">
-            <div className="mx-auto max-w-[1400px]">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-                <div className="lg:col-span-4">
-                  <h2 className="text-charcoal font-semibold leading-[1.2] tracking-[-0.02em]" style={{ fontSize: "clamp(24px, 3.2vw, 42px)" }}>
-                    実際に、こう変わりました。
-                  </h2>
-                </div>
-                <div className="lg:col-span-8">
-                  <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    {dxCases.map((c) => (
-                      <li key={`${c.client}-${c.title}`} className="border border-charcoal/12 p-7 md:p-8">
-                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                          <span className="border border-charcoal/25 px-2 py-0.5 text-[11px] font-bold tracking-[0.08em] text-charcoal/70">
-                            {c.kind}
-                          </span>
-                          <span className="text-[13px] font-medium text-charcoal/70">{c.client}</span>
-                        </div>
-                        <p className="mt-4 text-charcoal font-semibold leading-[1.35] tracking-[-0.02em]" style={{ fontSize: "clamp(17px, 1.8vw, 21px)" }}>
-                          {c.title}
-                        </p>
-                        <dl className="mt-5 border-t border-charcoal/10 pt-5 text-[14px] leading-[1.9]">
-                          <div className="flex gap-4">
-                            <dt className="w-16 shrink-0 font-bold text-charcoal/55">before</dt>
-                            <dd className="text-charcoal/80">{c.before}</dd>
-                          </div>
-                          <div className="mt-2 flex gap-4">
-                            <dt className="w-16 shrink-0 font-bold text-deep-green">after</dt>
-                            <dd className="font-semibold text-charcoal">{c.after}</dd>
-                          </div>
-                        </dl>
-                        {c.tools && (
-                          <p className="mt-4 text-[13px] leading-[1.8] text-charcoal/70">使ったもの：{c.tools}</p>
-                        )}
-                        {c.note && (
-                          <p className="mt-2 text-[12px] leading-[1.8] text-charcoal/60">{c.note}</p>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* ===== 費用 — 金額が無いままだと「高いかもしれない」で離脱する。
                  額を出せないうちは、決まり方といつ分かるかを示す。
                  一番聞かれることなので、ページの中ほどに置く。
@@ -693,9 +579,23 @@ export default function ServiceDX() {
                   </p>
                 ) : null}
                 <p className="mt-7 max-w-[32em] text-[15px] md:text-[16px] leading-[2] text-charcoal/80">
-                  決まった料金表はありません。減らせる仕事は会社ごとに違うので、
+                  単発の自動化や開発は、減らせる仕事が会社ごとに違うので、
                   対象が決まってから金額をお出ししています。
                 </p>
+                {/* 主力の年間プランは金額の目安を出せる。表示は lib/plans.ts の設定に従う */}
+                <div className="mt-7 border-l-2 border-deep-green pl-5">
+                  <p className="text-[13px] font-bold tracking-[0.08em] text-charcoal/70">AI導入伴走 年間プラン</p>
+                  <p className="mt-2 text-[15px] leading-[1.9] text-charcoal/85">
+                    毎月1本ずつ自動化をつくり、効果を毎月レポートする12か月の伴走。
+                    スタンダード {displayPrice(plans[0])}。
+                  </p>
+                  <Link
+                    href="/annual-plan"
+                    className="mt-3 inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
+                  >
+                    年間プランを見る →
+                  </Link>
+                </div>
 
                 {/* 比べる相手を示しておく。金額を出していないぶん、
                     読む人は「高いのか安いのか」の手がかりを持てない。
@@ -774,7 +674,7 @@ export default function ServiceDX() {
                   いまの困りごとを伺えれば、進め方と費用の目安をお伝えします。
                 </p>
               </div>
-              <Link href="/contact" className="btn btn-solid-green shrink-0 px-9 py-4">
+              <Link href={PLAN_CONTACT_HREF} className="btn btn-solid-green shrink-0 px-9 py-4">
                 まずは無料でご相談 →
               </Link>
             </div>
