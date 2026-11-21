@@ -107,7 +107,12 @@ export function Footer() {
           {/* 設立(2025年11月)から今年まで。年が変わっても直さなくていいよう、
               終わりの年はビルド時の年から取る。静的書き出しなので、
               値が入れ替わるのは次にビルドしたとき */}
-          <p className="text-[12px] text-charcoal/70">{copyright}</p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <p className="text-[12px] text-charcoal/70">{copyright}</p>
+            <Link href="/privacy" className="text-[12px] text-charcoal/70 hover:text-deep-green transition-colors">
+              プライバシーポリシー
+            </Link>
+          </div>
           <div className="flex items-center gap-6 text-[13px] text-charcoal/80">
             {snsLinks.map(({ href, label }) => (
               <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="hover:text-deep-green transition-colors">{label}</a>
