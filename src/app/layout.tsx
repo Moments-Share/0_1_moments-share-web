@@ -79,7 +79,7 @@ const organizationJsonLd = {
       },
       "sameAs": [
         "https://x.com/momentsshare_",
-        "https://instagram.com/momentsshare",
+        "https://www.instagram.com/2.4.0_nishio_hub/",
         "https://note.com/momentsshare",
       ],
       "areaServed": [

@@ -28,7 +28,7 @@ const companyLinks = [
 
 const snsLinks = [
   { href: "https://x.com/momentsshare_", label: "X" },
-  { href: "https://instagram.com/momentsshare", label: "Instagram" },
+  { href: "https://www.instagram.com/2.4.0_nishio_hub/", label: "Instagram" },
   { href: "https://note.com/momentsshare", label: "note" },
 ];
 
