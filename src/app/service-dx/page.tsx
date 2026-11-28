@@ -485,11 +485,13 @@ export default function ServiceDX() {
             </div>
 
             <div className="mt-10 md:mt-14">
+              {/* /works は Coming Soon のため、いまは問い合わせへ渡す。
+                  中身を入れて公開したら href="/works" と「導入実績をもっと見る →」に戻す */}
               <Link
-                href="/works"
+                href="/contact"
                 className="inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
               >
-                導入実績をもっと見る →
+                他の事例について聞いてみる →
               </Link>
             </div>
           </div>
