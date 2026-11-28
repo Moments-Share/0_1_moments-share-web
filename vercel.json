@@ -33,7 +33,7 @@
     },
     {
       "source": "/projects",
-      "destination": "/service-produce/",
+      "destination": "/works/",
       "permanent": true
     }
   ],

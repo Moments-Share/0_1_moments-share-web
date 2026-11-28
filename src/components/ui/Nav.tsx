@@ -7,8 +7,7 @@ import { useState, useEffect } from "react";
 const navLinks = [
   { href: "/about", label: "About", en: "私たちについて" },
   { href: "/#business", label: "Business", en: "3つの事業" },
-  // 非公開のあいだは出さない（Footer も同じ理由でコメントアウトしてある）
-  // { href: "/works", label: "Works", en: "実績" },
+  { href: "/works", label: "Works", en: "導入実績" },
   { href: "/people", label: "People", en: "関わる人たち" },
   { href: "/news", label: "News", en: "お知らせ" },
 ];

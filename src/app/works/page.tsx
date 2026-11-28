@@ -5,31 +5,28 @@ import { Nav } from "@/components/ui/Nav";
 import { PhotoNeeded } from "@/components/ui/PhotoNeeded";
 
 export const metadata: Metadata = {
-  title: "実績（Works）｜Moments Share",
+  title: "Works｜導入実績｜Moments Share",
   description:
     "Moments Shareがカタチにしてきた仕事。企業のDX・業務改善から地域プロジェクトまで、お客様や仲間と一緒につくってきた実績をご紹介します。",
+  /* 正規URL。他のページと同じく、末尾スラッシュ違いなどで
+     別のURLとして数えられないようにする */
+  alternates: { canonical: "https://moments-share.com/works/" },
   openGraph: {
     /* サイト名。layout で指定していても、ページ側で openGraph を
        書き直すと丸ごと差し替わって消えるので、各ページに書く */
     siteName: "Moments Share合同会社",
-    title: "実績（Works）｜Moments Share",
+    title: "Works｜導入実績｜Moments Share",
     description:
       "企業のDX・業務改善から地域プロジェクトまで。Moments Shareがつくってきた仕事の実績。",
     type: "website",
     url: "https://moments-share.com/works",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
-  /* 内容を整えてから出したいので、検索結果には出さない。
-     URLは生きているので、リンクを持っている人は開ける（下書きの確認用）。
-     canonical は noindex のあいだ付けない。
-     公開するときは robots を消し、sitemap.ts・Nav・llms.txt の
-     1行ずつと canonical を戻す。 */
-  robots: { index: false, follow: false },
 };
 
-/* 2026年10月にいったん公開したが、中身をもっと整理してから出したいので
-   非公開（noindex・導線なし）に戻した。ページ自体は残してあるので、
-   URLを直接開けば下書きとして確認できる。
+/* 2026年10月にいったん公開し、非公開（noindex・導線なし）に戻したあと、
+   2026年11月に「Works｜導入実績」として改めて公開した。
+   ナビの見出しは「Works」、開いたページでは「Works｜導入実績」と出す。
 
    公開のときに外し、いまも外したままにしているもの：
 
@@ -147,7 +144,7 @@ export default function WorksPage() {
             />
           </div>
           <div className="relative z-10 min-h-[58vh] md:min-h-[66vh] flex flex-col justify-end max-w-[1400px] mx-auto w-full px-6 md:px-10 pb-14 md:pb-20 pt-32">
-            <div className="text-[13px] font-bold tracking-[0.14em] text-white/70">Works（実績）</div>
+            <div className="text-[13px] font-bold tracking-[0.14em] text-white/70">Works｜導入実績</div>
             <h1 className="mt-5 text-white font-semibold leading-[1.16] tracking-[-0.02em]"
                 style={{ fontSize: "clamp(34px, 5vw, 68px)" }}>
               ひとつずつ、<br />形に。
