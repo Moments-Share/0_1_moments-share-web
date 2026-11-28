@@ -485,8 +485,8 @@ export default function ServiceDX() {
             </div>
 
             <div className="mt-10 md:mt-14">
-              {/* /works が準備中のため、いまは問い合わせへ渡す。
-                  実績ページを公開したら href="/works" と「実績をもっと見る →」に戻す */}
+              {/* /works は Coming Soon のため、いまは問い合わせへ渡す。
+                  中身を入れて公開したら href="/works" と「導入実績をもっと見る →」に戻す */}
               <Link
                 href="/contact"
                 className="inline-block border-b border-navy-ink/40 pb-0.5 text-[14px] font-bold text-navy-ink transition-colors hover:border-deep-green hover:text-deep-green"
